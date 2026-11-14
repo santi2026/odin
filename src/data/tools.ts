@@ -43,5 +43,7 @@ if (focusTool) {
   focusTool.name = 'Concentración · Pomodoro';
   focusTool.description = 'Alterna sesiones de concentración y descanso configurables.';
 }
+const datesTool = tools.find((tool) => tool.id === 'U08');
+if (datesTool) datesTool.status = 'available';
 tools.push({ id: 'U12', order: 12, slug: 'calendario', name: 'Calendario', description: 'Consulta calendarios mensuales o anuales con sus festivos.', category: 'Tiempo', icon: '▦', status: 'planned', featured: false });
 tools.push({ id: 'U11', order: 11, slug: 'fases-lunares', name: 'Fases lunares', description: 'Consulta la fase actual de la Luna y sus próximos cambios.', category: 'Tiempo', icon: '◐', status: 'planned', featured: false });

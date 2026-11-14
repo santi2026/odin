@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Suma, resta y compara fechas naturales o laborables con los festivos y periodos de ODÍN." />
+  <title>Calculadora de fechas · ODÍN</title>
+  <link rel="icon" href="/logo.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="/src/styles/global.css?v=dates-1" />
+</head>
+<body class="tool-page dates-body">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="site-header"><a class="brand" href="/preview-home/" aria-label="ODÍN, volver a la portada"><span class="brand-mark">◆</span><span>ODÍN</span></a><nav aria-label="Navegación de la herramienta"><a class="back-to-catalog" href="/preview-home/#herramientas"><span aria-hidden="true">←</span> Catálogo</a></nav></header>
+  <main id="contenido" class="dates-page">
+    <header class="dates-heading">
+      <div><p class="eyebrow">U07 · CÁLCULO</p><h1>Calculadora de fechas</h1><p>Suma tiempo o compara dos fechas. Puedes contar días naturales o aplicar los festivos, vacaciones y periodos que ya tienes en ODÍN.</p></div>
+      <div class="dates-today"><span>Hoy</span><strong id="today-day">--</strong><small id="today-label">--</small></div>
+    </header>
+
+    <div class="dates-tabs" role="tablist" aria-label="Tipo de cálculo">
+      <button id="tab-add" type="button" role="tab" aria-selected="true" aria-controls="panel-add">Sumar o restar</button>
+      <button id="tab-between" type="button" role="tab" aria-selected="false" aria-controls="panel-between">Entre dos fechas</button>
+    </div>
+
+    <section id="panel-add" class="dates-panel" role="tabpanel" aria-labelledby="tab-add">
+      <form id="add-form" class="dates-form">
+        <div class="dates-form-heading"><span class="map-kicker">Fecha de partida</span><h2>Calcula una fecha</h2></div>
+        <label><span>Fecha inicial</span><input id="base-date" type="date" min="1900-01-01" max="2200-12-31" required /></label>
+        <div class="date-quick-actions"><button type="button" data-base-offset="0">Hoy</button><button type="button" data-base-offset="1">Mañana</button><button type="button" data-base-offset="7">Dentro de 7 días</button></div>
+        <div class="date-operation-row">
+          <label><span>Operación</span><select id="operation"><option value="1">Sumar</option><option value="-1">Restar</option></select></label>
+          <label><span>Cantidad</span><input id="amount" type="number" min="0" max="10000" value="30" required /></label>
+          <label><span>Unidad</span><select id="unit"><option value="days">Días naturales</option><option value="business">Días laborables</option><option value="weeks">Semanas</option><option value="months">Meses</option><option value="years">Años</option></select></label>
+        </div>
+        <p class="dates-form-note" id="add-rule">La fecha inicial no cuenta como uno de los días añadidos.</p>
+      </form>
+      <article class="date-result" aria-live="polite">
+        <span class="map-kicker">Resultado</span><p id="result-weekday">--</p><h2 id="result-date">--</h2><div id="result-badges" class="result-badges"></div>
+        <div class="result-route"><span id="result-expression">--</span><small id="result-detail">--</small></div>
+        <div class="result-countdown"><label><span>Nombre para Cuenta atrás</span><input id="countdown-name" maxlength="48" value="Fecha calculada" /></label><button id="create-countdown" type="button">Crear cuenta atrás</button></div>
+        <p class="result-message" id="result-message" hidden></p>
+      </article>
+    </section>
+
+    <section id="panel-between" class="dates-panel" role="tabpanel" aria-labelledby="tab-between" hidden>
+      <form id="between-form" class="dates-form">
+        <div class="dates-form-heading"><span class="map-kicker">Periodo</span><h2>Compara dos fechas</h2></div>
+        <div class="between-date-row"><label><span>Fecha inicial</span><input id="start-date" type="date" min="1900-01-01" max="2200-12-31" required /></label><button id="swap-dates" type="button" aria-label="Intercambiar fechas">⇄</button><label><span>Fecha final</span><input id="end-date" type="date" min="1900-01-01" max="2200-12-31" required /></label></div>
+        <label class="include-setting"><span><b>Incluir los dos extremos</b><small>Cuenta tanto la fecha inicial como la final.</small></span><input id="include-both" type="checkbox" /><i aria-hidden="true"></i></label>
+        <p class="dates-form-note">Sin esta opción, se excluye el día inicial y se cuenta hasta el día final.</p>
+      </form>
+      <article class="between-results" aria-live="polite">
+        <div class="between-summary"><span class="map-kicker">Resultado</span><h2 id="between-title">--</h2><p id="between-order">--</p></div>
+        <div class="between-metrics"><div><strong id="natural-days">0</strong><span>días naturales</span></div><div><strong id="business-days">0</strong><span>días laborables</span></div><div><strong id="weeks-days">0 semanas</strong><span id="weeks-days-rest">0 días</span></div><div><strong id="calendar-duration">0 días</strong><span>duración de calendario</span></div></div>
+        <div class="between-breakdown"><span><i class="weekend-dot"></i><b id="weekend-count">0</b> fines de semana</span><span><i class="holiday-dot"></i><b id="holiday-count">0</b> festivos oficiales</span><span><i class="period-dot"></i><b id="period-count">0</b> días en periodos</span></div>
+      </article>
+    </section>
+
+    <section class="workday-policy">
+      <div><span class="map-kicker">Calendario laboral</span><h2>Qué días quieres excluir</h2><p>Estas opciones se aplican a los días laborables. Los sábados y domingos siempre se excluyen.</p></div>
+      <div class="policy-options">
+        <label><input type="checkbox" data-policy="spain" checked /><i style="--policy-color:var(--cal-spain)"></i><span><b>España</b><small>Festivos nacionales</small></span></label>
+        <label><input type="checkbox" data-policy="barcelona" checked /><i style="--policy-color:var(--cal-barcelona)"></i><span><b>Barcelona</b><small>Cataluña</small></span></label>
+        <label><input type="checkbox" data-policy="madrid" checked /><i style="--policy-color:var(--cal-madrid)"></i><span><b>Madrid</b><small>Comunidad</small></span></label>
+        <label><input type="checkbox" data-policy="other" checked /><i style="--policy-color:var(--cal-other)"></i><span><b>Otros</b><small>Incluye festivos locales</small></span></label>
+        <label><input type="checkbox" data-policy="vacation" /><i style="--policy-color:var(--cal-vacation)"></i><span><b>Vacaciones</b><small>Tus periodos guardados</small></span></label>
+      </div>
+      <p class="policy-status" id="policy-status">Cargando los periodos guardados en Calendario…</p>
+    </section>
+  </main>
+  <footer class="site-footer"><span>ODÍN · Calculadora de fechas</span><span>Cálculos locales · sin seguimiento</span></footer>
+  <script type="module" src="/preview-dates/dates.js?v=1"></script>
+  <script type="module" src="/global-timer.js?v=countdown-2"></script>
+  <script type="module" src="/time-center.js?v=4"></script>
+</body>
+</html>
