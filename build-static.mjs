@@ -18,6 +18,7 @@ for (const folder of ['preview','preview-home','preview-ip','preview-world','pre
 await mkdir(join(dist, 'src', 'styles'), { recursive: true });
 await cp(join(root, 'src', 'styles', 'global.css'), join(dist, 'src', 'styles', 'global.css'), { force: true });
 await writeFile(join(dist, '_headers'), `/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n`, 'utf8');
+await writeFile(join(dist, '_routes.json'), JSON.stringify({ version: 1, include: ['/api/*'], exclude: [] }, null, 2), 'utf8');
 
 const home = await readFile(join(dist, 'index.html'), 'utf8');
 if (!home.includes('/preview-home/home.js')) throw new Error('La portada estática no contiene su script principal.');

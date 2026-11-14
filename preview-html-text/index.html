@@ -13,13 +13,18 @@
   <header class="site-header"><a class="brand" href="/preview-home/" aria-label="ODÍN, volver a la portada"><span class="brand-mark">◆</span><span>ODÍN</span></a><nav aria-label="Navegación de la herramienta"><a class="back-to-catalog" href="/preview-home/#herramientas"><span aria-hidden="true">←</span> Catálogo</a></nav></header>
   <main id="contenido" class="html-text-page">
     <header class="html-text-heading">
-      <div><p class="eyebrow">U13 · CREACIÓN</p><h1>HTML a texto</h1><p>Pega un documento HTML o abre un archivo y conserva únicamente su texto legible. El código se procesa en este dispositivo.</p></div>
-      <div class="html-text-privacy"><strong>0</strong><span>datos enviados</span><small>Procesamiento local</small></div>
+      <div><p class="eyebrow">U13 · CREACIÓN</p><h1>HTML a texto</h1><p>Pega un documento HTML, abre un archivo o indica una URL y conserva únicamente su texto legible.</p></div>
+      <div class="html-text-privacy"><strong>0</strong><span>datos guardados</span><small>Sin historial</small></div>
     </header>
 
     <section class="html-text-workspace">
       <article class="html-source-panel">
         <div class="html-panel-heading"><div><span class="map-kicker">ORIGEN</span><h2>HTML</h2></div><button id="clear-html" type="button">Limpiar</button></div>
+        <form class="html-url-form" id="html-url-form">
+          <label for="html-url"><span>Obtener desde una URL</span><div><input id="html-url" type="url" inputmode="url" placeholder="https://ejemplo.com/articulo" /><button id="fetch-url" type="submit">Obtener texto</button></div></label>
+          <small id="html-url-status">Admite páginas públicas de hasta 2 MB.</small>
+        </form>
+        <div class="html-source-divider"><span>o utiliza un archivo / código</span></div>
         <label class="html-file-button" for="html-file"><span>↑ Abrir archivo HTML</span><small>.html, .htm o .txt</small></label>
         <input id="html-file" type="file" accept=".html,.htm,.txt,text/html,text/plain" hidden />
         <label class="html-editor-label" for="html-input"><span>Pega aquí el código</span><textarea id="html-input" spellcheck="false" placeholder="&lt;article&gt;&#10;  &lt;h1&gt;Título&lt;/h1&gt;&#10;  &lt;p&gt;Este texto se conservará.&lt;/p&gt;&#10;&lt;/article&gt;"></textarea></label>
@@ -46,10 +51,10 @@
         <label><input id="include-links" type="checkbox" /><i></i><span><b>Direcciones de enlaces</b><small>Añade la URL después del texto enlazado.</small></span></label>
       </div>
     </section>
-    <section class="html-text-note"><span>◎</span><div><b>El HTML nunca se ejecuta</b><p>Se analiza como un documento aislado y no se incorpora a la página. ODÍN tampoco guarda el original ni el resultado.</p></div></section>
+    <section class="html-text-note"><span>◎</span><div><b>El HTML nunca se ejecuta ni se almacena</b><p>El código pegado y los archivos se procesan localmente. Si utilizas una URL, Cloudflare descarga temporalmente esa página para evitar bloqueos del navegador y entrega el contenido directamente al limpiador.</p></div></section>
   </main>
   <footer class="site-footer"><span>ODÍN · HTML a texto</span><span>Limpieza local · sin seguimiento</span></footer>
-  <script type="module" src="/preview-html-text/html-text.js?v=1"></script>
+  <script type="module" src="/preview-html-text/html-text.js?v=2"></script>
   <script type="module" src="/global-timer.js?v=countdown-2"></script>
   <script type="module" src="/time-center.js?v=4"></script>
 </body>

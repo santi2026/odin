@@ -5,6 +5,10 @@ const copyButton = document.querySelector('#copy-text');
 const downloadButton = document.querySelector('#download-text');
 const editButton = document.querySelector('#edit-result');
 const fileInput = document.querySelector('#html-file');
+const urlForm = document.querySelector('#html-url-form');
+const urlInput = document.querySelector('#html-url');
+const urlButton = document.querySelector('#fetch-url');
+const urlStatus = document.querySelector('#html-url-status');
 const blockElements = new Set(['ADDRESS','ARTICLE','ASIDE','BLOCKQUOTE','DD','DIV','DL','DT','FIELDSET','FIGCAPTION','FIGURE','FOOTER','FORM','H1','H2','H3','H4','H5','H6','HEADER','HR','LI','MAIN','NAV','OL','P','PRE','SECTION','TABLE','TBODY','TD','TFOOT','TH','THEAD','TR','UL']);
 const ignoredElements = new Set(['SCRIPT','STYLE','NOSCRIPT','TEMPLATE','SVG','CANVAS','IFRAME','OBJECT','EMBED','HEAD']);
 
@@ -121,8 +125,53 @@ document.querySelectorAll('.html-option-grid input').forEach((control) => contro
 document.querySelector('#clear-html').addEventListener('click', () => {
   input.value = '';
   output.value = '';
+  urlInput.value = '';
+  urlStatus.textContent = 'Admite páginas públicas de hasta 2 MB.';
+  urlStatus.className = '';
   input.focus();
   convert();
+});
+
+urlForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  let address = urlInput.value.trim();
+  if (!address) {
+    urlStatus.textContent = 'Escribe una dirección web.';
+    urlStatus.className = 'error';
+    urlInput.focus();
+    return;
+  }
+  if (!/^https?:\/\//i.test(address)) address = 'https://' + address;
+  urlButton.disabled = true;
+  urlButton.textContent = 'Descargando…';
+  urlStatus.textContent = 'Obteniendo la página sin guardarla…';
+  urlStatus.className = 'loading';
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 20000);
+  try {
+    const response = await fetch('/api/html-to-text', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ url: address }),
+      signal: controller.signal
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || 'No ha sido posible descargar la página.');
+    input.value = data.html;
+    urlInput.value = data.finalUrl;
+    convert();
+    urlStatus.textContent = 'Página obtenida · ' + Number(data.bytes).toLocaleString('es-ES') + ' bytes';
+    urlStatus.className = 'success';
+    status.textContent = 'Texto extraído desde la URL correctamente.';
+    status.className = 'html-text-status success';
+  } catch (error) {
+    urlStatus.textContent = error.name === 'AbortError' ? 'La página ha tardado demasiado en responder.' : error.message;
+    urlStatus.className = 'error';
+  } finally {
+    clearTimeout(timeout);
+    urlButton.disabled = false;
+    urlButton.textContent = 'Obtener texto';
+  }
 });
 
 fileInput.addEventListener('change', async () => {
