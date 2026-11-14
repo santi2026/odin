@@ -34,6 +34,9 @@ tools[6][5] = '/preview-countdown/';
 tools[10][4] = 'available';
 tools[10][5] = '/preview-moon/';
 tools[10][7] = '<div class="moon-orbit"><span class="moon-phase" id="live-moon-disc"></span></div><i id="live-moon-phase">Fase actual</i>';
+tools[11][4] = 'available';
+tools[11][5] = '/preview-calendar/';
+tools[11][7] = '<div class="calendar-cover"><strong id="live-calendar-month">MES</strong><span>1</span><span>2</span><span class="national">3</span><span>4</span><span class="barcelona">5</span><span class="overlap">6</span><span>7</span></div><i id="live-calendar-next">Próxima celebración</i>';
 tools[6][7] = '<small id="live-countdown-name">Próximo acontecimiento</small><b id="live-countdown-days">--</b><i id="live-countdown-unit">días</i>';
 const labels = { available: 'Disponible', next: 'Próximamente', planned: 'Planificada' };
 const grid = document.querySelector('#tool-grid');
@@ -139,3 +142,6 @@ function updateMoonCover(){
   disc.style.setProperty('--moon-light',`${Math.round(illumination*100)}%`);disc.classList.toggle('is-waning',fraction>.5);
 }
 updateMoonCover();setInterval(updateMoonCover,60000);
+
+function updateCalendarCover(){const month=document.querySelector('#live-calendar-month'),next=document.querySelector('#live-calendar-next');if(!month||!next)return;const now=new Date(),names=['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];month.textContent=`${names[now.getMonth()]} ${now.getFullYear()}`;const annual=[[0,1,'Año Nuevo'],[0,6,'Reyes'],[4,1,'Día del Trabajo'],[7,15,'Asunción'],[9,12,'Fiesta Nacional'],[10,1,'Todos los Santos'],[11,6,'Constitución'],[11,8,'Inmaculada'],[11,25,'Navidad']];let items=[];for(const add of [0,1])for(const [m,d,name] of annual){const date=new Date(now.getFullYear()+add,m,d);if(date>now)items.push({date,name})}items.sort((a,b)=>a.date-b.date);const item=items[0],days=Math.ceil((item.date-now)/86400000);next.textContent=`${item.name} · ${days} ${days===1?'día':'días'}`;}
+updateCalendarCover();setInterval(updateCalendarCover,3600000);

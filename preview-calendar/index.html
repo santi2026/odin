@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Calendario anual con festividades recurrentes y periodos de vacaciones." />
+  <title>Calendario anual · ODÍN</title>
+  <link rel="icon" href="/logo.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="/src/styles/global.css?v=calendar-1" />
+</head>
+<body class="tool-page calendar-body">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="site-header"><a class="brand" href="/preview-home/" aria-label="ODÍN, inicio"><span class="brand-mark" aria-hidden="true">✦</span><span>ODÍN</span></a><nav aria-label="Navegación principal"><a href="/preview-home/#herramientas">Catálogo</a></nav></header>
+  <main id="contenido" class="calendar-page">
+    <section class="tool-hero calendar-hero"><p class="eyebrow">U12 · TIEMPO</p><h1>Calendario anual</h1><p>Todo el año de un vistazo, con celebraciones recurrentes y tus vacaciones guardadas en este navegador.</p></section>
+
+    <section class="calendar-toolbar">
+      <div class="year-control"><button id="prev-year" type="button" aria-label="Año anterior">←</button><label><span>Año</span><input id="year-input" type="number" min="1900" max="2200" /></label><button id="next-year" type="button" aria-label="Año siguiente">→</button><button id="current-year" type="button">Este año</button></div>
+      <div class="year-summary"><strong id="year-type">Año común</strong><span id="year-days">365 días</span></div>
+      <button id="export-excel" class="calendar-export" type="button">Exportar a Excel</button>
+    </section>
+
+    <section class="calendar-options">
+      <div class="layer-controls" aria-label="Capas del calendario">
+        <label><input type="checkbox" data-layer="spain" checked /><span class="layer-dot" data-color="spain"></span>España</label>
+        <label><input type="checkbox" data-layer="madrid" checked /><span class="layer-dot" data-color="madrid"></span>Madrid</label>
+        <label><input type="checkbox" data-layer="barcelona" checked /><span class="layer-dot" data-color="barcelona"></span>Barcelona</label>
+        <label><input type="checkbox" data-layer="vacation" checked /><span class="layer-dot" data-color="vacation"></span>Vacaciones</label>
+      </div>
+      <details class="color-settings"><summary>Personalizar colores</summary><div class="color-grid"><label>España <input type="color" data-picker="spain" /></label><label>Madrid <input type="color" data-picker="madrid" /></label><label>Barcelona <input type="color" data-picker="barcelona" /></label><label>Vacaciones <input type="color" data-picker="vacation" /></label><button id="reset-colors" type="button">Restablecer</button></div></details>
+    </section>
+
+    <div id="range-message" class="range-message" hidden><div><strong>Inicio seleccionado: <span id="range-start-label"></span></strong><small>Ahora pulsa el último día de las vacaciones, aunque esté en otro año.</small></div><button id="cancel-range" type="button">Cancelar</button></div>
+    <section class="calendar-grid" id="calendar-grid" aria-label="Calendario anual"></section>
+
+    <section class="calendar-lower">
+      <article class="date-detail" id="date-detail"><p class="eyebrow">FECHA SELECCIONADA</p><h2>Selecciona un día</h2><p>Pulsa cualquier fecha para consultar sus detalles o iniciar un periodo de vacaciones.</p></article>
+      <article class="vacation-panel"><div class="panel-title"><div><p class="eyebrow">MIS PERIODOS</p><h2>Vacaciones</h2></div><span id="vacation-count">0</span></div><div id="vacation-list" class="vacation-list"></div></article>
+    </section>
+    <p class="calendar-note">Las celebraciones se muestran como fechas recurrentes de referencia. Su aparición no garantiza que sean días no laborables oficiales en todos los años.</p>
+  </main>
+  <footer class="site-footer"><span>ODÍN · Calendario anual</span><span>Datos locales · sin seguimiento</span></footer>
+  <script type="module" src="/global-timer.js?v=countdown-2"></script><script type="module" src="/time-center.js?v=4"></script><script type="module" src="/preview-calendar/calendar.js?v=1"></script>
+</body>
+</html>
