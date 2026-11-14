@@ -41,7 +41,22 @@
     </section>
     <p class="calendar-note">Las celebraciones se muestran como fechas recurrentes de referencia. Su aparición no garantiza que sean días no laborables oficiales en todos los años.</p>
   </main>
+  <dialog class="excel-layout-dialog" id="excel-layout-dialog" aria-labelledby="excel-dialog-title">
+    <form method="dialog">
+      <button class="excel-dialog-close" value="cancel" aria-label="Cerrar">×</button>
+      <p class="eyebrow">EXPORTAR A EXCEL</p>
+      <h2 id="excel-dialog-title">Distribución del calendario</h2>
+      <p>Elige cuántos meses aparecerán en cada fila. Las filas se calculan automáticamente.</p>
+      <div class="excel-layout-options" role="group" aria-label="Meses por fila">
+        <button type="button" data-excel-columns="1"><strong>1</strong><span>columna</span><small>12 filas</small></button>
+        <button type="button" data-excel-columns="2"><strong>2</strong><span>columnas</span><small>6 filas</small></button>
+        <button type="button" data-excel-columns="3"><strong>3</strong><span>columnas</span><small>4 filas</small></button>
+        <button type="button" data-excel-columns="4"><strong>4</strong><span>columnas</span><small>3 filas</small></button>
+      </div>
+      <small>El archivo también conservará las pestañas de datos, vacaciones y configuración.</small>
+    </form>
+  </dialog>
   <footer class="site-footer"><span>ODÍN · Calendario anual</span><span>Datos locales · sin seguimiento</span></footer>
-  <script type="module" src="/global-timer.js?v=countdown-2"></script><script type="module" src="/time-center.js?v=4"></script><script type="module" src="/preview-calendar/calendar.js?v=2"></script>
+  <script type="module" src="/global-timer.js?v=countdown-2"></script><script type="module" src="/time-center.js?v=4"></script><script type="module" src="/preview-calendar/calendar.js?v=3"></script>
 </body>
 </html>
