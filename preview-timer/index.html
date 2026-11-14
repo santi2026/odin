@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Cronómetro y temporizador precisos con recuperación de sesión." />
+  <title>Temporizador y cronómetro · ODÍN</title>
+  <link rel="stylesheet" href="/src/styles/global.css" />
+</head>
+<body class="tool-page timer-body">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="site-header"><a class="brand" href="/preview-home/" aria-label="ODÍN, volver a la portada"><span class="brand-mark">◈</span><span>ODÍN</span></a><nav aria-label="Navegación de la herramienta"><a class="back-to-catalog" href="/preview-home/#herramientas"><span aria-hidden="true">←</span> Catálogo</a></nav></header>
+  <main id="contenido">
+    <section class="timer-page">
+      <header class="timer-heading"><p class="eyebrow">U06 · Tiempo</p><h1>Temporizador y cronómetro</h1><p>Define cuánto debe durar o mide el tiempo transcurrido. El estado se conserva aunque cierres esta página.</p></header>
+      <div class="timer-tabs" role="tablist" aria-label="Modo de medición"><button class="active" id="timer-tab" type="button" role="tab" aria-selected="true" aria-controls="timer-panel">Temporizador</button><button id="stopwatch-tab" type="button" role="tab" aria-selected="false" aria-controls="stopwatch-panel">Cronómetro</button></div>
+      <div class="recovery-note" id="recovery-note" hidden><span>↻</span><p id="recovery-text"></p><button type="button" id="dismiss-recovery" aria-label="Cerrar aviso">×</button></div>
+
+      <section class="measure-panel" id="stopwatch-panel" role="tabpanel" aria-labelledby="stopwatch-tab" hidden>
+        <div class="measure-stage">
+          <span class="measure-kicker">Tiempo transcurrido</span>
+          <div class="measure-time" id="stopwatch-time">00:00<span>.00</span></div>
+          <p class="measure-status" id="stopwatch-status">Preparado</p>
+          <div class="measure-actions"><button class="primary-action" id="stopwatch-toggle" type="button">Iniciar</button><button id="lap-button" type="button" disabled>Vuelta</button><button id="stopwatch-reset" type="button" disabled>Restablecer</button></div>
+        </div>
+        <aside class="laps-panel"><div class="panel-title"><div><span class="map-kicker">Registro</span><h2>Vueltas</h2></div><button id="clear-laps" type="button" hidden>Vaciar</button></div><ol id="laps-list"><li class="empty-laps">Las vueltas aparecerán aquí.</li></ol></aside>
+      </section>
+
+      <section class="measure-panel timer-panel" id="timer-panel" role="tabpanel" aria-labelledby="timer-tab">
+        <div class="measure-stage timer-stage">
+          <span class="measure-kicker">Tiempo restante</span>
+          <div class="timer-ring" id="timer-ring"><div class="measure-time" id="timer-time">25:00</div></div>
+          <p class="measure-status" id="timer-status">25 minutos</p>
+          <div class="measure-actions"><button class="primary-action" id="timer-toggle" type="button">Iniciar</button><button id="timer-reset" type="button">Restablecer</button></div>
+        </div>
+        <aside class="timer-settings"><div><span class="map-kicker">Duración</span><h2>Configurar temporizador</h2></div><div class="duration-inputs"><label><span>Horas</span><input id="timer-hours" type="number" inputmode="numeric" min="0" max="99" value="0" /></label><i>:</i><label><span>Minutos</span><input id="timer-minutes" type="number" inputmode="numeric" min="0" max="59" value="25" /></label><i>:</i><label><span>Segundos</span><input id="timer-seconds" type="number" inputmode="numeric" min="0" max="59" value="0" /></label></div><div class="preset-list" aria-label="Duraciones rápidas"><button type="button" data-minutes="5">5 min</button><button type="button" data-minutes="10">10 min</button><button type="button" data-minutes="25">25 min</button><button type="button" data-minutes="45">45 min</button><button type="button" data-minutes="60">1 hora</button></div><label class="sound-setting"><span><b>Aviso sonoro</b><small>Reproduce un sonido al finalizar.</small></span><input id="sound-enabled" type="checkbox" checked /><i aria-hidden="true"></i></label><div class="sound-picker"><label for="sound-choice">Sonido<select id="sound-choice"><option value="bell">Campana clara</option><option value="digital">Alarma digital</option><option value="triple">Tres avisos</option><option value="gentle">Aviso suave</option></select></label><button id="preview-sound" type="button">▶ Probar</button></div><p>Los cambios se aplican mientras el temporizador está detenido.</p></aside>
+      </section>
+    </section>
+  </main>
+  <footer class="site-footer"><span>ODÍN · herramientas claras para cada día</span><span>Privacidad primero · sin publicidad</span></footer>
+  <script type="module" src="/preview-timer/timer.js"></script>
+</body>
+</html>

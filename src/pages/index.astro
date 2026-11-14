@@ -1,0 +1,69 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ToolCard from '../components/ToolCard.astro';
+import { tools } from '../data/tools';
+---
+<BaseLayout title="ODÍN · herramientas útiles" description="Herramientas rápidas, claras y respetuosas con tu privacidad.">
+  <section class="hero">
+    <div class="constellation constellation-a" aria-hidden="true"></div>
+    <div class="constellation constellation-b" aria-hidden="true"></div>
+    <div class="hero-copy">
+      <p class="eyebrow">Herramientas · conocimiento · orientación</p>
+      <h1>Lo útil también puede<br /><em>ser sencillo.</em></h1>
+      <p class="hero-lead">Una colección de herramientas cotidianas que hacen su trabajo y, cuando quieras, te explican cómo.</p>
+      <div class="hero-actions">
+        <a class="button primary" href="#herramientas">Explorar herramientas</a>
+        <a class="button secondary" href="/herramientas/reloj-negro/">Probar el reloj negro</a>
+      </div>
+    </div>
+    <aside class="compass-card" aria-label="Principios de ODÍN">
+      <div class="orb" aria-hidden="true"><span>✦</span></div>
+      <p>Tu norte digital</p>
+      <ul>
+        <li><span>01</span> Uso inmediato</li>
+        <li><span>02</span> Privacidad local</li>
+        <li><span>03</span> Aprende si quieres</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section class="tools-section" id="herramientas">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Catálogo</p>
+        <h2>Encuentra tu herramienta</h2>
+      </div>
+      <label class="search-box">
+        <span aria-hidden="true">⌕</span>
+        <span class="sr-only">Buscar herramientas</span>
+        <input id="tool-search" type="search" placeholder="Buscar por nombre o función" autocomplete="off" />
+      </label>
+    </div>
+    <div class="tool-grid" id="tool-grid">
+      {tools.map((tool) => <ToolCard tool={tool} />)}
+    </div>
+    <p class="empty-state" id="empty-state" hidden>No hay herramientas que coincidan con la búsqueda.</p>
+  </section>
+
+  <section class="principles" id="principios">
+    <div><span>✦</span><h2>Utilizar</h2><p>Abre una herramienta y resuelve la tarea sin pasos innecesarios.</p></div>
+    <div><span>⌁</span><h2>Recordar</h2><p>Tus preferencias y sesiones permanecen en este dispositivo.</p></div>
+    <div><span>◎</span><h2>Aprender</h2><p>Las explicaciones están disponibles, pero nunca interrumpen.</p></div>
+  </section>
+
+  <script>
+    const input = document.querySelector<HTMLInputElement>('#tool-search');
+    const cards = [...document.querySelectorAll<HTMLElement>('.tool-card')];
+    const empty = document.querySelector<HTMLElement>('#empty-state');
+    input?.addEventListener('input', () => {
+      const query = input.value.trim().toLocaleLowerCase('es');
+      let visible = 0;
+      cards.forEach((card) => {
+        const match = (card.dataset.toolName ?? '').includes(query);
+        card.hidden = !match;
+        if (match) visible += 1;
+      });
+      if (empty) empty.hidden = visible !== 0;
+    });
+  </script>
+</BaseLayout>

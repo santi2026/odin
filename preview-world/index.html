@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Compara la hora real de las principales ciudades del mundo." />
+  <title>Relojes del mundo · ODÍN</title>
+  <link rel="stylesheet" href="/src/styles/global.css" />
+</head>
+<body class="tool-page">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="site-header"><a class="brand" href="/preview-home/" aria-label="ODÍN, volver a la portada"><span class="brand-mark">◈</span><span>ODÍN</span></a><nav aria-label="Navegación de la herramienta"><a class="back-to-catalog" href="/preview-home/#herramientas"><span aria-hidden="true">←</span> Catálogo</a></nav></header>
+  <main id="contenido">
+    <section class="world-page">
+      <header class="world-heading"><div><p class="eyebrow">U03 · Tiempo</p><h1>Relojes del mundo</h1><p>Compara ciudades, cambios estacionales y diferencias horarias tomando Barcelona como referencia.</p></div></header>
+      <div class="world-tabs" role="tablist" aria-label="Vista de relojes del mundo"><button class="active" id="map-tab" type="button" role="tab" aria-selected="true" aria-controls="world-map-view">Mapa</button><button id="cards-tab" type="button" role="tab" aria-selected="false" aria-controls="world-cards-view">Fichas</button></div>
+      <article class="home-clock" id="home-clock"></article>
+      <div class="world-view" id="world-map-view" role="tabpanel" aria-labelledby="map-tab"><section class="world-map-panel" aria-labelledby="map-title">
+        <div class="map-copy"><div><span class="map-kicker">Vista mundial</span><h2 id="map-title">Diez ciudades, una sola mirada</h2></div><span class="map-legend"><i></i> Día <i></i> Noche</span></div>
+        <div class="world-map" id="world-map" role="img" aria-label="Mapa mundial con las ciudades seleccionadas">
+          <svg viewBox="0 0 1000 460" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+            <defs><linearGradient id="land" x1="0" x2="1"><stop stop-color="#233856"/><stop offset="1" stop-color="#182a42"/></linearGradient></defs>
+            <g class="map-grid"><path d="M0 115H1000M0 230H1000M0 345H1000M250 0V460M500 0V460M750 0V460"/></g>
+            <g fill="url(#land)" stroke="#3b5477" stroke-width="2">
+              <path d="M58 96L116 53l96 8 72 44 34 61-43 42-36-15-34 33-54-17-32-55-61-18z"/>
+              <path d="M248 239l57 20 41 68-21 93-37-26-18-72-35-51z"/>
+              <path d="M431 97l44-28 80 10 34 30 62-10 67 28 81-4 76 44-28 49-68 5-45 40-67-13-44-45-52 12-35-33-56-13-55 26-42-30 14-45z"/>
+              <path d="M469 218l78-10 55 43-12 86-48 82-45-51-23-73-36-42z"/>
+              <path d="M789 315l60-29 75 23 24 57-48 32-81-17-46-37z"/>
+              <path d="M922 168l23-18 20 27-17 24z"/>
+            </g>
+          </svg>
+          <canvas class="solar-layer" id="solar-layer" width="720" height="360" aria-hidden="true"></canvas>
+          <div id="map-pins"></div>
+        </div>
+      </section></div>
+      <div class="world-view" id="world-cards-view" role="tabpanel" aria-labelledby="cards-tab" hidden><div class="cards-toolbar"><div><span class="map-kicker">Ciudades</span><h2>Información detallada</h2></div><label class="world-sort">Ordenar<select id="city-sort"><option value="offset">Por hora</option><option value="name">Por nombre</option></select></label></div><div class="city-grid" id="city-grid"></div></div>
+      <aside class="world-note"><span aria-hidden="true">i</span><p>Las diferencias y cambios de horario se calculan automáticamente con las reglas horarias del navegador. Las coordenadas representan el centro aproximado de cada ciudad.</p></aside>
+    </section>
+  </main>
+  <footer class="site-footer"><span>ODÍN · herramientas claras para cada día</span><span>Privacidad primero · sin publicidad</span></footer>
+  <script type="module" src="/preview-world/world.js"></script>
+  <script type="module" src="/global-timer.js"></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Crea alarmas semanales con avisos globales y sonidos personalizables." />
+  <title>Alarmas · ODÍN</title>
+  <link rel="stylesheet" href="/src/styles/global.css" />
+</head>
+<body class="tool-page alarms-body">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="site-header"><a class="brand" href="/preview-home/" aria-label="ODÍN, volver a la portada"><span class="brand-mark">◈</span><span>ODÍN</span></a><nav aria-label="Navegación de la herramienta"><a class="back-to-catalog" href="/preview-home/#herramientas"><span aria-hidden="true">←</span> Catálogo</a></nav></header>
+  <main id="contenido">
+    <section class="alarms-page">
+      <header class="alarms-heading"><div><p class="eyebrow">U10 · Tiempo</p><h1>Alarmas</h1><p>Programa avisos que permanecen activos mientras navegas por ODÍN. Puedes repetirlos por días y elegir cómo sonarán.</p></div><div class="alarms-summary"><strong id="active-count">0 de 10</strong><span>alarmas creadas</span><small id="next-summary">Ninguna programada</small></div></header>
+      <div class="alarms-layout">
+        <form class="alarm-editor" id="alarm-form">
+          <div class="editor-heading"><div><span class="map-kicker">Nueva alarma</span><h2 id="editor-title">Configurar aviso</h2></div><button type="button" id="cancel-edit" hidden>Cancelar</button></div>
+          <label class="alarm-time-label"><span>Hora</span><input id="alarm-time" type="time" required /></label>
+          <label class="alarm-name-label"><span>Nombre</span><input id="alarm-label" type="text" maxlength="40" placeholder="Alarma" /></label>
+          <fieldset class="repeat-field"><legend>Repetir</legend><div class="day-picker"><label><input type="checkbox" value="1" /><span>L</span></label><label><input type="checkbox" value="2" /><span>M</span></label><label><input type="checkbox" value="3" /><span>X</span></label><label><input type="checkbox" value="4" /><span>J</span></label><label><input type="checkbox" value="5" /><span>V</span></label><label><input type="checkbox" value="6" /><span>S</span></label><label><input type="checkbox" value="0" /><span>D</span></label></div><small>Sin días seleccionados, sonará una sola vez.</small></fieldset>
+          <div class="alarm-sound-row"><label><span>Sonido</span><select id="alarm-sound"><option value="bell">Campana clara</option><option value="digital">Alarma digital</option><option value="triple">Tres avisos</option><option value="gentle">Aviso suave</option></select></label><button id="test-alarm-sound" type="button">▶ Probar</button></div>
+          <label class="sound-setting alarm-sound-toggle"><span><b>Aviso sonoro</b><small>Puede desactivarse y conservar el aviso visual.</small></span><input id="alarm-sound-enabled" type="checkbox" checked /><i aria-hidden="true"></i></label>
+          <p class="alarm-limit" id="alarm-limit" hidden>Has alcanzado el límite de 10 alarmas. Elimina una para crear otra.</p><button class="save-alarm" type="submit" id="save-alarm">Guardar alarma</button>
+        </form>
+        <section class="alarms-list-panel" aria-labelledby="alarms-list-title"><div class="list-heading"><div><span class="map-kicker">Programadas</span><h2 id="alarms-list-title">Mis alarmas</h2></div><span id="alarm-count">0 alarmas</span></div><div class="alarms-list" id="alarms-list"></div></section>
+      </div>
+      <aside class="world-note alarm-note"><span aria-hidden="true">i</span><p>Las alarmas funcionan mientras alguna página de ODÍN permanezca abierta. El navegador puede limitar el sonido sin interacción previa, por eso también se muestra siempre un aviso visual.</p></aside>
+    </section>
+  </main>
+  <footer class="site-footer"><span>ODÍN · herramientas claras para cada día</span><span>Privacidad primero · sin publicidad</span></footer>
+  <script type="module" src="/global-timer.js"></script>
+  <script type="module" src="/preview-alarms/alarms.js"></script>
+</body>
+</html>

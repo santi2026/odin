@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reloj sobre fondo negro · ODÍN</title>
+  <link rel="stylesheet" href="/src/styles/global.css" />
+</head>
+<body class="tool-page">
+  <header class="site-header"><a class="brand" href="/preview-home/" aria-label="ODÍN, volver a la portada"><span class="brand-mark">✦</span><span>ODÍN</span></a><nav aria-label="Navegación de la herramienta"><a class="back-to-catalog" href="/preview-home/#herramientas"><span aria-hidden="true">←</span> Catálogo</a></nav></header>
+  <main>
+    <section class="sony-clock-page">
+      <header class="sony-clock-heading"><p class="eyebrow">U01 · Tiempo</p><h1>Reloj sobre fondo negro</h1><p>Mantiene la pantalla encendida con un fondo completamente negro y muestra el reloj unos segundos cada minuto.</p></header>
+      <div class="sony-clock-layout">
+        <div class="sony-clock-stage" id="clock-stage" aria-label="Vista del reloj sobre fondo negro">
+          <div class="sony-floating-clock" id="floating-clock"><time id="clock-time">00:00</time><span id="clock-session">0:00</span></div>
+          <button class="stage-fullscreen" id="stage-fullscreen" type="button" aria-label="Abrir reloj en pantalla completa">⛶</button>
+        </div>
+        <aside class="sony-clock-controls" aria-label="Personalizar reloj">
+          <h2>Personalizar reloj</h2><p>El reloj aparece al cambiar el minuto o al mover el puntero. Los cambios se guardan en este navegador.</p>
+          <label class="range-control" for="speed"><span>Velocidad</span><output id="speed-output">1,0×</output><input id="speed" type="range" min="0.2" max="3" step="0.2" value="1" /></label>
+          <label class="range-control" for="size"><span>Tamaño</span><output id="size-output">42 px</output><input id="size" type="range" min="24" max="110" value="42" /></label>
+          <label class="color-control" for="color"><span>Color</span><input id="color" type="color" value="#ffffff" /></label>
+          <label class="always-control" for="always-visible"><span><strong>Siempre visible</strong><small>Si se desactiva, aparece al mover el ratón y cada minuto.</small></span><input id="always-visible" type="checkbox" /></label>
+          <div class="sony-control-actions"><button id="fullscreen" type="button">⛶ Pantalla completa</button><button id="reset" type="button">↻ Restablecer</button></div>
+          <p class="sony-help">Pulsa Esc para salir de pantalla completa. El contador pequeño muestra el tiempo transcurrido desde que abriste el reloj.</p>
+        </aside>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="/preview/clock.js"></script>
+  <script type="module" src="/global-timer.js"></script>
+</body>
+</html>

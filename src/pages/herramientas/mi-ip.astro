@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Mi IP · ODÍN" description="Consulta tu IP pública y los datos aproximados de tu conexión." toolPage>
+  <section class="ip-page">
+    <header class="ip-heading"><p class="eyebrow">U02 · Conexión</p><h1>Mi IP</h1><p>Descubre cómo se identifica tu conexión en Internet y qué información aproximada publica sobre ella.</p></header>
+    <div class="ip-hero" aria-live="polite"><div><span class="ip-kicker">Tu IP pública</span><strong id="ip-address">Consultando…</strong><span id="ip-summary">Comprobando la conexión</span></div><button class="ip-copy" id="copy-ip" type="button" disabled><span aria-hidden="true">⧉</span><span id="copy-label">Copiar IP</span></button></div>
+    <p class="ip-error" id="ip-error" hidden>No hemos podido consultar los datos en este momento. Puedes volver a intentarlo.</p>
+    <div class="ip-grid" id="ip-details" aria-busy="true">
+      <article><span class="detail-icon" aria-hidden="true">⌖</span><div><small>Ubicación aproximada</small><strong id="ip-location">—</strong><span id="ip-region">—</span></div></article>
+      <article><span class="detail-icon" aria-hidden="true">⌁</span><div><small>Red y operador</small><strong id="ip-provider">—</strong><span id="ip-asn">—</span></div></article>
+      <article><span class="detail-icon" aria-hidden="true">◷</span><div><small>Zona horaria</small><strong id="ip-timezone">—</strong><span id="ip-local-time">—</span></div></article>
+      <article><span class="detail-icon" aria-hidden="true">◎</span><div><small>Tipo de dirección</small><strong id="ip-version">—</strong><span>Dirección pública de esta conexión</span></div></article>
+    </div>
+    <aside class="ip-note"><span aria-hidden="true">i</span><p><strong>La ubicación es aproximada.</strong> Puede corresponder al operador, una red móvil o una VPN; no identifica tu domicilio ni tu posición exacta.</p></aside>
+    <div class="ip-actions"><button id="refresh-ip" type="button">↻ Actualizar datos</button><span>ODÍN no almacena esta consulta.</span></div>
+  </section>
+  <script src="../../scripts/ip.ts"></script>
+</BaseLayout>

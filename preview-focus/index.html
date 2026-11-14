@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="description" content="Ciclos Pomodoro configurables con avisos globales." /><title>Concentración · Pomodoro · ODÍN</title><link rel="stylesheet" href="/src/styles/global.css" /></head>
+<body class="tool-page focus-body">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="site-header"><a class="brand" href="/preview-home/" aria-label="ODÍN, volver a la portada"><span class="brand-mark">◈</span><span>ODÍN</span></a><nav aria-label="Navegación de la herramienta"><a class="back-to-catalog" href="/preview-home/#herramientas"><span aria-hidden="true">←</span> Catálogo</a></nav></header>
+  <main id="contenido"><section class="pomodoro-page">
+    <header class="pomodoro-heading"><div><p class="eyebrow">U04 · Productividad</p><h1>Concentración · Pomodoro</h1><p>Alterna periodos de concentración y descanso. La sesión continúa mientras navegas por cualquier herramienta de ODÍN.</p></div><div class="focus-today"><strong id="today-count">0</strong><span>sesiones completadas hoy</span></div></header>
+    <div class="pomodoro-layout">
+      <section class="focus-stage">
+        <div class="phase-pills"><span class="active" id="focus-pill">Concentración</span><span id="break-pill">Descanso</span></div>
+        <div class="pomodoro-ring" id="pomodoro-ring"><div><span id="phase-label">Concentración</span><strong id="focus-time">25:00</strong><small id="session-label">Sesión 1 de 4</small></div></div>
+        <p class="focus-status" id="focus-status">Preparado para empezar</p>
+        <div class="focus-actions"><button class="primary-action" id="focus-toggle" type="button">Iniciar</button><button id="focus-skip" type="button">Saltar fase</button><button id="focus-reset" type="button">Restablecer</button></div>
+      </section>
+      <aside class="focus-settings">
+        <div><span class="map-kicker">Preferencias</span><h2>Configurar ciclo</h2></div>
+        <div class="focus-duration-grid"><label><span>Concentración</span><div><input id="focus-minutes" type="number" min="1" max="180" value="25" /><small>min</small></div></label><label><span>Descanso corto</span><div><input id="short-minutes" type="number" min="1" max="60" value="5" /><small>min</small></div></label><label><span>Descanso largo</span><div><input id="long-minutes" type="number" min="1" max="120" value="15" /><small>min</small></div></label><label><span>Sesiones por ciclo</span><div><input id="sessions-count" type="number" min="1" max="12" value="4" /><small>ses.</small></div></label></div>
+        <label class="sound-setting"><span><b>Inicio automático</b><small>Comienza la siguiente fase sin confirmación.</small></span><input id="auto-start" type="checkbox" /><i aria-hidden="true"></i></label>
+        <label class="sound-setting"><span><b>Aviso sonoro</b><small>Suena al terminar cada fase.</small></span><input id="focus-sound-enabled" type="checkbox" checked /><i aria-hidden="true"></i></label>
+        <div class="sound-picker"><label for="focus-sound">Sonido<select id="focus-sound"><option value="bell">Campana clara</option><option value="digital">Alarma digital</option><option value="triple">Tres avisos</option><option value="gentle">Aviso suave</option></select></label><button id="test-focus-sound" type="button">▶ Probar</button></div>
+        <p>Los cambios de duración se aplican al restablecer o al comenzar una nueva fase.</p>
+      </aside>
+    </div>
+    <aside class="world-note"><span aria-hidden="true">i</span><p>El método clásico utiliza 25 minutos de concentración, 5 de descanso corto y un descanso largo tras cuatro sesiones. Aquí puedes adaptarlo a tu ritmo.</p></aside>
+  </section></main>
+  <footer class="site-footer"><span>ODÍN · herramientas claras para cada día</span><span>Privacidad primero · sin publicidad</span></footer>
+  <script type="module" src="/global-timer.js"></script><script type="module" src="/preview-focus/focus.js"></script>
+</body></html>

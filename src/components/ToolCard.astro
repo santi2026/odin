@@ -1,0 +1,20 @@
+---
+import type { OdinTool } from '../data/tools';
+interface Props { tool: OdinTool }
+const { tool } = Astro.props;
+const href = tool.status === 'available' ? `/herramientas/${tool.slug}/` : undefined;
+const statusLabel = tool.status === 'available' ? 'Disponible' : tool.status === 'next' ? 'Próximamente' : 'Planificada';
+---
+<article class:list={['tool-card', `status-${tool.status}`]} data-tool-name={`${tool.name} ${tool.description} ${tool.category}`.toLowerCase()}>
+  <div class="tool-card-top">
+    <span class="tool-icon" aria-hidden="true">{tool.icon}</span>
+    <span class="tool-id">{tool.id}</span>
+  </div>
+  <p class="tool-category">{tool.category}</p>
+  <h3>{tool.name}</h3>
+  <p>{tool.description}</p>
+  <div class="tool-card-bottom">
+    <span class:list={['status-pill', `pill-${tool.status}`]}>{statusLabel}</span>
+    {href ? <a class="card-link" href={href} aria-label={`Abrir ${tool.name}`}>Abrir <span aria-hidden="true">→</span></a> : <span class="muted-action" aria-hidden="true">En preparación</span>}
+  </div>
+</article>

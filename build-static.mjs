@@ -1,0 +1,21 @@
+import { cp, mkdir, readFile, writeFile } from 'node:fs/promises';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const root = dirname(fileURLToPath(import.meta.url));
+const dist = join(root, 'dist');
+await mkdir(dist, { recursive: true });
+await cp(join(root, 'preview-home', 'index.html'), join(dist, 'index.html'), { force: true });
+await cp(join(root, 'global-timer.js'), join(dist, 'global-timer.js'), { force: true });
+
+for (const folder of ['preview','preview-home','preview-ip','preview-world','preview-timer','preview-alarms','preview-focus']) {
+  await cp(join(root, folder), join(dist, folder), { recursive: true, force: true });
+}
+
+await mkdir(join(dist, 'src', 'styles'), { recursive: true });
+await cp(join(root, 'src', 'styles', 'global.css'), join(dist, 'src', 'styles', 'global.css'), { force: true });
+await writeFile(join(dist, '_headers'), `/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n`, 'utf8');
+
+const home = await readFile(join(dist, 'index.html'), 'utf8');
+if (!home.includes('/preview-home/home.js')) throw new Error('La portada estática no contiene su script principal.');
+console.log(`STATIC_BUILD=${dist}`);
