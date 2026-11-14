@@ -100,12 +100,13 @@ updateFocusCover();setInterval(updateFocusCover,500);
 
 const countdownDefaults=[['christmas','Navidad',11,25],['new-year','Año Nuevo',0,1],['kings','Reyes',0,6],['sant-jordi','Sant Jordi',3,23],['san-juan','San Juan',5,24],['all-saints','Todos los Santos',10,1]];
 function nextAnnual(month,day,now=new Date()){let target=new Date(now.getFullYear(),month,day,0,0,0,0);if(target<=now)target.setFullYear(target.getFullYear()+1);return target.getTime();}
-function nextClockChange(now=new Date()){const candidates=[];for(const year of [now.getFullYear(),now.getFullYear()+1])for(const month of [2,9]){const last=new Date(year,month+1,0,2,0,0,0);last.setDate(last.getDate()-last.getDay());candidates.push(last.getTime());}return candidates.filter(value=>value>now.getTime()).sort((a,b)=>a-b)[0];}
+function lastSunday(year,month){const date=new Date(Date.UTC(year,month+1,0));return date.getUTCDate()-date.getUTCDay();}
+function clockChanges(now=new Date()){const items=[];for(const year of [now.getFullYear(),now.getFullYear()+1])for(const [id,name,month] of [['clock-summer','Inicio del horario de verano',2],['clock-winter','Inicio del horario de invierno',9]]){const targetAt=Date.UTC(year,month,lastSunday(year,month),1);if(targetAt>now.getTime())items.push({id,name,targetAt});}return items;}
 function upcomingCountdowns(){
   let state={personal:[],defaults:{}};try{state={...state,...JSON.parse(localStorage.getItem('odin-countdowns-v1'))};}catch{}
   const now=Date.now(), items=(state.personal||[]).filter(item=>item.enabled!==false&&item.targetAt>now).map(item=>({name:item.name,targetAt:item.targetAt}));
   for(const [id,name,month,day] of countdownDefaults)if(state.defaults?.[id]!==false)items.push({name,targetAt:nextAnnual(month,day)});
-  if(state.defaults?.['clock-change']!==false)items.push({name:'Cambio de hora',targetAt:nextClockChange()});
+  for(const change of clockChanges())if(state.defaults?.[change.id]!==false&&state.defaults?.['clock-change']!==false)items.push(change);
   return items.sort((a,b)=>a.targetAt-b.targetAt);
 }
 function updateCountdownCover(){const name=document.querySelector('#live-countdown-name'),days=document.querySelector('#live-countdown-days'),unit=document.querySelector('#live-countdown-unit');if(!name||!days||!unit)return;const next=upcomingCountdowns()[0];if(!next){name.textContent='Sin acontecimientos';days.textContent='--';unit.textContent='días';return;}const remaining=next.targetAt-Date.now(),dayCount=Math.ceil(remaining/86400000);name.textContent=next.name;days.textContent=dayCount;unit.textContent=dayCount===1?'día':'días';}

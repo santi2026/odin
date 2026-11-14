@@ -82,6 +82,7 @@ const countdownDefaults=[['christmas','Navidad',11,25],['new-year','Año Nuevo',
 function dueDefaultEvents(state,now=new Date()){
   const due=[];
   for(const [id,name,month,day] of countdownDefaults){if(state.defaults?.[id]===false)continue;const target=new Date(now.getFullYear(),month,day,0,0,0,0).getTime();if(target<=now.getTime()&&now.getTime()-target<7*86400000)due.push({id:`default:${id}`,name,targetAt:target});}
+  for(const [id,name,month] of [['clock-summer','Inicio del horario de verano',2],['clock-winter','Inicio del horario de invierno',9]]){if(state.defaults?.[id]===false||state.defaults?.['clock-change']===false)continue;const last=new Date(Date.UTC(now.getFullYear(),month+1,0)),target=Date.UTC(now.getFullYear(),month,last.getUTCDate()-last.getUTCDay(),1);if(target<=now.getTime()&&now.getTime()-target<7*86400000)due.push({id:`default:${id}`,name,targetAt:target});}
   return due;
 }
 function checkGlobalCountdowns(){
