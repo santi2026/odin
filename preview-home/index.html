@@ -6,7 +6,7 @@
   <meta name="description" content="Herramientas rápidas, claras y respetuosas con tu privacidad." />
   <title>ODÍN · herramientas útiles</title>
   <link rel="icon" href="/logo.ico" type="image/x-icon" />
-  <link rel="stylesheet" href="/src/styles/global.css?v=header-moon-1" />
+  <link rel="stylesheet" href="/src/styles/global.css?v=catalog-counts-1" />
 </head>
 <body class="catalog-v2">
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -17,7 +17,7 @@
   <main id="contenido">
     <section class="catalog-intro">
       <div><p class="eyebrow">Tu espacio de utilidades</p><h1>Encuentra. Utiliza. <em>Aprende.</em></h1><p>Consulta, mide y organiza lo cotidiano con herramientas sencillas que se adaptan a ti.</p></div>
-      <div class="intro-stat"><strong>12</strong><span>herramientas previstas</span></div>
+      <div class="intro-stat"><strong id="catalog-tool-count">--</strong><span>utilidades en el catálogo</span></div>
       <div class="intro-symbol" aria-hidden="true">✦</div>
     </section>
     <section class="tools-section" id="herramientas">
@@ -25,15 +25,13 @@
         <div><p class="eyebrow">Catálogo</p><h2>Todas las herramientas</h2></div>
         <label class="search-box"><span aria-hidden="true">⌕</span><span class="sr-only">Buscar herramientas</span><input id="tool-search" type="search" placeholder="Buscar por nombre o función" autocomplete="off" /></label>
       </div>
-      <div class="catalog-filters" aria-label="Filtrar por categoría">
-        <button class="filter-chip active" type="button" data-filter="all">Todas</button><button class="filter-chip" type="button" data-filter="Tiempo">Tiempo</button><button class="filter-chip" type="button" data-filter="Conexión">Conexión</button><button class="filter-chip" type="button" data-filter="Productividad">Productividad</button><button class="filter-chip" type="button" data-filter="Cálculo">Cálculo</button>
-      </div>
+      <div class="catalog-filters" id="catalog-filters" aria-label="Filtrar por categoría"></div>
       <div class="tool-grid" id="tool-grid"></div>
       <p class="empty-state" id="empty-state" hidden>No hay herramientas que coincidan con la búsqueda.</p>
     </section>
   </main>
   <footer class="site-footer"><span>ODÍN · herramientas claras para cada día</span><span>Privacidad primero · sin publicidad</span></footer>
-  <script type="module" src="/preview-home/home.js?v=html-text-1"></script>
+  <script type="module" src="/preview-home/home.js?v=catalog-counts-1"></script>
   <script type="module" src="/global-timer.js?v=countdown-2"></script>
   <script type="module" src="/time-center.js?v=4"></script>
 </body>

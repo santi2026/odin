@@ -49,6 +49,14 @@ const orderedToolNames=['Reloj negro','Calendario','Cuenta atrás','Alarmas','Te
 const orderedTools=orderedToolNames.map(name=>tools.find(tool=>tool[2]===name)).filter(Boolean);
 orderedTools.forEach((tool,index)=>tool[0]=`U${String(index+1).padStart(2,'0')}`);
 tools.splice(0,tools.length,...orderedTools);
+const preferredCategoryOrder = ['Tiempo','Cálculo','Creación','Conexión','Productividad'];
+const categoryCounts = tools.reduce((counts, tool) => counts.set(tool[1], (counts.get(tool[1]) || 0) + 1), new Map());
+const remainingCategories = [...categoryCounts.keys()].filter(category => !preferredCategoryOrder.includes(category)).sort((a,b) => a.localeCompare(b,'es'));
+const categories = preferredCategoryOrder.filter(category => categoryCounts.has(category)).concat(remainingCategories);
+const filtersNode = document.querySelector('#catalog-filters');
+filtersNode.innerHTML = [{ value:'all', label:'Todas', count:tools.length }, ...categories.map(category => ({ value:category, label:category, count:categoryCounts.get(category) }))]
+  .map((filter,index) => `<button class="filter-chip${index===0?' active':''}" type="button" data-filter="${filter.value}" aria-pressed="${index===0}"><span>${filter.label}</span><b>(${filter.count})</b></button>`).join('');
+document.querySelector('#catalog-tool-count').textContent = tools.length;
 const labels = { available: 'Disponible', next: 'Próximamente', planned: 'Planificada' };
 const grid = document.querySelector('#tool-grid');
 for (const [id, category, name, description, status, href, cover, preview] of tools) {
@@ -62,7 +70,7 @@ const input = document.querySelector('#tool-search'), cards = [...document.query
 let activeFilter = 'all';
 function updateCards() { const query = input.value.trim().toLocaleLowerCase('es'); let visible = 0; for (const card of cards) { const matchText = card.dataset.toolName.includes(query), matchCategory = activeFilter === 'all' || card.dataset.category === activeFilter, match = matchText && matchCategory; card.hidden = !match; if (match) visible++; } empty.hidden = visible !== 0; }
 input.addEventListener('input', updateCards);
-for (const chip of chips) chip.addEventListener('click', () => { activeFilter = chip.dataset.filter; for (const item of chips) item.classList.toggle('active', item === chip); updateCards(); });
+for (const chip of chips) chip.addEventListener('click', () => { activeFilter = chip.dataset.filter; for (const item of chips) { const selected=item===chip; item.classList.toggle('active',selected); item.setAttribute('aria-pressed',String(selected)); } updateCards(); });
 
 const timeFormatter = (timeZone) => new Intl.DateTimeFormat('es-ES', { timeZone, hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
 const localTime = new Intl.DateTimeFormat('es-ES', { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });

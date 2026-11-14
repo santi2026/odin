@@ -221,6 +221,7 @@ h1 em { color: var(--gold); font-weight: 400; }
 .catalog-filters::-webkit-scrollbar { display: none; }
 .filter-chip { flex: 0 0 auto; padding: .45rem .8rem; color: var(--muted); background: #111727; border: 1px solid var(--line); border-radius: 999px; cursor: pointer; font-size: .76rem; }
 .filter-chip.active, .filter-chip:hover { color: #17130b; background: var(--gold); border-color: var(--gold); }
+.filter-chip{display:inline-flex;align-items:center;gap:.28rem}.filter-chip b{color:#7488aa;font-size:.64rem;font-weight:700}.filter-chip.active b,.filter-chip:hover b{color:#5e4a20}
 .catalog-v2 .tool-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
 .catalog-v2 .tool-card { position: relative; min-height: 0; padding: 0; overflow: hidden; background: #111725; border-radius: .85rem; }
 .catalog-v2 .tool-card:hover { transform: translateY(-2px); }
