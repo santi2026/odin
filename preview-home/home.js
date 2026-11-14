@@ -39,6 +39,8 @@ tools[11][5] = '/preview-calendar/';
 tools[11][7] = '<div class="calendar-cover"><strong id="live-calendar-month">MES</strong><span>1</span><span>2</span><span class="national">3</span><span>4</span><span class="barcelona">5</span><span class="overlap">6</span><span>7</span></div><i id="live-calendar-next">Próxima celebración</i>';
 tools[8][4] = 'available';
 tools[8][5] = '/preview-dates/';
+tools[9][4] = 'available';
+tools[9][5] = '/preview-convert/';
 tools[6][7] = '<small id="live-countdown-name">Próximo acontecimiento</small><b id="live-countdown-days">--</b><i id="live-countdown-unit">días</i>';
 const orderedToolNames=['Reloj negro','Calendario','Cuenta atrás','Alarmas','Temporizador y cronómetro','Concentración · Pomodoro','Calculadora de fechas','Conversor universal','Relojes del mundo','Fases lunares','Mi IP','Generador QR'];
 const orderedTools=orderedToolNames.map(name=>tools.find(tool=>tool[2]===name)).filter(Boolean);

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Conversor universal de unidades y divisas con cambio manual, realizado localmente en tu navegador." />
+  <title>Conversor universal · ODÍN</title>
+  <link rel="icon" href="/logo.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="/src/styles/global.css?v=convert-1" />
+</head>
+<body class="tool-page converter-body">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="site-header"><a class="brand" href="/preview-home/" aria-label="ODÍN, volver a la portada"><span class="brand-mark">◆</span><span>ODÍN</span></a><nav aria-label="Navegación de la herramienta"><a class="back-to-catalog" href="/preview-home/#herramientas"><span aria-hidden="true">←</span> Catálogo</a></nav></header>
+  <main id="contenido" class="converter-page">
+    <header class="converter-heading"><div><p class="eyebrow">U08 · CÁLCULO</p><h1>Conversor universal</h1><p>Convierte unidades habituales con claridad. Los cálculos se realizan localmente y tus preferencias permanecen en este navegador.</p></div><div class="converter-summary"><strong id="category-count">13</strong><span>categorías</span><small>Sin enviar tus valores</small></div></header>
+
+    <section class="converter-categories" aria-label="Categorías del conversor"><div id="primary-categories" class="category-list"></div><details id="more-categories"><summary>Más categorías</summary><div id="secondary-categories" class="category-list secondary"></div></details></section>
+
+    <section class="converter-workspace">
+      <article class="converter-main">
+        <div class="converter-title"><div><span class="map-kicker" id="category-kicker">LONGITUD</span><h2 id="category-title">Convierte una medida</h2></div><button id="save-favorite" type="button">☆ Guardar combinación</button></div>
+        <div class="converter-fields">
+          <div class="converter-side"><label for="source-value">Cantidad de origen</label><div class="converter-number"><input id="source-value" type="text" inputmode="decimal" value="24" autocomplete="off" /><button type="button" data-copy="source-value" aria-label="Copiar cantidad de origen">Copiar</button></div><select id="source-unit" aria-label="Unidad de origen"></select></div>
+          <button class="converter-swap" id="swap-units" type="button" aria-label="Intercambiar unidades">⇄</button>
+          <div class="converter-side"><label for="target-value">Resultado</label><div class="converter-number"><input id="target-value" type="text" inputmode="decimal" autocomplete="off" /><button type="button" data-copy="target-value" aria-label="Copiar resultado">Copiar</button></div><select id="target-unit" aria-label="Unidad de destino"></select></div>
+        </div>
+        <div class="conversion-reference"><span id="conversion-equivalence">1 km = 0,621371 mi</span><small id="conversion-note">Escribe en cualquiera de los dos campos.</small></div>
+
+        <section class="currency-settings" id="currency-settings" hidden>
+          <div class="currency-heading"><div><span class="map-kicker">TIPO DE CAMBIO MANUAL</span><h3>Indica el cambio que quieres utilizar</h3></div><span class="manual-pill">No se consulta automáticamente</span></div>
+          <div class="currency-rate-row"><label><span id="rate-label">1 EUR equivale a</span><div><input id="exchange-rate" type="text" inputmode="decimal" placeholder="Ej. 1,1052" /><b id="rate-currency">USD</b></div></label><label><span>Fecha del cambio</span><input id="rate-date" type="date" /></label></div>
+          <p id="currency-warning">Introduce el tipo consultado en una fuente externa. El resultado es orientativo y no representa el precio final de una transacción.</p>
+          <div class="currency-sources"><a href="https://www.bde.es/webbe/es/estadisticas/recursos/conversor-divisas.html" target="_blank" rel="noreferrer">Consultar Banco de España ↗</a><a href="https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.es.html" target="_blank" rel="noreferrer">Consultar BCE ↗</a></div>
+        </section>
+      </article>
+
+      <aside class="converter-options">
+        <div class="converter-option-heading"><span class="map-kicker">PRESENTACIÓN</span><h2>Precisión</h2></div>
+        <label class="precision-field"><span>Decimales del resultado</span><select id="precision"><option value="auto">Automática</option><option value="2">2 decimales</option><option value="4">4 decimales</option><option value="6">6 decimales</option><option value="scientific">Notación científica</option></select></label>
+        <div class="converter-help"><b id="system-label">Sistema métrico e imperial</b><p id="system-note">Las equivalencias utilizan factores exactos cuando están definidos oficialmente.</p></div>
+        <p class="copy-status" id="copy-status" hidden></p>
+      </aside>
+    </section>
+
+    <section class="converter-memory">
+      <article><div class="memory-heading"><div><span class="map-kicker">ACCESO RÁPIDO</span><h2>Combinaciones guardadas</h2></div><span id="favorite-count">0 de 8</span></div><div id="favorite-list" class="memory-list"><p class="memory-empty">Todavía no has guardado combinaciones.</p></div></article>
+      <article><div class="memory-heading"><div><span class="map-kicker">ÚLTIMOS CÁLCULOS</span><h2>Conversiones recientes</h2></div><button id="clear-recents" type="button">Limpiar</button></div><div id="recent-list" class="memory-list"><p class="memory-empty">Las últimas conversiones aparecerán aquí.</p></div></article>
+    </section>
+  </main>
+  <footer class="site-footer"><span>ODÍN · Conversor universal</span><span>Cálculos locales · sin seguimiento</span></footer>
+  <script type="module" src="/preview-convert/converter.js?v=1"></script>
+  <script type="module" src="/global-timer.js?v=countdown-2"></script>
+  <script type="module" src="/time-center.js?v=4"></script>
+</body>
+</html>
