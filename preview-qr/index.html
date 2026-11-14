@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Generador de c�digos QR local y privado para texto, enlaces, Wi-Fi, contactos, ubicaciones y eventos." />
+  <title>Generador QR � OD�N</title>
+  <link rel="icon" href="/logo.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="/src/styles/global.css?v=qr-1" />
+</head>
+<body class="tool-page qr-body">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="site-header"><a class="brand" href="/preview-home/" aria-label="OD�N, volver a la portada"><span class="brand-mark">?</span><span>OD�N</span></a><nav aria-label="Navegaci�n de la herramienta"><a class="back-to-catalog" href="/preview-home/#herramientas"><span aria-hidden="true"></span> Cat�logo</a></nav></header>
+  <main id="contenido" class="qr-page">
+    <header class="qr-heading">
+      <div><p class="eyebrow">U12 � CREACI�N</p><h1>Generador QR</h1><p>Convierte informaci�n en un c�digo listo para compartir. Todo se genera en este dispositivo: el contenido no se env�a ni se guarda.</p></div>
+      <div class="qr-privacy"><strong>100%</strong><span>local</span><small>Sin API ni servidor</small></div>
+    </header>
+    <nav class="qr-types" id="qr-types" aria-label="Tipo de contenido"></nav>
+    <section class="qr-workspace">
+      <article class="qr-editor">
+        <div class="qr-panel-heading"><div><span class="map-kicker">CONTENIDO</span><h2 id="editor-title">Texto libre</h2></div><span id="required-note">Completa el campo para crear el QR</span></div>
+        <form id="qr-form" autocomplete="off"><div class="qr-form-grid" id="qr-fields"></div></form>
+        <details class="qr-settings" open>
+          <summary>Personalizar c�digo</summary>
+          <div class="qr-settings-grid">
+            <label><span>Tama�o <b id="size-value">360 px</b></span><input id="qr-size" type="range" min="180" max="720" step="20" value="360" /></label>
+            <label><span>Correcci�n de errores</span><select id="qr-level"><option value="L">L � ligera</option><option value="M" selected>M � equilibrada</option><option value="Q">Q � alta</option><option value="H">H � m�xima</option></select></label>
+            <label><span>Color del c�digo</span><input id="qr-foreground" type="color" value="#07101f" /></label>
+            <label><span>Color del fondo</span><input id="qr-background" type="color" value="#ffffff" /></label>
+            <label><span>Margen <b id="margin-value">4 m�dulos</b></span><input id="qr-margin" type="range" min="0" max="8" step="1" value="4" /></label>
+            <button id="reset-style" type="button">Restablecer estilo</button>
+          </div>
+        </details>
+      </article>
+      <aside class="qr-preview-panel">
+        <div class="qr-panel-heading"><div><span class="map-kicker">VISTA PREVIA</span><h2>Tu c�digo QR</h2></div><span class="qr-live-indicator"><i></i> En directo</span></div>
+        <div class="qr-canvas-wrap"><canvas id="qr-canvas" width="360" height="360" aria-label="Vista previa del c�digo QR"></canvas><div id="qr-empty"><span>?</span><b>Esperando contenido</b><small>El c�digo aparecer� mientras escribes.</small></div></div>
+        <div class="qr-metadata"><span id="qr-character-count">0 caracteres</span><span id="qr-complexity">Sin generar</span></div>
+        <p class="qr-status" id="qr-status">El contenido permanece �nicamente en este navegador.</p>
+        <div class="qr-actions">
+          <button class="primary" id="download-png" type="button" disabled>Descargar PNG</button>
+          <button id="download-svg" type="button" disabled>Descargar SVG</button>
+          <button id="copy-image" type="button" disabled>Copiar imagen</button>
+          <button id="print-qr" type="button" disabled>Imprimir</button>
+          <button id="copy-content" type="button" disabled>Copiar contenido</button>
+        </div>
+      </aside>
+    </section>
+    <section class="qr-note"><span>?</span><div><b>Privacidad por dise�o</b><p>OD�N recuerda �nicamente el tipo y el aspecto visual elegidos. Nunca conserva textos, contrase�as Wi-Fi, contactos ni otros datos del formulario.</p></div></section>
+  </main>
+  <footer class="site-footer"><span>OD�N � Generador QR</span><span>Creaci�n local � sin seguimiento</span></footer>
+  <script src="/preview-qr/qrcode.js"></script>
+  <script type="module" src="/preview-qr/qr.js?v=1"></script>
+  <script type="module" src="/global-timer.js?v=countdown-2"></script>
+  <script type="module" src="/time-center.js?v=4"></script>
+</body>
+</html>
+
+
