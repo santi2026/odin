@@ -6,7 +6,7 @@
   <meta name="description" content="Calendario anual con festividades recurrentes y periodos de vacaciones." />
   <title>Calendario anual · ODÍN</title>
   <link rel="icon" href="/logo.ico" type="image/x-icon" />
-  <link rel="stylesheet" href="/src/styles/global.css?v=calendar-1" />
+  <link rel="stylesheet" href="/src/styles/global.css?v=calendar-2" />
 </head>
 <body class="tool-page calendar-body">
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -31,15 +31,17 @@
     </section>
 
     <div id="range-message" class="range-message" hidden><div><strong>Inicio seleccionado: <span id="range-start-label"></span></strong><small>Ahora pulsa el último día de las vacaciones, aunque esté en otro año.</small></div><button id="cancel-range" type="button">Cancelar</button></div>
-    <section class="calendar-grid" id="calendar-grid" aria-label="Calendario anual"></section>
-
-    <section class="calendar-lower">
-      <article class="date-detail" id="date-detail"><p class="eyebrow">FECHA SELECCIONADA</p><h2>Selecciona un día</h2><p>Pulsa cualquier fecha para consultar sus detalles o iniciar un periodo de vacaciones.</p></article>
-      <article class="vacation-panel"><div class="panel-title"><div><p class="eyebrow">MIS PERIODOS</p><h2>Vacaciones</h2></div><span id="vacation-count">0</span></div><div id="vacation-list" class="vacation-list"></div></article>
+    <section class="calendar-workspace" id="calendar-workspace">
+      <section class="calendar-grid" id="calendar-grid" aria-label="Calendario anual"></section>
+      <aside class="calendar-side-panel" id="calendar-side-panel" aria-label="Detalles del calendario" hidden>
+        <button class="calendar-panel-close" id="calendar-panel-close" type="button" aria-label="Cerrar detalles">×</button>
+        <article class="date-detail" id="date-detail"><p class="eyebrow">FECHA SELECCIONADA</p><h2>Selecciona un día</h2><p>Pulsa cualquier fecha para consultar sus detalles o iniciar un periodo de vacaciones.</p></article>
+        <article class="vacation-panel"><div class="panel-title"><div><p class="eyebrow">MIS PERIODOS</p><h2>Vacaciones</h2></div><span id="vacation-count">0</span></div><div id="vacation-list" class="vacation-list"></div></article>
+      </aside>
     </section>
     <p class="calendar-note">Las celebraciones se muestran como fechas recurrentes de referencia. Su aparición no garantiza que sean días no laborables oficiales en todos los años.</p>
   </main>
   <footer class="site-footer"><span>ODÍN · Calendario anual</span><span>Datos locales · sin seguimiento</span></footer>
-  <script type="module" src="/global-timer.js?v=countdown-2"></script><script type="module" src="/time-center.js?v=4"></script><script type="module" src="/preview-calendar/calendar.js?v=1"></script>
+  <script type="module" src="/global-timer.js?v=countdown-2"></script><script type="module" src="/time-center.js?v=4"></script><script type="module" src="/preview-calendar/calendar.js?v=2"></script>
 </body>
 </html>
