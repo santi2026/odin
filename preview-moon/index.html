@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Consulta la fase, iluminación y próximos cambios de la Luna." />
+  <title>Fases lunares · ODÍN</title>
+  <link rel="icon" href="/logo.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="/src/styles/global.css?v=moon-1" />
+</head>
+<body class="tool-page moon-body">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="site-header">
+    <a class="brand" href="/preview-home/" aria-label="ODÍN, inicio"><span class="brand-mark" aria-hidden="true">✦</span><span>ODÍN</span></a>
+    <nav aria-label="Navegación principal"><a href="/preview-home/#herramientas">Catálogo</a></nav>
+  </header>
+  <main id="contenido" class="moon-page">
+    <section class="tool-hero moon-hero"><p class="eyebrow">U11 · TIEMPO</p><h1>Fases lunares</h1><p>Observa cómo cambia la Luna hoy o en cualquier fecha, sin enviar datos fuera del navegador.</p></section>
+    <section class="moon-datebar" aria-label="Seleccionar fecha">
+      <button id="moon-prev" type="button" aria-label="Día anterior">←</button>
+      <label><span>Fecha consultada</span><input id="moon-date" type="date" /></label>
+      <button id="moon-next" type="button" aria-label="Día siguiente">→</button>
+      <button id="moon-today" class="secondary-button" type="button">Hoy</button>
+    </section>
+    <section class="moon-dashboard" aria-live="polite">
+      <article class="moon-main-card">
+        <div class="moon-visual-wrap"><canvas id="moon-canvas" width="440" height="440" aria-label="Representación de la fase lunar"></canvas><span class="moon-direction" id="moon-direction">Creciendo</span></div>
+        <div class="moon-main-copy"><p class="eyebrow" id="moon-date-label">HOY</p><h2 id="moon-phase-name">—</h2><p id="moon-phase-description">Calculando la posición lunar…</p><div class="moon-progress"><span id="moon-progress-fill"></span></div><p class="moon-cycle-label"><span id="moon-age-label">—</span><span>Ciclo de 29,53 días</span></p></div>
+      </article>
+      <div class="moon-stats">
+        <article><span>Iluminación</span><strong id="moon-illumination">—</strong><small>de la superficie visible</small></article>
+        <article><span>Edad lunar</span><strong id="moon-age">—</strong><small>desde la luna nueva</small></article>
+        <article><span>Distancia</span><strong id="moon-distance">—</strong><small>aproximada desde la Tierra</small></article>
+        <article class="moon-next-card"><span>Próximo cambio</span><strong id="moon-next-phase">—</strong><small id="moon-next-detail">—</small></article>
+      </div>
+    </section>
+    <section class="moon-upcoming-section"><div><p class="eyebrow">PRÓXIMOS HITOS</p><h2>El ciclo que viene</h2></div><div class="moon-upcoming" id="moon-upcoming"></div></section>
+    <p class="moon-note">Cálculo astronómico local basado en el ciclo sinódico medio. Las horas son aproximadas y se muestran en tu zona horaria.</p>
+  </main>
+  <footer class="site-footer"><span>ODÍN · Fases lunares</span><span>Cálculo local · sin seguimiento</span></footer>
+  <script type="module" src="/global-timer.js?v=countdown-2"></script>
+  <script type="module" src="/time-center.js?v=3"></script>
+  <script type="module" src="/preview-moon/moon.js?v=1"></script>
+</body>
+</html>

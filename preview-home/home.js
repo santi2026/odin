@@ -31,6 +31,9 @@ tools[5][5] = '/preview-focus/';
 tools[5][7] = '<div class="focus-ring"><b id="live-focus-time">25</b><small id="live-focus-unit">min</small></div><i id="live-focus-phase">Sesión 1 de 4</i>';
 tools[6][4] = 'available';
 tools[6][5] = '/preview-countdown/';
+tools[10][4] = 'available';
+tools[10][5] = '/preview-moon/';
+tools[10][7] = '<div class="moon-orbit"><span class="moon-phase" id="live-moon-disc"></span></div><i id="live-moon-phase">Fase actual</i>';
 tools[6][7] = '<small id="live-countdown-name">Próximo acontecimiento</small><b id="live-countdown-days">--</b><i id="live-countdown-unit">días</i>';
 const labels = { available: 'Disponible', next: 'Próximamente', planned: 'Planificada' };
 const grid = document.querySelector('#tool-grid');
@@ -127,3 +130,12 @@ async function updatePublicIp() {
   }
 }
 updatePublicIp();
+
+function updateMoonCover(){
+  const label=document.querySelector('#live-moon-phase'),disc=document.querySelector('#live-moon-disc');if(!label||!disc)return;
+  const month=29.530588853,epoch=Date.UTC(2000,0,6,18,14),fraction=((((Date.now()-epoch)/86400000/month)%1)+1)%1),illumination=(1-Math.cos(2*Math.PI*fraction))/2;
+  const names=[[.0339,'Luna nueva'],[.2161,'Creciente'],[.2839,'Cuarto creciente'],[.4661,'Gibosa creciente'],[.5339,'Luna llena'],[.7161,'Gibosa menguante'],[.7839,'Cuarto menguante'],[.9661,'Menguante']];
+  label.textContent=`${(names.find(([limit])=>fraction<limit)||names[0])[1]} · ${Math.round(illumination*100)} %`;
+  disc.style.setProperty('--moon-light',`${Math.round(illumination*100)}%`);disc.classList.toggle('is-waning',fraction>.5);
+}
+updateMoonCover();setInterval(updateMoonCover,60000);
