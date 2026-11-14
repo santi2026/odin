@@ -6,7 +6,7 @@
   <meta name="description" content="Calendario anual con festividades recurrentes y periodos de vacaciones." />
   <title>Calendario anual · ODÍN</title>
   <link rel="icon" href="/logo.ico" type="image/x-icon" />
-  <link rel="stylesheet" href="/src/styles/global.css?v=calendar-2" />
+  <link rel="stylesheet" href="/src/styles/global.css?v=calendar-3" />
 </head>
 <body class="tool-page calendar-body">
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -36,7 +36,20 @@
       <aside class="calendar-side-panel" id="calendar-side-panel" aria-label="Detalles del calendario" hidden>
         <button class="calendar-panel-close" id="calendar-panel-close" type="button" aria-label="Cerrar detalles">×</button>
         <article class="date-detail" id="date-detail"><p class="eyebrow">FECHA SELECCIONADA</p><h2>Selecciona un día</h2><p>Pulsa cualquier fecha para consultar sus detalles o iniciar un periodo de vacaciones.</p></article>
-        <article class="vacation-panel"><div class="panel-title"><div><p class="eyebrow">MIS PERIODOS</p><h2>Vacaciones</h2></div><span id="vacation-count">0</span></div><div id="vacation-list" class="vacation-list"></div></article>
+        <article class="vacation-panel">
+          <div class="panel-title"><div><p class="eyebrow">MIS PERIODOS</p><h2>Vacaciones</h2></div><span id="vacation-count">0</span></div>
+          <form class="vacation-form" id="vacation-form">
+            <label>Nombre<input id="vacation-name" type="text" maxlength="60" value="Vacaciones" /></label>
+            <div class="vacation-date-fields">
+              <label>Inicio<input id="vacation-start" type="date" min="1900-01-01" max="2200-12-31" required /></label>
+              <label>Final<input id="vacation-end" type="date" min="1900-01-01" max="2200-12-31" required /></label>
+            </div>
+            <p class="vacation-form-error" id="vacation-form-error" role="alert" hidden></p>
+            <button type="submit">Añadir periodo</button>
+            <small>Puedes indicar fechas de años diferentes.</small>
+          </form>
+          <div id="vacation-list" class="vacation-list"></div>
+        </article>
       </aside>
     </section>
     <p class="calendar-note">Las celebraciones se muestran como fechas recurrentes de referencia. Su aparición no garantiza que sean días no laborables oficiales en todos los años.</p>
@@ -57,6 +70,6 @@
     </form>
   </dialog>
   <footer class="site-footer"><span>ODÍN · Calendario anual</span><span>Datos locales · sin seguimiento</span></footer>
-  <script type="module" src="/global-timer.js?v=countdown-2"></script><script type="module" src="/time-center.js?v=4"></script><script type="module" src="/preview-calendar/calendar.js?v=3"></script>
+  <script type="module" src="/global-timer.js?v=countdown-2"></script><script type="module" src="/time-center.js?v=4"></script><script type="module" src="/preview-calendar/calendar.js?v=4"></script>
 </body>
 </html>
