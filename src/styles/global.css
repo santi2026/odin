@@ -161,6 +161,8 @@ h1 em { color: var(--gold); font-weight: 400; }
   .sony-clock-stage { min-height: 62vh; }
   .sony-control-actions { grid-template-columns: 1fr; }
 }
+
+.countdown-units { grid-template-columns: repeat(3, 1fr) !important; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
