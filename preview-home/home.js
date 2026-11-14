@@ -133,7 +133,7 @@ updatePublicIp();
 
 function updateMoonCover(){
   const label=document.querySelector('#live-moon-phase'),disc=document.querySelector('#live-moon-disc');if(!label||!disc)return;
-  const month=29.530588853,epoch=Date.UTC(2000,0,6,18,14),fraction=((((Date.now()-epoch)/86400000/month)%1)+1)%1),illumination=(1-Math.cos(2*Math.PI*fraction))/2;
+  const month=29.530588853,epoch=Date.UTC(2000,0,6,18,14),fraction=(((Date.now()-epoch)/86400000/month)%1+1)%1,illumination=(1-Math.cos(2*Math.PI*fraction))/2;
   const names=[[.0339,'Luna nueva'],[.2161,'Creciente'],[.2839,'Cuarto creciente'],[.4661,'Gibosa creciente'],[.5339,'Luna llena'],[.7161,'Gibosa menguante'],[.7839,'Cuarto menguante'],[.9661,'Menguante']];
   label.textContent=`${(names.find(([limit])=>fraction<limit)||names[0])[1]} · ${Math.round(illumination*100)} %`;
   disc.style.setProperty('--moon-light',`${Math.round(illumination*100)}%`);disc.classList.toggle('is-waning',fraction>.5);
