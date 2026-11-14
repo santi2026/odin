@@ -29,6 +29,9 @@ tools[5][3] = 'Alterna sesiones de concentración y descanso configurables.';
 tools[5][4] = 'available';
 tools[5][5] = '/preview-focus/';
 tools[5][7] = '<div class="focus-ring"><b id="live-focus-time">25</b><small id="live-focus-unit">min</small></div><i id="live-focus-phase">Sesión 1 de 4</i>';
+tools[6][4] = 'available';
+tools[6][5] = '/preview-countdown/';
+tools[6][7] = '<small id="live-countdown-name">Próximo acontecimiento</small><b id="live-countdown-days">--</b><i id="live-countdown-unit">días</i>';
 const labels = { available: 'Disponible', next: 'Próximamente', planned: 'Planificada' };
 const grid = document.querySelector('#tool-grid');
 for (const [id, category, name, description, status, href, cover, preview] of tools) {
@@ -94,6 +97,19 @@ function updateFocusCover(){
   try{const state=JSON.parse(localStorage.getItem('odin-focus-v1')),session=state?.session;if(!session)return;const remaining=session.running?Math.max(0,session.endAt-Date.now()):session.remaining;const seconds=Math.ceil(remaining/1000);value.textContent=seconds>=60?Math.ceil(seconds/60):seconds;unit.textContent=seconds>=60?'min':'s';const phase=session.phase==='focus'?'Concentración':session.phase==='short'?'Descanso corto':'Descanso largo';label.textContent=session.running?`${phase} · En marcha`:session.phase==='focus'?`Sesión ${session.sessionIndex} de ${state.settings.sessions}`:phase;value.closest('.tool-cover')?.classList.toggle('is-cover-active',session.running);}catch{}
 }
 updateFocusCover();setInterval(updateFocusCover,500);
+
+const countdownDefaults=[['christmas','Navidad',11,25],['new-year','Año Nuevo',0,1],['kings','Reyes',0,6],['sant-jordi','Sant Jordi',3,23],['san-juan','San Juan',5,24],['all-saints','Todos los Santos',10,1]];
+function nextAnnual(month,day,now=new Date()){let target=new Date(now.getFullYear(),month,day,0,0,0,0);if(target<=now)target.setFullYear(target.getFullYear()+1);return target.getTime();}
+function nextClockChange(now=new Date()){const candidates=[];for(const year of [now.getFullYear(),now.getFullYear()+1])for(const month of [2,9]){const last=new Date(year,month+1,0,2,0,0,0);last.setDate(last.getDate()-last.getDay());candidates.push(last.getTime());}return candidates.filter(value=>value>now.getTime()).sort((a,b)=>a-b)[0];}
+function upcomingCountdowns(){
+  let state={personal:[],defaults:{}};try{state={...state,...JSON.parse(localStorage.getItem('odin-countdowns-v1'))};}catch{}
+  const now=Date.now(), items=(state.personal||[]).filter(item=>item.enabled!==false&&item.targetAt>now).map(item=>({name:item.name,targetAt:item.targetAt}));
+  for(const [id,name,month,day] of countdownDefaults)if(state.defaults?.[id]!==false)items.push({name,targetAt:nextAnnual(month,day)});
+  if(state.defaults?.['clock-change']!==false)items.push({name:'Cambio de hora',targetAt:nextClockChange()});
+  return items.sort((a,b)=>a.targetAt-b.targetAt);
+}
+function updateCountdownCover(){const name=document.querySelector('#live-countdown-name'),days=document.querySelector('#live-countdown-days'),unit=document.querySelector('#live-countdown-unit');if(!name||!days||!unit)return;const next=upcomingCountdowns()[0];if(!next){name.textContent='Sin acontecimientos';days.textContent='--';unit.textContent='días';return;}const remaining=next.targetAt-Date.now(),dayCount=Math.ceil(remaining/86400000);name.textContent=next.name;days.textContent=dayCount;unit.textContent=dayCount===1?'día':'días';}
+updateCountdownCover();setInterval(updateCountdownCover,30000);window.addEventListener('odin:countdowns-updated',updateCountdownCover);
 
 async function updatePublicIp() {
   const value = document.querySelector('#live-public-ip');

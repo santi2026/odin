@@ -1,10 +1,12 @@
 const ODIN_TIMER_KEY = 'odin-timer-v1';
 const ODIN_ALARMS_KEY = 'odin-alarms-v1';
 const ODIN_FOCUS_KEY = 'odin-focus-v1';
+const ODIN_COUNTDOWNS_KEY = 'odin-countdowns-v1';
 let audioContext = null;
 let handledEndAt = 0;
 const handledAlarms = new Set();
 let handledFocusEndAt = 0;
+const handledCountdowns = new Set();
 
 function readTimerState() {
   try { return JSON.parse(localStorage.getItem(ODIN_TIMER_KEY)); }
@@ -76,10 +78,25 @@ function checkGlobalFocus(){
   try{const state=JSON.parse(localStorage.getItem(ODIN_FOCUS_KEY)),session=state?.session;if(!session?.running||!session.endAt||session.endAt>Date.now()||handledFocusEndAt===session.endAt)return;handledFocusEndAt=session.endAt;advanceFocus(state);}
   catch{}
 }
+const countdownDefaults=[['christmas','Navidad',11,25],['new-year','Año Nuevo',0,1],['kings','Reyes',0,6],['sant-jordi','Sant Jordi',3,23],['san-juan','San Juan',5,24],['all-saints','Todos los Santos',10,1]];
+function dueDefaultEvents(state,now=new Date()){
+  const due=[];
+  for(const [id,name,month,day] of countdownDefaults){if(state.defaults?.[id]===false)continue;const target=new Date(now.getFullYear(),month,day,0,0,0,0).getTime();if(target<=now.getTime()&&now.getTime()-target<7*86400000)due.push({id:`default:${id}`,name,targetAt:target});}
+  return due;
+}
+function checkGlobalCountdowns(){
+  try{
+    const state={personal:[],defaults:{},notifiedDefaults:{},settings:{soundEnabled:true,soundChoice:'bell'},...JSON.parse(localStorage.getItem(ODIN_COUNTDOWNS_KEY)||'{}')};
+    const due=[...(state.personal||[]).filter(item=>item.enabled!==false&&item.targetAt<=Date.now()).map(item=>({id:item.id,name:item.name,targetAt:item.targetAt,item})),...dueDefaultEvents(state)];
+    let changed=false;
+    for(const event of due){const key=`${event.id}:${event.targetAt}`;const notified=event.item?event.item.notifiedAt===event.targetAt:state.notifiedDefaults?.[event.id]===event.targetAt;if(notified||handledCountdowns.has(key))continue;handledCountdowns.add(key);if(event.item)event.item.notifiedAt=event.targetAt;else{state.notifiedDefaults ||= {};state.notifiedDefaults[event.id]=event.targetAt;}changed=true;showGlobalNotice({badge:'HOY',title:event.name,message:'La cuenta atrás ha llegado a su fecha. Pulsa para abrirla.',href:'/preview-countdown/'});if(state.settings?.soundEnabled!==false)playGlobalSound(state.settings?.soundChoice||'bell');}
+    if(changed){localStorage.setItem(ODIN_COUNTDOWNS_KEY,JSON.stringify(state));window.dispatchEvent(new Event('odin:countdowns-updated'));}
+  }catch{}
+}
 
 window.addEventListener('odin:alert',event=>showGlobalNotice(event.detail || {}));
 window.addEventListener('odin:preview-sound',event=>playGlobalSound(event.detail?.choice || 'bell'));
 window.addEventListener('odin:focus-skip',()=>{try{const state=JSON.parse(localStorage.getItem(ODIN_FOCUS_KEY));if(state)advanceFocus(state,{notify:false,completed:false});}catch{}});
 
 for (const event of ['pointerdown','keydown']) document.addEventListener(event,()=>getAudioContext(),{once:true,capture:true});
-checkGlobalTimer(); checkGlobalAlarms(); checkGlobalFocus(); setInterval(()=>{ checkGlobalTimer(); checkGlobalAlarms(); checkGlobalFocus(); },250);
+checkGlobalTimer(); checkGlobalAlarms(); checkGlobalFocus(); checkGlobalCountdowns(); setInterval(()=>{ checkGlobalTimer(); checkGlobalAlarms(); checkGlobalFocus(); checkGlobalCountdowns(); },250);

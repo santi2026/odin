@@ -9,7 +9,7 @@ await cp(join(root, 'preview-home', 'index.html'), join(dist, 'index.html'), { f
 await cp(join(root, 'global-timer.js'), join(dist, 'global-timer.js'), { force: true });
 await cp(join(root, 'logo.ico'), join(dist, 'logo.ico'), { force: true });
 
-for (const folder of ['preview','preview-home','preview-ip','preview-world','preview-timer','preview-alarms','preview-focus']) {
+for (const folder of ['preview','preview-home','preview-ip','preview-world','preview-timer','preview-alarms','preview-focus','preview-countdown']) {
   await cp(join(root, folder), join(dist, folder), { recursive: true, force: true });
 }
 
