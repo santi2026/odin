@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Convierte código HTML en texto limpio localmente, sin enviar ni guardar el contenido." />
+  <title>HTML a texto · ODÍN</title>
+  <link rel="icon" href="/logo.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="/src/styles/global.css?v=html-text-1" />
+</head>
+<body class="tool-page html-text-body">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="site-header"><a class="brand" href="/preview-home/" aria-label="ODÍN, volver a la portada"><span class="brand-mark">◆</span><span>ODÍN</span></a><nav aria-label="Navegación de la herramienta"><a class="back-to-catalog" href="/preview-home/#herramientas"><span aria-hidden="true">←</span> Catálogo</a></nav></header>
+  <main id="contenido" class="html-text-page">
+    <header class="html-text-heading">
+      <div><p class="eyebrow">U13 · CREACIÓN</p><h1>HTML a texto</h1><p>Pega un documento HTML o abre un archivo y conserva únicamente su texto legible. El código se procesa en este dispositivo.</p></div>
+      <div class="html-text-privacy"><strong>0</strong><span>datos enviados</span><small>Procesamiento local</small></div>
+    </header>
+
+    <section class="html-text-workspace">
+      <article class="html-source-panel">
+        <div class="html-panel-heading"><div><span class="map-kicker">ORIGEN</span><h2>HTML</h2></div><button id="clear-html" type="button">Limpiar</button></div>
+        <label class="html-file-button" for="html-file"><span>↑ Abrir archivo HTML</span><small>.html, .htm o .txt</small></label>
+        <input id="html-file" type="file" accept=".html,.htm,.txt,text/html,text/plain" hidden />
+        <label class="html-editor-label" for="html-input"><span>Pega aquí el código</span><textarea id="html-input" spellcheck="false" placeholder="&lt;article&gt;&#10;  &lt;h1&gt;Título&lt;/h1&gt;&#10;  &lt;p&gt;Este texto se conservará.&lt;/p&gt;&#10;&lt;/article&gt;"></textarea></label>
+        <div class="html-source-footer"><span id="html-source-count">0 caracteres</span><span id="html-tag-count">0 etiquetas</span></div>
+      </article>
+
+      <article class="html-result-panel">
+        <div class="html-panel-heading"><div><span class="map-kicker">RESULTADO</span><h2>Texto limpio</h2></div><span id="html-reduction">Sin contenido</span></div>
+        <label class="html-editor-label" for="text-output"><span>Resultado editable</span><textarea id="text-output" placeholder="Aquí aparecerá únicamente el texto…" readonly></textarea></label>
+        <p class="html-text-status" id="html-status">Introduce HTML para comenzar.</p>
+        <div class="html-result-actions">
+          <button class="primary" id="copy-text" type="button" disabled>Copiar texto</button>
+          <button id="download-text" type="button" disabled>Descargar TXT</button>
+          <button id="edit-result" type="button" disabled>Editar resultado</button>
+        </div>
+      </article>
+    </section>
+
+    <section class="html-text-options">
+      <div><span class="map-kicker">LIMPIEZA</span><h2>Qué conservar</h2><p>Los scripts, estilos, comentarios y elementos no visibles se eliminan siempre.</p></div>
+      <div class="html-option-grid">
+        <label><input id="keep-paragraphs" type="checkbox" checked /><i></i><span><b>Párrafos y saltos</b><small>Mantiene la estructura básica del texto.</small></span></label>
+        <label><input id="include-alt" type="checkbox" checked /><i></i><span><b>Texto de imágenes</b><small>Incluye el atributo alternativo de las imágenes.</small></span></label>
+        <label><input id="include-links" type="checkbox" /><i></i><span><b>Direcciones de enlaces</b><small>Añade la URL después del texto enlazado.</small></span></label>
+      </div>
+    </section>
+    <section class="html-text-note"><span>◎</span><div><b>El HTML nunca se ejecuta</b><p>Se analiza como un documento aislado y no se incorpora a la página. ODÍN tampoco guarda el original ni el resultado.</p></div></section>
+  </main>
+  <footer class="site-footer"><span>ODÍN · HTML a texto</span><span>Limpieza local · sin seguimiento</span></footer>
+  <script type="module" src="/preview-html-text/html-text.js?v=1"></script>
+  <script type="module" src="/global-timer.js?v=countdown-2"></script>
+  <script type="module" src="/time-center.js?v=4"></script>
+</body>
+</html>

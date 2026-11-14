@@ -12,6 +12,7 @@ const tools = [
   ,['U11','Tiempo','Fases lunares','Consulta la fase actual de la Luna y sus próximos cambios.','planned','','moon','<div class="moon-orbit"><span class="moon-phase"></span></div><i>Cuarto creciente</i>']
 ];
 tools.push(['U12','Tiempo','Calendario','Consulta calendarios mensuales o anuales con sus festivos.','planned','','calendar','<div class="calendar-cover"><strong>NOV</strong><span>10</span><span>11</span><span class="national">12</span><span>13</span><span class="barcelona">14</span><span class="overlap">15</span><span>16</span></div><i>España · Madrid · Barcelona</i>']);
+tools.push(['U13','Creación','HTML a texto','Extrae el texto legible de un documento HTML sin ejecutarlo.','available','/preview-html-text/','html-clean','<div class="html-clean-cover"><span>&lt;html&gt;</span><b>Texto limpio</b></div>']);
 tools[1][4] = 'available';
 tools[1][5] = '/preview-ip/';
 tools[2][4] = 'available';
@@ -44,7 +45,7 @@ tools[9][5] = '/preview-convert/';
 tools[7][4] = 'available';
 tools[7][5] = '/preview-qr/';
 tools[6][7] = '<small id="live-countdown-name">Próximo acontecimiento</small><b id="live-countdown-days">--</b><i id="live-countdown-unit">días</i>';
-const orderedToolNames=['Reloj negro','Calendario','Cuenta atrás','Alarmas','Temporizador y cronómetro','Concentración · Pomodoro','Calculadora de fechas','Conversor universal','Relojes del mundo','Fases lunares','Mi IP','Generador QR'];
+const orderedToolNames=['Reloj negro','Calendario','Cuenta atrás','Alarmas','Temporizador y cronómetro','Concentración · Pomodoro','Calculadora de fechas','Conversor universal','Relojes del mundo','Fases lunares','Mi IP','Generador QR','HTML a texto'];
 const orderedTools=orderedToolNames.map(name=>tools.find(tool=>tool[2]===name)).filter(Boolean);
 orderedTools.forEach((tool,index)=>tool[0]=`U${String(index+1).padStart(2,'0')}`);
 tools.splice(0,tools.length,...orderedTools);
