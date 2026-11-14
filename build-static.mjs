@@ -7,6 +7,7 @@ const dist = join(root, 'dist');
 await mkdir(dist, { recursive: true });
 await cp(join(root, 'preview-home', 'index.html'), join(dist, 'index.html'), { force: true });
 await cp(join(root, 'global-timer.js'), join(dist, 'global-timer.js'), { force: true });
+await cp(join(root, 'time-center.js'), join(dist, 'time-center.js'), { force: true });
 await cp(join(root, 'logo.ico'), join(dist, 'logo.ico'), { force: true });
 
 for (const folder of ['preview','preview-home','preview-ip','preview-world','preview-timer','preview-alarms','preview-focus','preview-countdown']) {
