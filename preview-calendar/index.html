@@ -6,7 +6,7 @@
   <meta name="description" content="Calendario anual con festividades recurrentes y periodos de vacaciones." />
   <title>Calendario anual · ODÍN</title>
   <link rel="icon" href="/logo.ico" type="image/x-icon" />
-  <link rel="stylesheet" href="/src/styles/global.css?v=calendar-5" />
+  <link rel="stylesheet" href="/src/styles/global.css?v=calendar-6" />
 </head>
 <body class="tool-page calendar-body">
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -32,8 +32,9 @@
           <label><input type="checkbox" data-layer="spain" checked /><span class="layer-dot" data-color="spain"></span>España</label>
           <label><input type="checkbox" data-layer="barcelona" checked /><span class="layer-dot" data-color="barcelona"></span>Barcelona</label>
           <label><input type="checkbox" data-layer="madrid" checked /><span class="layer-dot" data-color="madrid"></span>Madrid</label>
+          <label><input type="checkbox" data-layer="other" checked /><span class="layer-dot" data-color="other"></span>Otros</label>
         </div>
-        <details class="color-settings"><summary>Personalizar colores</summary><div class="color-grid"><label>España <input type="color" data-picker="spain" /></label><label>Madrid <input type="color" data-picker="madrid" /></label><label>Barcelona <input type="color" data-picker="barcelona" /></label><label>Vacaciones <input type="color" data-picker="vacation" /></label><button id="reset-colors" type="button">Restablecer</button></div></details>
+        <details class="color-settings"><summary>Personalizar colores</summary><div class="color-grid"><label>España <input type="color" data-picker="spain" /></label><label>Madrid <input type="color" data-picker="madrid" /></label><label>Barcelona <input type="color" data-picker="barcelona" /></label><label>Vacaciones <input type="color" data-picker="vacation" /></label><label>Otros <input type="color" data-picker="other" /></label><button id="reset-colors" type="button">Restablecer</button></div></details>
       </div>
     </section>
 
@@ -43,8 +44,9 @@
         <button class="calendar-panel-close" id="calendar-panel-close" type="button" aria-label="Cerrar detalles">×</button>
         <article class="date-detail" id="date-detail"><p class="eyebrow">FECHA SELECCIONADA</p><h2>Selecciona un día</h2><p>Pulsa cualquier fecha para consultar sus detalles o iniciar un periodo de vacaciones.</p></article>
         <article class="vacation-panel">
-          <div class="panel-title"><div><p class="eyebrow">MIS PERIODOS</p><h2>Vacaciones</h2></div><span id="vacation-count">0</span></div>
+          <div class="panel-title"><div><p class="eyebrow">MIS PERIODOS</p><h2>Periodos</h2></div><span id="vacation-count">0</span></div>
           <form class="vacation-form" id="vacation-form">
+            <label>Tipo<select id="vacation-type"><option value="vacation">Vacaciones</option><option value="other">Otros</option></select></label>
             <label>Nombre<input id="vacation-name" type="text" maxlength="60" value="Vacaciones" /></label>
             <div class="vacation-date-fields">
               <label>Inicio<input id="vacation-start" type="date" min="1900-01-01" max="2200-12-31" required /></label>
@@ -52,6 +54,7 @@
             </div>
             <p class="vacation-form-error" id="vacation-form-error" role="alert" hidden></p>
             <button type="submit">Añadir periodo</button>
+            <p class="vacation-copy-note" id="vacation-copy-note" hidden>El periodo original se conservará. Al guardar crearás uno nuevo.</p>
             <small>Puedes indicar fechas de años diferentes.</small>
           </form>
           <div id="vacation-list" class="vacation-list"></div>
@@ -76,6 +79,6 @@
     </form>
   </dialog>
   <footer class="site-footer"><span>ODÍN · Calendario anual</span><span>Datos locales · sin seguimiento</span></footer>
-  <script type="module" src="/global-timer.js?v=countdown-2"></script><script type="module" src="/time-center.js?v=4"></script><script type="module" src="/preview-calendar/calendar.js?v=6"></script>
+  <script type="module" src="/global-timer.js?v=countdown-2"></script><script type="module" src="/time-center.js?v=4"></script><script type="module" src="/preview-calendar/calendar.js?v=7"></script>
 </body>
 </html>
