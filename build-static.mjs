@@ -10,6 +10,7 @@ await cp(join(root, 'global-timer.js'), join(dist, 'global-timer.js'), { force: 
 await cp(join(root, 'time-center.js'), join(dist, 'time-center.js'), { force: true });
 await cp(join(root, 'calendar-data.js'), join(dist, 'calendar-data.js'), { force: true });
 await cp(join(root, 'countdown-data.js'), join(dist, 'countdown-data.js'), { force: true });
+await cp(join(root, 'countdown-general.js'), join(dist, 'countdown-general.js'), { force: true });
 await cp(join(root, 'catalog-data.json'), join(dist, 'catalog-data.json'), { force: true });
 await cp(join(root, 'logo.ico'), join(dist, 'logo.ico'), { force: true });
 
@@ -24,4 +25,5 @@ await writeFile(join(dist, '_routes.json'), JSON.stringify({ version: 1, include
 
 const home = await readFile(join(dist, 'index.html'), 'utf8');
 if (!home.includes('/preview-home/home.js')) throw new Error('La portada estática no contiene su script principal.');
+for(const asset of ['global-timer.js','time-center.js','calendar-data.js','countdown-data.js','countdown-general.js'])await readFile(join(dist,asset),'utf8');
 console.log(`STATIC_BUILD=${dist}`);
