@@ -6,13 +6,13 @@
   <meta name="description" content="Organiza cumpleaños, santos, aniversarios, recordatorios y acontecimientos generales." />
   <title>Cuenta atrás · ODÍN</title>
   <link rel="icon" href="/logo.ico" type="image/x-icon" />
-  <link rel="stylesheet" href="/src/styles/global.css?v=countdown-categories-1-nav5" />
+  <link rel="stylesheet" href="/src/styles/global.css?v=countdown-search-1-nav5" />
 </head>
 <body class="tool-page countdown-body">
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
   <header class="site-header"><a class="brand" href="/preview-home/" aria-label="ODÍN, volver a la portada"><span class="brand-mark">✦</span><span>ODÍN</span></a><nav aria-label="Navegación de la herramienta"><a class="back-to-catalog" href="/preview-home/#herramientas"><span aria-hidden="true">←</span> Catálogo</a></nav></header>
   <main id="contenido"><section class="countdown-page">
-    <header class="countdown-heading"><div><p class="eyebrow">U03 · Tiempo</p><h1>Cuenta atrás</h1><p>Organiza tus acontecimientos por categoría. Los anuales se renuevan automáticamente y también aparecen en el Calendario.</p></div><div class="countdown-summary"><strong id="personal-count">0 de 200</strong><span>acontecimientos personales</span><small id="nearest-summary">Sin acontecimientos</small></div></header>
+    <header class="countdown-heading"><div><p class="eyebrow">U03 · Tiempo</p><h1>Cuenta atrás</h1><p>Organiza tus acontecimientos por categoría. Los anuales se renuevan automáticamente y también aparecen en el Calendario.</p><a class="tool-switch-link" href="/preview-calendar/">Ver en Calendario <span aria-hidden="true">→</span></a></div><div class="countdown-summary"><strong id="personal-count">0 de 200</strong><span>acontecimientos personales</span><small id="nearest-summary">Sin acontecimientos</small></div></header>
     <div class="countdown-layout">
       <aside class="countdown-editor">
         <div class="editor-heading"><div><span class="map-kicker">Nuevo acontecimiento</span><h2 id="editor-title">Crear cuenta atrás</h2></div><button id="cancel-edit" type="button" hidden>Cancelar</button></div>
@@ -32,14 +32,14 @@
         <div class="countdown-settings"><label class="sound-setting"><span><b>Aviso sonoro</b><small>Sonará al vencer si ODÍN está abierto; si no, al volver.</small></span><input id="countdown-sound" type="checkbox" checked /><i aria-hidden="true"></i></label></div>
       </aside>
       <section class="countdown-list-panel">
-        <div class="list-heading countdown-list-heading"><div><span class="map-kicker">Por proximidad</span><h2>Próximos acontecimientos</h2></div><div class="countdown-list-tools"><label><span>Mostrar</span><select id="event-filter"><option value="all">Todos</option><option value="birthday">Cumpleaños</option><option value="saint">Santos</option><option value="anniversary">Aniversarios</option><option value="reminder">Recordatorios</option><option value="general">Generales</option></select></label><span id="event-total">0 acontecimientos</span></div></div>
+        <div class="list-heading countdown-list-heading"><div><span class="map-kicker">Por proximidad</span><h2>Próximos acontecimientos</h2></div><div class="countdown-list-tools"><label><span>Buscar</span><input id="event-search" type="search" placeholder="Nombre del acontecimiento" autocomplete="off" /></label><label><span>Mostrar</span><select id="event-filter"><option value="all">Todos</option><option value="birthday">Cumpleaños</option><option value="saint">Santos</option><option value="anniversary">Aniversarios</option><option value="reminder">Recordatorios</option><option value="general">Generales</option></select></label><span id="event-total">0 acontecimientos</span></div></div>
         <div class="countdown-list" id="countdown-list"></div>
       </section>
     </div>
-    <section class="general-events"><div class="list-heading"><div><span class="map-kicker">Incluidos en ODÍN</span><h2>Acontecimientos generales</h2></div><span>No consumen tus 20 plazas</span></div><div class="general-event-grid" id="general-event-grid"></div></section>
+    <section class="general-events"><div class="list-heading"><div><span class="map-kicker">Incluidos en ODÍN</span><h2>Acontecimientos generales</h2></div><span>No consumen tus 200 plazas</span></div><div class="general-event-grid" id="general-event-grid"></div></section>
   </section></main>
   <footer class="site-footer"><span>ODÍN · herramientas claras para cada día</span><span>Privacidad primero · sin publicidad</span></footer>
-  <script type="module" src="/preview-countdown/countdown.js?v=categories-1"></script>
+  <script type="module" src="/preview-countdown/countdown.js?v=search-1"></script>
   <script type="module" src="/global-timer.js?v=countdown-categories-1"></script>
   <script type="module" src="/time-center.js?v=countdown-categories-1"></script>
 </body>
