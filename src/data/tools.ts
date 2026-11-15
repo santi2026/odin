@@ -6,7 +6,7 @@ export interface OdinTool {
   slug: string;
   name: string;
   description: string;
-  category: 'Tiempo' | 'Conexión' | 'Productividad' | 'Creación' | 'Cálculo' | 'Texto y datos';
+  category: 'Tiempo' | 'Conexión' | 'Productividad' | 'Creación' | 'Cálculo' | 'Texto y datos' | 'Seguridad';
   icon: string;
   status: ToolStatus;
   featured: boolean;
@@ -53,3 +53,5 @@ tools.push({ id: 'U12', order: 12, slug: 'calendario', name: 'Calendario', descr
 tools.push({ id: 'U11', order: 11, slug: 'fases-lunares', name: 'Fases lunares', description: 'Consulta la fase actual de la Luna y sus próximos cambios.', category: 'Tiempo', icon: '◐', status: 'planned', featured: false });
 tools.push({ id: 'U13', order: 13, slug: 'html-a-texto', name: 'HTML a texto', description: 'Extrae el texto legible de un documento HTML sin ejecutarlo.', category: 'Texto y datos', icon: 'Aa', status: 'available', featured: false });
 tools.push({ id: 'U14', order: 14, slug: 'codificador-texto-url', name: 'Codificador de texto y URL', description: 'Codifica, analiza URLs y cifra texto localmente.', category: 'Texto y datos', icon: '%', status: 'available', featured: false });
+tools.push({ id: 'U15', order: 15, slug: 'generador-contrasenas', name: 'Generador de contraseñas', description: 'Crea contraseñas, frases de paso y PIN aleatorios sin guardar historial.', category: 'Seguridad', icon: '✦', status: 'available', featured: false });
+tools.push({ id: 'U16', order: 16, slug: 'identificadores-control', name: 'Identificadores y dígitos de control', description: 'Valida, calcula y genera ejemplos de NIF, NIE, CIF, IBAN y NUSS/NAF.', category: 'Seguridad', icon: '✓', status: 'planned', featured: false });

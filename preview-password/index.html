@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Genera contraseñas aleatorias, frases de paso y PIN seguros localmente en tu navegador." />
+  <title>Generador de contraseñas · ODÍN</title>
+  <link rel="icon" href="/logo.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="/src/styles/global.css?v=password-1" />
+</head>
+<body class="tool-page password-body">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="site-header"><a class="brand" href="/preview-home/" aria-label="ODÍN, volver a la portada"><span class="brand-mark">◆</span><span>ODÍN</span></a><nav aria-label="Navegación de la herramienta"><a class="back-to-catalog" href="/preview-home/#herramientas"><span aria-hidden="true">←</span> Catálogo</a></nav></header>
+  <main id="contenido" class="password-page">
+    <header class="password-heading">
+      <div><p class="eyebrow">U15 · SEGURIDAD</p><h1>Generador de contraseñas</h1><p>Crea credenciales aleatorias y únicas sin enviarlas, almacenarlas ni añadirlas al historial.</p></div>
+      <div class="password-privacy"><strong>LOCAL</strong><span>generación criptográfica</span><small>Sin historial</small></div>
+    </header>
+
+    <div class="password-tabs" role="tablist" aria-label="Tipo de credencial">
+      <button type="button" role="tab" aria-selected="true" data-mode="password">Contraseña</button>
+      <button type="button" role="tab" aria-selected="false" data-mode="passphrase">Frase de paso</button>
+      <button type="button" role="tab" aria-selected="false" data-mode="pin">PIN</button>
+    </div>
+
+    <section class="password-workspace">
+      <article class="password-settings">
+        <div class="password-panel-heading"><div><span class="map-kicker">CONFIGURACIÓN</span><h2 id="password-settings-title">Contraseña aleatoria</h2></div><button id="password-reset" type="button">Restablecer</button></div>
+
+        <div class="password-options" data-options="password">
+          <label class="password-range"><span>Longitud <b id="password-length-value">20</b></span><input id="password-length" type="range" min="4" max="128" value="20" /></label>
+          <fieldset><legend>Caracteres permitidos</legend>
+            <label><input id="password-lowercase" type="checkbox" checked /><i></i><span>Minúsculas</span></label>
+            <label><input id="password-uppercase" type="checkbox" checked /><i></i><span>Mayúsculas</span></label>
+            <label><input id="password-digits" type="checkbox" checked /><i></i><span>Números</span></label>
+            <label><input id="password-symbols" type="checkbox" checked /><i></i><span>Símbolos</span></label>
+          </fieldset>
+          <label class="password-check"><input id="password-ambiguous" type="checkbox" checked /><i></i><span><b>Evitar caracteres ambiguos</b><small>Elimina I, l, 1, O, 0 y similares.</small></span></label>
+          <label class="password-text-field"><span>Excluir caracteres concretos</span><input id="password-excluded" type="text" maxlength="40" placeholder="Por ejemplo: /\()" autocomplete="off" /></label>
+        </div>
+
+        <div class="password-options" data-options="passphrase" hidden>
+          <label class="password-range"><span>Número de palabras <b id="passphrase-words-value">8</b></span><input id="passphrase-words" type="range" min="3" max="12" value="8" /></label>
+          <label class="password-text-field"><span>Separador</span><select id="passphrase-separator"><option value="-">Guion — palabra-palabra</option><option value=" ">Espacio — palabra palabra</option><option value=".">Punto — palabra.palabra</option><option value="_">Guion bajo — palabra_palabra</option></select></label>
+          <label class="password-check"><input id="passphrase-capitalize" type="checkbox" /><i></i><span><b>Primera palabra con mayúscula</b><small>Facilita algunos requisitos de compatibilidad.</small></span></label>
+          <label class="password-check"><input id="passphrase-number" type="checkbox" /><i></i><span><b>Añadir un número</b><small>Agrega dos cifras aleatorias al final.</small></span></label>
+        </div>
+
+        <div class="password-options" data-options="pin" hidden>
+          <label class="password-range"><span>Número de dígitos <b id="pin-length-value">6</b></span><input id="pin-length" type="range" min="4" max="16" value="6" /></label>
+          <label class="password-check"><input id="pin-obvious" type="checkbox" checked /><i></i><span><b>Evitar secuencias evidentes</b><small>Descarta repeticiones y series ascendentes o descendentes.</small></span></label>
+          <div class="pin-warning"><b>Un PIN no sustituye una contraseña</b><span>Úsalo solamente donde el servicio lo solicite expresamente.</span></div>
+        </div>
+
+        <label class="password-text-field password-quantity"><span>Resultados</span><select id="password-quantity"><option value="1">1 resultado</option><option value="3">3 resultados</option><option value="5">5 resultados</option><option value="10">10 resultados</option></select></label>
+        <button class="password-generate" id="password-generate" type="button">Generar contraseña</button>
+      </article>
+
+      <article class="password-results-panel">
+        <div class="password-panel-heading"><div><span class="map-kicker">RESULTADO</span><h2>Listo para copiar</h2></div><div class="password-result-tools"><button id="password-visibility" type="button" aria-pressed="false">Ocultar</button><button id="password-copy-all" type="button" hidden>Copiar todo</button></div></div>
+        <div class="password-results" id="password-results" aria-live="polite"></div>
+        <p class="password-status" id="password-status">La primera credencial se genera automáticamente.</p>
+        <div class="password-security-note"><span>◈</span><div><b>No guardamos los resultados</b><p>Al recargar o cerrar esta página desaparecerán. Guárdalos directamente en tu gestor de contraseñas.</p></div></div>
+      </article>
+    </section>
+
+    <section class="password-guidance"><div><span class="map-kicker">BUENA PRÁCTICA</span><h2>Una contraseña distinta para cada servicio</h2></div><p>La longitud y la aleatoriedad aportan más seguridad que patrones difíciles de recordar. La estimación mostrada es orientativa y presupone que ODÍN ha generado el valor al azar.</p></section>
+  </main>
+  <script type="module" src="/preview-password/password.js?v=1"></script>
+  <script type="module" src="/global-timer.js?v=countdown-2"></script>
+  <script type="module" src="/time-center.js?v=4"></script>
+</body>
+</html>
