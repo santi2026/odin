@@ -1,4 +1,4 @@
-import { generatePassword, generatePassphrase, generatePin, strengthFromEntropy } from './password-core.js';
+import { generatePassword, generatePassphrase, generatePin, strengthFromEntropy } from './password-core.js?v=4';
 
 const STORAGE_KEY = 'odin-password-settings-v2';
 const currentMonth = new Date().toLocaleDateString('sv-SE', { year: 'numeric', month: '2-digit' });
