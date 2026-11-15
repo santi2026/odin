@@ -58,9 +58,9 @@
       "preview": "<small>Tu IP pública</small><b id=\"live-public-ip\">Consultando…</b><i id=\"live-ip-type\">Conexión actual</i>"
     },
     {
-      "id": "U12", "order": 12, "slug": "generador-qr", "category": "Creación", "name": "Generador QR",
-      "description": "Crea y lee códigos QR localmente, sin enviar el contenido.", "status": "available", "href": "/preview-qr/", "cover": "qr", "icon": "▦", "featured": false,
-      "preview": "<div class=\"qr-mark\">▦</div><span>Generar · Leer</span>"
+      "id": "U12", "order": 12, "slug": "codigos-qr", "category": "Creación", "name": "Códigos QR",
+      "description": "Crea un código para compartir o lee uno desde una imagen o la cámara. Todo se procesa en este dispositivo.", "status": "available", "href": "/preview-qr/", "cover": "qr", "icon": "▦", "featured": false,
+      "preview": "<div class=\"qr-mark\">▦</div><span>Crear · Imagen · Cámara</span>"
     },
     {
       "id": "U13", "order": 13, "slug": "html-a-texto", "category": "Texto y datos", "name": "HTML a texto",

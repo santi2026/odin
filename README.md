@@ -22,7 +22,7 @@ Colección de utilidades web cotidianas, rápidas y centradas en la privacidad. 
 | U09 | Relojes del mundo | Tiempo |
 | U10 | Fases lunares | Tiempo |
 | U11 | Mi IP | Conexión |
-| U12 | Generador QR | Creación |
+| U12 | Códigos QR | Creación |
 | U13 | HTML a texto | Texto y datos |
 | U14 | Codificador de texto y URL | Texto y datos |
 | U15 | Generador de contraseñas | Seguridad |
