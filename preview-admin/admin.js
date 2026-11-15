@@ -1,4 +1,4 @@
-import { BACKUP_FORMAT, LEGACY_BACKUP_FORMAT, PERIOD_FORMAT, SECTIONS, applySections, buildBackup, countdownsToCsv, parseImport, periodTemplate, periodsToCsv, readSection, resetSections, sectionCount, validateImportedSections } from './admin-core.js?v=backup-v2';
+import { BACKUP_FORMAT, LEGACY_BACKUP_FORMAT, PERIOD_FORMAT, SECTIONS, applySections, buildBackup, countdownsToCsv, parseImport, periodTemplate, periodsToCsv, readSection, resetSections, sectionCount, validateImportedSections } from './admin-core.js?v=backup-v2-1';
 
 const $=selector=>document.querySelector(selector), $$=selector=>[...document.querySelectorAll(selector)];
 const dateStamp=()=>new Date().toLocaleDateString('sv-SE');

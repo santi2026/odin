@@ -17,7 +17,7 @@
     <nav class="admin-tabs" role="tablist" aria-label="Administración"><button type="button" aria-selected="true" data-admin-tab="backup">Copia completa</button><button type="button" aria-selected="false" data-admin-tab="export">Exportar por secciones</button><button type="button" aria-selected="false" data-admin-tab="import">Importar</button><button type="button" aria-selected="false" data-admin-tab="reset">Restablecer</button></nav>
 
     <section class="admin-panel" data-admin-panel="backup">
-      <article class="admin-hero-card"><span class="map-kicker">COPIA GENERAL</span><h2>Todo ODÍN en un solo archivo</h2><p>Incluye los datos y las preferencias guardadas en este navegador. No incluye contraseñas generadas, documentos, direcciones IP ni contenido de códigos QR.</p><div class="admin-summary" id="backup-summary"></div><button class="admin-primary" id="download-full" type="button">Descargar copia completa</button><small>Formato JSON legible · compatible con otros navegadores</small></article>
+      <article class="admin-hero-card"><span class="map-kicker">COPIA GENERAL</span><h2>Todo ODÍN en un solo archivo</h2><p>Incluye los datos y las preferencias guardadas en este navegador. Los festivos fijos forman parte de ODÍN y no se duplican en la copia. No incluye contraseñas generadas, documentos, direcciones IP ni contenido de códigos QR.</p><div class="admin-summary" id="backup-summary"></div><button class="admin-primary" id="download-full" type="button">Descargar copia completa</button><small>Formato JSON legible · compatible con otros navegadores</small></article>
       <article class="admin-info-card"><b>Nombre del archivo</b><code>odin-copia-completa-AAAA-MM-DD.json</code><p>Guárdalo en un lugar seguro. Para restaurarlo, abre la pestaña Importar y selecciona el archivo.</p></article>
     </section>
 
@@ -25,7 +25,7 @@
       <div class="admin-panel-head"><div><span class="map-kicker">EXPORTACIÓN SELECTIVA</span><h2>Elige qué quieres guardar</h2></div><div class="admin-quick-actions"><button type="button" data-select-set="all">Todo</button><button type="button" data-select-set="data">Solo datos personales</button><button type="button" data-select-set="preferences">Solo preferencias</button><button type="button" data-select-set="none">Nada</button></div></div>
       <div class="admin-section-list" id="export-sections"></div>
       <div class="admin-export-actions"><button class="admin-primary" id="export-json" type="button">Exportar selección en JSON</button><button id="export-csv" type="button">Exportar vacaciones y festivos en CSV</button></div>
-      <div class="admin-info-card admin-countdown-export"><div><b>Exportar acontecimientos por categoría</b><p>Elige todas las categorías o solamente una. El año puede quedar vacío en cumpleaños de edad desconocida.</p></div><label><span>Categoría</span><select id="countdown-export-category"><option value="all">Todas</option><option value="birthday">Cumpleaños</option><option value="saint">Santos</option><option value="anniversary">Aniversarios</option><option value="reminder">Recordatorios</option></select></label><div><button id="export-countdowns-json" type="button">Descargar JSON</button><button id="export-countdowns-csv" type="button">Descargar CSV</button></div></div>
+      <div class="admin-info-card admin-countdown-export"><div><b>Exportar acontecimientos por categoría</b><p>El JSON conserva también el sonido y los interruptores generales. El CSV contiene únicamente los acontecimientos seleccionados. El año puede quedar vacío en cumpleaños de edad desconocida.</p></div><label><span>Categoría</span><select id="countdown-export-category"><option value="all">Todas</option><option value="birthday">Cumpleaños</option><option value="saint">Santos</option><option value="anniversary">Aniversarios</option><option value="reminder">Recordatorios</option></select></label><div><button id="export-countdowns-json" type="button">Descargar JSON</button><button id="export-countdowns-csv" type="button">Descargar CSV</button></div></div>
       <p class="admin-inline-status" id="export-status">El CSV utiliza punto y coma (;) como separador.</p>
       <details class="admin-template-box"><summary>Plantillas para vacaciones y festivos</summary><div><button type="button" id="template-json">Descargar plantilla JSON</button><button type="button" id="template-csv">Descargar plantilla CSV</button><button type="button" id="copy-holiday-prompt">Copiar prompt para generar festivos</button></div><pre id="holiday-prompt"></pre></details>
     </section>
@@ -48,7 +48,7 @@
     <section class="admin-note"><span>!</span><div><b>Los archivos permanecen bajo tu control</b><p>ODÍN no sube las copias a ningún servidor. La importación solo acepta estructuras conocidas y nunca ejecuta código incluido en los archivos.</p></div></section>
   </main>
   <footer class="site-footer"><span>ODÍN · Administración</span><span>JSON y CSV local · sin seguimiento</span></footer>
-  <script type="module" src="/preview-admin/admin.js?v=backup-v2"></script>
+  <script type="module" src="/preview-admin/admin.js?v=backup-v2-1"></script>
 <script type="module" src="/global-timer.js?v=calendar-merge-1"></script>
 <script type="module" src="/time-center.js?v=calendar-merge-1"></script>
 </body>
