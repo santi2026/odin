@@ -95,7 +95,7 @@ function parsePeriodsCsv(text) {
   if(required.some(name=>!headers.includes(name)))throw new Error('El CSV debe incluir: tipo;nombre;desde;hasta.');
   const sections={vacaciones:[],otros_festivos:[]};
   for(const row of rows.slice(1)){if(!row.some(value=>value.trim()))continue;const item=Object.fromEntries(headers.map((name,index)=>[name,row[index]??''])),type=item.tipo.trim().toLowerCase();if(!['vacaciones','otros','otro'].includes(type))throw new Error(`Tipo CSV no reconocido: ${item.tipo}`);const id=type==='vacaciones'?'vacaciones':'otros_festivos';sections[id].push(externalPeriod(item,id==='otros_festivos'?'other':'vacation'));}
-  return sections;
+  return Object.fromEntries(Object.entries(sections).filter(([,items])=>items.length));
 }
 
 export function parseImport(text, filename='') {
@@ -107,7 +107,7 @@ export function parseImport(text, filename='') {
     const sections={};for(const [id,data] of Object.entries(value.secciones))if(byId(id))sections[id]=clone(data);if(!Object.keys(sections).length)throw new Error('La copia no contiene secciones compatibles.');return{formato:BACKUP_FORMAT,secciones:sections};
   }
   if(value?.formato===PERIOD_FORMAT && Array.isArray(value.periodos)){
-    const sections={vacaciones:[],otros_festivos:[]};for(const item of value.periodos){const type=(item.tipo||value.tipo||'otros').toLowerCase(),id=type==='vacaciones'?'vacaciones':'otros_festivos';sections[id].push(externalPeriod(item,id==='otros_festivos'?'other':'vacation'));}return{formato:PERIOD_FORMAT,secciones:sections};
+    const sections={vacaciones:[],otros_festivos:[]};for(const item of value.periodos){const type=(item.tipo||value.tipo||'otros').toLowerCase(),id=type==='vacaciones'?'vacaciones':'otros_festivos';sections[id].push(externalPeriod(item,id==='otros_festivos'?'other':'vacation'));}return{formato:PERIOD_FORMAT,secciones:Object.fromEntries(Object.entries(sections).filter(([,items])=>items.length))};
   }
   throw new Error(`Formato no reconocido. Utiliza ${BACKUP_FORMAT} o ${PERIOD_FORMAT}.`);
 }

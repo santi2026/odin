@@ -4,15 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Exporta, importa y restablece los datos y preferencias de ODÍN." />
-  <title>Administración y copias · ODÍN</title>
+  <title>Administración de ODÍN</title>
   <link rel="icon" href="/logo.ico" type="image/x-icon" />
-  <link rel="stylesheet" href="/src/styles/global.css?v=admin-1" />
+  <link rel="stylesheet" href="/src/styles/global.css?v=admin-1-nav5" />
 </head>
 <body class="tool-page admin-body">
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
   <header class="site-header"><a class="brand" href="/preview-home/" aria-label="ODÍN, volver a la portada"><span class="brand-mark">◆</span><span>ODÍN</span></a><nav aria-label="Navegación de la herramienta"><a class="back-to-catalog" href="/preview-home/#herramientas">← Catálogo</a></nav></header>
   <main id="contenido" class="admin-page">
-    <header class="admin-heading"><div><p class="eyebrow">U17 · ADMINISTRACIÓN</p><h1>Copias y configuración</h1><p>Protege tus datos, trasládalos a otro navegador o recupera únicamente las secciones que necesites.</p></div><div class="admin-local"><strong>LOCAL</strong><span>tú controlas los archivos</span><small>Sin cuentas ni servidor</small></div></header>
+    <header class="admin-heading"><div><p class="eyebrow">ADMINISTRACIÓN DE ODÍN</p><h1>Copias y configuración</h1><p>Protege tus datos, trasládalos a otro navegador o recupera únicamente las secciones que necesites.</p></div><div class="admin-local"><strong>LOCAL</strong><span>tú controlas los archivos</span><small>Sin cuentas ni servidor</small></div></header>
 
     <nav class="admin-tabs" role="tablist" aria-label="Administración"><button type="button" aria-selected="true" data-admin-tab="backup">Copia completa</button><button type="button" aria-selected="false" data-admin-tab="export">Exportar por secciones</button><button type="button" aria-selected="false" data-admin-tab="import">Importar</button><button type="button" aria-selected="false" data-admin-tab="reset">Restablecer</button></nav>
 
@@ -31,8 +31,10 @@
 
     <section class="admin-panel" data-admin-panel="import" hidden>
       <div class="admin-panel-head"><div><span class="map-kicker">IMPORTAR</span><h2>Revisa antes de aplicar</h2><p>Admite copias ODÍN en JSON y periodos en JSON o CSV con separador ;.</p></div></div>
+      <ol class="admin-import-steps"><li><b>1. Introduce el contenido</b><span>Abre un archivo o pega su texto.</span></li><li><b>2. Analízalo</b><span>ODÍN comprueba el formato sin modificar nada.</span></li><li><b>3. Elige y confirma</b><span>Verás las secciones detectadas antes de importarlas.</span></li></ol>
+      <aside class="admin-detection-help"><b>¿Cómo sabe ODÍN dónde aplicar cada dato?</b><p>La copia completa identifica sus secciones internamente. En vacaciones y festivos se utiliza el campo <code>tipo</code>; en CSV, la columna <code>tipo</code>. Después del análisis verás exactamente si corresponde a Alarmas, Cuentas atrás, Vacaciones, Otros u otra configuración.</p></aside>
       <div class="admin-import-source"><label class="admin-file-button" for="import-file"><b>Abrir archivo</b><small>.json o .csv · máximo 2 MB</small></label><input id="import-file" type="file" accept=".json,.csv,application/json,text/csv" hidden /><span>o</span><label><b>Pegar contenido</b><textarea id="import-text" spellcheck="false" placeholder="Pega aquí una copia JSON o una lista CSV"></textarea></label><button id="analyze-import" type="button">Analizar contenido</button></div>
-      <div class="admin-import-preview" id="import-preview" hidden><div class="admin-panel-head"><div><span class="map-kicker">CONTENIDO DETECTADO</span><h3 id="import-title">Copia compatible</h3></div><label class="admin-mode"><span>Cómo importar</span><select id="import-mode"><option value="merge">Combinar sin duplicar</option><option value="replace">Sustituir las secciones marcadas</option></select></label></div><div class="admin-section-list" id="import-sections"></div><label class="admin-safety"><input id="preimport-backup" type="checkbox" checked /><span><b>Descargar una copia preventiva</b><small>Guarda el estado actual antes de importar.</small></span></label><button class="admin-primary" id="apply-import" type="button">Importar secciones marcadas</button></div>
+      <div class="admin-import-preview" id="import-preview" hidden><div class="admin-panel-head"><div><span class="map-kicker">CONTENIDO DETECTADO</span><h3 id="import-title">Copia compatible</h3><p id="import-detection"></p></div><label class="admin-mode"><span>Cómo importar</span><select id="import-mode"><option value="merge">Combinar sin duplicar</option><option value="replace">Sustituir las secciones marcadas</option></select></label></div><div class="admin-section-list" id="import-sections"></div><label class="admin-safety"><input id="preimport-backup" type="checkbox" checked /><span><b>Descargar una copia preventiva</b><small>Guarda el estado actual antes de importar.</small></span></label><button class="admin-primary" id="apply-import" type="button">Importar secciones marcadas</button></div>
       <p class="admin-inline-status" id="import-status">Todavía no se ha analizado ningún archivo.</p>
     </section>
 
@@ -45,8 +47,8 @@
     <section class="admin-note"><span>!</span><div><b>Los archivos permanecen bajo tu control</b><p>ODÍN no sube las copias a ningún servidor. La importación solo acepta estructuras conocidas y nunca ejecuta código incluido en los archivos.</p></div></section>
   </main>
   <footer class="site-footer"><span>ODÍN · Administración</span><span>JSON y CSV local · sin seguimiento</span></footer>
-  <script type="module" src="/preview-admin/admin.js?v=1"></script>
+  <script type="module" src="/preview-admin/admin.js?v=2"></script>
   <script type="module" src="/global-timer.js?v=countdown-2"></script>
-  <script type="module" src="/time-center.js?v=4"></script>
+  <script type="module" src="/time-center.js?v=5"></script>
 </body>
 </html>
