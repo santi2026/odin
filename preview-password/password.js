@@ -1,10 +1,11 @@
 import { generatePassword, generatePassphrase, generatePin, strengthFromEntropy } from './password-core.js';
 
-const STORAGE_KEY = 'odin-password-settings-v1';
+const STORAGE_KEY = 'odin-password-settings-v2';
+const currentMonth = new Date().toLocaleDateString('sv-SE', { year: 'numeric', month: '2-digit' });
 const defaults = {
   mode: 'password', quantity: 1, hidden: false,
-  password: { length: 20, lowercase: true, uppercase: true, digits: true, symbols: true, excludeAmbiguous: true, excluded: '' },
-  passphrase: { words: 8, separator: '-', capitalize: false, appendNumber: false },
+  password: { length: 20, lowercase: true, uppercase: true, digitCount: 3, symbolCount: 3, symbolsAllowed: '$%€#', excludeAmbiguous: true, excluded: '', dateEnabled: false, date: currentMonth, datePosition: 'end' },
+  passphrase: { words: 8, separator: '-', capitalization: 'none', numberCount: 0, leet: false, dateEnabled: false, date: currentMonth, datePosition: 'end' },
   pin: { length: 6, avoidObvious: true },
 };
 let state = structuredClone(defaults);
@@ -37,20 +38,29 @@ function applyStateToControls() {
   byId('password-length').value = state.password.length;
   byId('password-lowercase').checked = state.password.lowercase;
   byId('password-uppercase').checked = state.password.uppercase;
-  byId('password-digits').checked = state.password.digits;
-  byId('password-symbols').checked = state.password.symbols;
+  byId('password-digit-count').value = state.password.digitCount;
+  byId('password-symbol-count').value = state.password.symbolCount;
+  byId('password-symbols-allowed').value = state.password.symbolsAllowed ?? '$%€#';
   byId('password-ambiguous').checked = state.password.excludeAmbiguous;
   byId('password-excluded').value = state.password.excluded;
+  byId('password-date-enabled').checked = state.password.dateEnabled;
+  byId('password-date').value = state.password.date || currentMonth;
+  byId('password-date-position').value = state.password.datePosition;
   byId('passphrase-words').value = state.passphrase.words;
   byId('passphrase-separator').value = state.passphrase.separator;
-  byId('passphrase-capitalize').checked = state.passphrase.capitalize;
-  byId('passphrase-number').checked = state.passphrase.appendNumber;
+  byId('passphrase-capitalization').value = state.passphrase.capitalization;
+  byId('passphrase-number-count').value = state.passphrase.numberCount;
+  byId('passphrase-leet').checked = state.passphrase.leet;
+  byId('passphrase-date-enabled').checked = state.passphrase.dateEnabled;
+  byId('passphrase-date').value = state.passphrase.date || currentMonth;
+  byId('passphrase-date-position').value = state.passphrase.datePosition;
   byId('pin-length').value = state.pin.length;
   byId('pin-obvious').checked = state.pin.avoidObvious;
   byId('password-quantity').value = state.quantity;
   byId('password-length-value').textContent = state.password.length;
   byId('passphrase-words-value').textContent = state.passphrase.words;
   byId('pin-length-value').textContent = state.pin.length;
+  updateDateAvailability();
   setMode(state.mode, false);
   setVisibility(state.hidden, false);
 }
@@ -60,24 +70,42 @@ function readControls() {
     length: Number(byId('password-length').value),
     lowercase: byId('password-lowercase').checked,
     uppercase: byId('password-uppercase').checked,
-    digits: byId('password-digits').checked,
-    symbols: byId('password-symbols').checked,
+    digitCount: Number(byId('password-digit-count').value),
+    symbolCount: Number(byId('password-symbol-count').value),
+    symbolsAllowed: byId('password-symbols-allowed').value,
     excludeAmbiguous: byId('password-ambiguous').checked,
     excluded: byId('password-excluded').value,
+    dateEnabled: byId('password-date-enabled').checked,
+    date: byId('password-date').value,
+    datePosition: byId('password-date-position').value,
   };
   state.passphrase = {
     words: Number(byId('passphrase-words').value),
     separator: byId('passphrase-separator').value,
-    capitalize: byId('passphrase-capitalize').checked,
-    appendNumber: byId('passphrase-number').checked,
+    capitalization: byId('passphrase-capitalization').value,
+    numberCount: Number(byId('passphrase-number-count').value),
+    leet: byId('passphrase-leet').checked,
+    dateEnabled: byId('passphrase-date-enabled').checked,
+    date: byId('passphrase-date').value,
+    datePosition: byId('passphrase-date-position').value,
   };
   state.pin = { length: Number(byId('pin-length').value), avoidObvious: byId('pin-obvious').checked };
   state.quantity = Number(byId('password-quantity').value);
   byId('password-length-value').textContent = state.password.length;
   byId('passphrase-words-value').textContent = state.passphrase.words;
   byId('pin-length-value').textContent = state.pin.length;
+  updateDateAvailability();
   saveSettings();
 }
+
+function updateDateAvailability() {
+  byId('password-date').disabled = !byId('password-date-enabled').checked;
+  byId('password-date-position').disabled = !byId('password-date-enabled').checked;
+  byId('passphrase-date').disabled = !byId('passphrase-date-enabled').checked;
+  byId('passphrase-date-position').disabled = !byId('passphrase-date-enabled').checked;
+}
+
+function aamm(value) { return /^\d{4}-\d{2}$/.test(value) ? value.replace('-', '').slice(2) : ''; }
 
 function setMode(mode, regenerate = true) {
   state.mode = ['password', 'passphrase', 'pin'].includes(mode) ? mode : 'password';
@@ -91,9 +119,9 @@ function setMode(mode, regenerate = true) {
 }
 
 function createOne() {
-  if (state.mode === 'passphrase') return generatePassphrase(state.passphrase);
+  if (state.mode === 'passphrase') return generatePassphrase({ ...state.passphrase, dateToken: state.passphrase.dateEnabled ? aamm(state.passphrase.date) : '' });
   if (state.mode === 'pin') return generatePin(state.pin);
-  return generatePassword(state.password);
+  return generatePassword({ ...state.password, dateToken: state.password.dateEnabled ? aamm(state.password.date) : '' });
 }
 
 function maskedValue(value) {

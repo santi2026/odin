@@ -6,7 +6,7 @@ const tools = [
   ['U10','Tiempo','Alarmas','Programa avisos web y recupera los que vencieron.','next','','alarm','<small>Próxima alarma</small><b>07:30</b><i>Lun · Mar · Mié · Jue · Vie</i>'],
   ['U04','Productividad','Concentración','Ciclos de trabajo y descanso ajustables.','planned','','focus','<div class="focus-ring"><b>18</b><small>min</small></div><i>Sesión 2 de 4</i>'],
   ['U05','Tiempo','Cuenta atrás','Sigue el tiempo restante hasta tus acontecimientos.','planned','','countdown','<small>Vacaciones</small><b>18</b><i>días</i>'],
-  ['U07','Creación','Generador QR','Crea códigos QR localmente, sin enviar el contenido.','planned','','qr','<div class="qr-mark">▦</div><span>Texto → QR</span>'],
+  ['U07','Creación','Generador QR','Crea y lee códigos QR localmente, sin enviar el contenido.','planned','','qr','<div class="qr-mark">▦</div><span>Generar · Leer</span>'],
   ['U08','Cálculo','Calculadora de fechas','Suma días y calcula periodos entre fechas.','planned','','dates','<span><small>12 NOV</small><b>+ 45 días</b></span><strong>27 DIC</strong>'],
   ['U09','Cálculo','Conversor universal','Convierte unidades habituales con claridad.','planned','','convert','<span><b>24</b><small>km</small></span><i>⇄</i><span><b>14,91</b><small>mi</small></span>']
   ,['U11','Tiempo','Fases lunares','Consulta la fase actual de la Luna y sus próximos cambios.','planned','','moon','<div class="moon-orbit"><span class="moon-phase"></span></div><i>Cuarto creciente</i>']
@@ -15,7 +15,7 @@ tools.push(['U12','Tiempo','Calendario','Consulta calendarios mensuales o anuale
 tools.push(['U13','Texto y datos','HTML a texto','Extrae el texto legible de un documento HTML sin ejecutarlo.','available','/preview-html-text/','html-clean','<div class="html-clean-cover"><span>&lt;html&gt;</span><b>Texto limpio</b></div>']);
 tools.push(['U14','Texto y datos','Codificador de texto y URL','Codifica, analiza URLs y cifra texto localmente.','available','/preview-codec/','codec','<div class="codec-cover"><span>%20 · 64</span><b>Texto ⇄ datos</b></div>']);
 tools.push(['U15','Seguridad','Generador de contraseñas','Crea contraseñas, frases de paso y PIN aleatorios sin guardar historial.','available','/preview-password/','password','<div class="password-cover"><span>A7·x#9K</span><b>Generación local</b></div>']);
-tools.push(['U16','Seguridad','Identificadores y dígitos de control','Valida, calcula y genera ejemplos de NIF, NIE, CIF, IBAN y NUSS/NAF.','planned','','identity','<div class="identity-cover"><span>12345678·Z</span><b>Validar · Calcular</b></div>']);
+tools.push(['U16','Seguridad','Identificadores y dígitos de control','Valida, calcula y genera ejemplos de NIF, NIE, CIF, IBAN y NUSS/NAF.','available','/preview-identifiers/','identity','<div class="identity-cover"><span>12345678·Z</span><b>Validar · Calcular</b></div>']);
 tools[1][4] = 'available';
 tools[1][5] = '/preview-ip/';
 tools[2][4] = 'available';

@@ -3,56 +3,71 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Generador de códigos QR local y privado para texto, enlaces, Wi-Fi, contactos, ubicaciones y eventos." />
-  <title>Generador QR · ODÍN</title>
+  <meta name="description" content="Genera y lee códigos QR localmente para texto, enlaces, Wi-Fi, contactos, ubicaciones y eventos." />
+  <title>Códigos QR · ODÍN</title>
   <link rel="icon" href="/logo.ico" type="image/x-icon" />
-  <link rel="stylesheet" href="/src/styles/global.css?v=qr-2" />
+  <link rel="stylesheet" href="/src/styles/global.css?v=qr-reader-1" />
 </head>
 <body class="tool-page qr-body">
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
   <header class="site-header"><a class="brand" href="/preview-home/" aria-label="ODÍN, volver a la portada"><span class="brand-mark">◆</span><span>ODÍN</span></a><nav aria-label="Navegación de la herramienta"><a class="back-to-catalog" href="/preview-home/#herramientas"><span aria-hidden="true">←</span> Catálogo</a></nav></header>
   <main id="contenido" class="qr-page">
     <header class="qr-heading">
-      <div><p class="eyebrow">U12 · CREACIÓN</p><h1>Generador QR</h1><p>Convierte información en un código listo para compartir. Todo se genera en este dispositivo: el contenido no se envía ni se guarda.</p></div>
+      <div><p class="eyebrow">U12 · CREACIÓN</p><h1>Códigos QR</h1><p>Crea un código para compartir o lee uno desde una imagen o la cámara. Todo se procesa en este dispositivo.</p></div>
       <div class="qr-privacy"><strong>100%</strong><span>local</span><small>Sin API ni servidor</small></div>
     </header>
-    <nav class="qr-types" id="qr-types" aria-label="Tipo de contenido"></nav>
-    <section class="qr-workspace">
-      <article class="qr-editor">
-        <div class="qr-panel-heading"><div><span class="map-kicker">CONTENIDO</span><h2 id="editor-title">Texto libre</h2></div><span id="required-note">Completa el campo para crear el QR</span></div>
-        <form id="qr-form" autocomplete="off"><div class="qr-form-grid" id="qr-fields"></div></form>
-        <details class="qr-settings" open>
-          <summary>Personalizar código</summary>
-          <div class="qr-settings-grid">
-            <label><span>Tamaño <b id="size-value">360 px</b></span><input id="qr-size" type="range" min="180" max="720" step="20" value="360" /></label>
-            <label><span>Corrección de errores</span><select id="qr-level"><option value="L">L · ligera</option><option value="M" selected>M · equilibrada</option><option value="Q">Q · alta</option><option value="H">H · máxima</option></select></label>
-            <label><span>Color del código</span><input id="qr-foreground" type="color" value="#07101f" /></label>
-            <label><span>Color del fondo</span><input id="qr-background" type="color" value="#ffffff" /></label>
-            <label><span>Margen <b id="margin-value">4 módulos</b></span><input id="qr-margin" type="range" min="0" max="8" step="1" value="4" /></label>
-            <button id="reset-style" type="button">Restablecer estilo</button>
-          </div>
-        </details>
-      </article>
-      <aside class="qr-preview-panel">
-        <div class="qr-panel-heading"><div><span class="map-kicker">VISTA PREVIA</span><h2>Tu código QR</h2></div><span class="qr-live-indicator"><i></i> En directo</span></div>
-        <div class="qr-canvas-wrap"><canvas id="qr-canvas" width="360" height="360" aria-label="Vista previa del código QR"></canvas><div id="qr-empty"><span>▦</span><b>Esperando contenido</b><small>El código aparecerá mientras escribes.</small></div></div>
-        <div class="qr-metadata"><span id="qr-character-count">0 caracteres</span><span id="qr-complexity">Sin generar</span></div>
-        <p class="qr-status" id="qr-status">El contenido permanece únicamente en este navegador.</p>
-        <div class="qr-actions">
-          <button class="primary" id="download-png" type="button" disabled>Descargar PNG</button>
-          <button id="download-svg" type="button" disabled>Descargar SVG</button>
-          <button id="copy-image" type="button" disabled>Copiar imagen</button>
-          <button id="print-qr" type="button" disabled>Imprimir</button>
-          <button id="copy-content" type="button" disabled>Copiar contenido</button>
-        </div>
-      </aside>
+    <div class="qr-mode-tabs" role="tablist" aria-label="Funciones de códigos QR"><button type="button" aria-selected="true" data-qr-mode="generate">Generar QR</button><button type="button" aria-selected="false" data-qr-mode="read">Leer QR</button></div>
+
+    <section data-qr-panel="generate">
+      <nav class="qr-types" id="qr-types" aria-label="Tipo de contenido"></nav>
+      <section class="qr-workspace">
+        <article class="qr-editor">
+          <div class="qr-panel-heading"><div><span class="map-kicker">CONTENIDO</span><h2 id="editor-title">Texto libre</h2></div><span id="required-note">Completa el campo para crear el QR</span></div>
+          <form id="qr-form" autocomplete="off"><div class="qr-form-grid" id="qr-fields"></div></form>
+          <details class="qr-settings" open>
+            <summary>Personalizar código</summary>
+            <div class="qr-settings-grid">
+              <label><span>Tamaño <b id="size-value">360 px</b></span><input id="qr-size" type="range" min="180" max="720" step="20" value="360" /></label>
+              <label><span>Corrección de errores</span><select id="qr-level"><option value="L">L · ligera</option><option value="M" selected>M · equilibrada</option><option value="Q">Q · alta</option><option value="H">H · máxima</option></select></label>
+              <label><span>Color del código</span><input id="qr-foreground" type="color" value="#07101f" /></label>
+              <label><span>Color del fondo</span><input id="qr-background" type="color" value="#ffffff" /></label>
+              <label><span>Margen <b id="margin-value">4 módulos</b></span><input id="qr-margin" type="range" min="0" max="8" step="1" value="4" /></label>
+              <button id="reset-style" type="button">Restablecer estilo</button>
+            </div>
+          </details>
+        </article>
+        <aside class="qr-preview-panel">
+          <div class="qr-panel-heading"><div><span class="map-kicker">VISTA PREVIA</span><h2>Tu código QR</h2></div><span class="qr-live-indicator"><i></i> En directo</span></div>
+          <div class="qr-canvas-wrap"><canvas id="qr-canvas" width="360" height="360" aria-label="Vista previa del código QR"></canvas><div id="qr-empty"><span>?</span><b>Esperando contenido</b><small>El código aparecerá mientras escribes.</small></div></div>
+          <div class="qr-metadata"><span id="qr-character-count">0 caracteres</span><span id="qr-complexity">Sin generar</span></div>
+          <p class="qr-status" id="qr-status">El contenido permanece únicamente en este navegador.</p>
+          <div class="qr-actions"><button class="primary" id="download-png" type="button" disabled>Descargar PNG</button><button id="download-svg" type="button" disabled>Descargar SVG</button><button id="copy-image" type="button" disabled>Copiar imagen</button><button id="print-qr" type="button" disabled>Imprimir</button><button id="copy-content" type="button" disabled>Copiar contenido</button></div>
+        </aside>
+      </section>
+      <section class="qr-note"><span>◈</span><div><b>Privacidad por diseño</b><p>ODÍN recuerda únicamente el tipo y el aspecto visual elegidos. Nunca conserva textos, contraseñas Wi-Fi, contactos ni otros datos del formulario.</p></div></section>
     </section>
-    <section class="qr-note"><span>◎</span><div><b>Privacidad por diseño</b><p>ODÍN recuerda únicamente el tipo y el aspecto visual elegidos. Nunca conserva textos, contraseñas Wi-Fi, contactos ni otros datos del formulario.</p></div></section>
+
+    <section class="qr-reader" data-qr-panel="read" hidden>
+      <article class="qr-reader-source">
+        <div class="qr-panel-heading"><div><span class="map-kicker">ORIGEN</span><h2>Elige cómo leerlo</h2></div><span>Imagen procesada localmente</span></div>
+        <label class="qr-reader-drop" id="qr-reader-drop" for="qr-reader-file"><span>⌁</span><b>Arrastra una imagen o selecciónala</b><small>PNG, JPEG, WebP, GIF o captura de pantalla · máximo 12 MB</small></label><input id="qr-reader-file" type="file" accept="image/*" hidden />
+        <div class="qr-reader-source-actions"><button class="primary" id="qr-reader-camera" type="button">Usar cámara</button><button id="qr-reader-paste" type="button">Pegar imagen</button><button id="qr-reader-clear" type="button">Limpiar</button></div>
+        <p class="qr-reader-status" id="qr-reader-status">Esperando una imagen o la cámara.</p>
+        <div class="qr-reader-preview"><video id="qr-reader-video" playsinline muted hidden></video><canvas id="qr-reader-canvas" width="640" height="480" aria-label="Imagen utilizada para leer el QR"></canvas><div id="qr-reader-placeholder"><span>▦</span><b>Sin imagen</b><small>El QR aparecerá aquí antes de analizarse.</small></div></div>
+      </article>
+      <article class="qr-reader-result">
+        <div class="qr-panel-heading"><div><span class="map-kicker">CONTENIDO DETECTADO</span><h2 id="qr-reader-result-title">Esperando un QR</h2></div><span id="qr-reader-kind">Sin resultado</span></div>
+        <div class="qr-reader-empty" id="qr-reader-empty"><span>?</span><b>Todavía no hay contenido</b><p>ODÍN nunca abrirá automáticamente un enlace leído.</p></div>
+        <div class="qr-reader-output" id="qr-reader-output" hidden><label><span>Contenido</span><textarea id="qr-reader-content" readonly></textarea></label><div class="qr-reader-details" id="qr-reader-details"></div><div class="qr-reader-result-actions"><button class="primary" id="qr-reader-copy" type="button">Copiar contenido</button><button id="qr-reader-open" type="button" hidden>Abrir con confirmación</button></div><p>Revisa siempre el destino antes de abrir un enlace procedente de un QR desconocido.</p></div>
+      </article>
+    </section>
+    <section class="qr-note qr-reader-note" data-qr-panel="read" hidden><span>!</span><div><b>La cámara solo funciona mediante HTTPS</b><p>El permiso se solicita únicamente al pulsar «Usar cámara» y se detiene al salir de la pestaña o al encontrar un código.</p></div></section>
   </main>
-  <footer class="site-footer"><span>ODÍN · Generador QR</span><span>Creación local · sin seguimiento</span></footer>
+  <footer class="site-footer"><span>ODÍN · Códigos QR</span><span>Creación y lectura local · sin seguimiento</span></footer>
   <script src="/preview-qr/qrcode.js?v=2"></script>
+  <script src="/preview-qr/jsQR-reader.js?v=1"></script>
   <script type="module" src="/preview-qr/qr.js?v=2"></script>
+  <script type="module" src="/preview-qr/qr-reader.js?v=1"></script>
   <script type="module" src="/global-timer.js?v=countdown-2"></script>
   <script type="module" src="/time-center.js?v=4"></script>
-</body>
-</html>
+</body></html>

@@ -37,35 +37,53 @@ export function generatePassword(options = {}) {
     length = 20,
     lowercase = true,
     uppercase = true,
-    digits = true,
-    symbols = true,
+    digitCount = options.digits === false ? 0 : 3,
+    symbolCount = options.symbols === false ? 0 : 3,
+    symbolsAllowed = SYMBOLS,
     excludeAmbiguous = true,
     excluded = '',
+    dateToken = '',
+    datePosition = 'end',
   } = options;
   if (!Number.isInteger(length) || length < 4 || length > 128) throw new Error('La longitud debe estar entre 4 y 128.');
-  const groups = [lowercase && LOWER, uppercase && UPPER, digits && DIGITS, symbols && SYMBOLS]
-    .filter(Boolean)
-    .map(group => cleanCharacters(group, excludeAmbiguous, excluded))
-    .filter(Boolean);
-  if (!groups.length) throw new Error('Selecciona al menos un grupo de caracteres.');
-  if (length < groups.length) throw new Error('La longitud no permite incluir todos los grupos seleccionados.');
-  const pool = [...new Set(groups.join(''))].join('');
-  const result = groups.map(pick);
-  while (result.length < length) result.push(pick(pool));
-  return { value: shuffle(result).join(''), poolSize: pool.length, entropy: length * Math.log2(pool.length) };
+  if (!Number.isInteger(digitCount) || digitCount < 0 || !Number.isInteger(symbolCount) || symbolCount < 0) throw new Error('Las cantidades deben ser números enteros positivos.');
+  if (dateToken && !/^\d{4}$/.test(dateToken)) throw new Error('La fecha AAMM debe contener cuatro cifras.');
+  const alphaGroups = [lowercase && LOWER, uppercase && UPPER].filter(Boolean).map(group => cleanCharacters(group, excludeAmbiguous, excluded)).filter(Boolean);
+  const digitPool = cleanCharacters(DIGITS, excludeAmbiguous, excluded), symbolPool = cleanCharacters(symbolsAllowed, excludeAmbiguous, excluded);
+  const alphaLength = length - digitCount - symbolCount - dateToken.length;
+  if (digitCount && !digitPool) throw new Error('No quedan números disponibles.');
+  if (symbolCount && !symbolPool) throw new Error('No quedan símbolos disponibles.');
+  if (alphaLength < alphaGroups.length || alphaLength < 0) throw new Error('Aumenta la longitud o reduce números, símbolos o la fecha AAMM.');
+  if (!alphaGroups.length && alphaLength) throw new Error('Activa minúsculas o mayúsculas para completar la longitud.');
+  const alphaPool = [...new Set(alphaGroups.join(''))].join('');
+  const result = alphaGroups.map(pick);
+  while (result.length < alphaLength) result.push(pick(alphaPool));
+  for (let index=0; index<digitCount; index+=1) result.push(pick(digitPool));
+  for (let index=0; index<symbolCount; index+=1) result.push(pick(symbolPool));
+  const randomPart = shuffle(result).join('');
+  const dateIndex = datePosition === 'middle' ? Math.floor(randomPart.length / 2) : randomPart.length;
+  const value = dateToken ? randomPart.slice(0,dateIndex)+dateToken+randomPart.slice(dateIndex) : randomPart;
+  const entropy = Math.max(0,alphaLength)*Math.log2(Math.max(1,alphaPool.length)) + digitCount*Math.log2(Math.max(1,digitPool.length)) + symbolCount*Math.log2(Math.max(1,symbolPool.length));
+  return { value, poolSize: alphaPool.length + digitPool.length + symbolPool.length, entropy };
 }
 
 export function generatePassphrase(options = {}) {
-  const { words = 7, separator = '-', capitalize = false, appendNumber = false } = options;
+  const { words = 8, separator = '-', capitalization = options.capitalize ? 'first' : 'none', numberCount = options.appendNumber ? 2 : 0, dateToken = '', datePosition = 'end', leet = false } = options;
   if (!Number.isInteger(words) || words < 3 || words > 12) throw new Error('La frase debe contener entre 3 y 12 palabras.');
-  const selected = Array.from({ length: words }, () => PASSPHRASE_WORDS[secureRandomInt(PASSPHRASE_WORDS.length)]);
-  if (capitalize) selected[0] = selected[0][0].toUpperCase() + selected[0].slice(1);
-  let value = selected.join(separator);
-  let entropy = words * Math.log2(PASSPHRASE_WORDS.length);
-  if (appendNumber) {
-    value += `${separator}${String(secureRandomInt(100)).padStart(2, '0')}`;
-    entropy += Math.log2(100);
-  }
+  if (!Number.isInteger(numberCount) || numberCount < 0 || numberCount > 24) throw new Error('Puedes intercalar entre 0 y 24 números.');
+  if (dateToken && !/^\d{4}$/.test(dateToken)) throw new Error('La fecha AAMM debe contener cuatro cifras.');
+  const leetMap={a:'4',e:'3',i:'1',o:'0',u:'9'};
+  const transformLeet = word => { const positions=[...word].map((char,index)=>leetMap[char]?index:-1).filter(index=>index>=0); if(!positions.length)return word; const index=positions[secureRandomInt(positions.length)]; return word.slice(0,index)+leetMap[word[index]]+word.slice(index+1); };
+  const capitalizeWord = word => { const index=word.search(/[a-z]/); return index<0?word:word.slice(0,index)+word[index].toUpperCase()+word.slice(index+1); };
+  const selected = Array.from({ length: words }, () => PASSPHRASE_WORDS[secureRandomInt(PASSPHRASE_WORDS.length)]).map(word=>leet?transformLeet(word):word);
+  if (capitalization === 'first') selected[0] = capitalizeWord(selected[0]);
+  if (capitalization === 'all') selected.forEach((word,index)=>{selected[index]=capitalizeWord(word);});
+  const gaps=Array.from({length:Math.max(1,words-1)},()=>[]);
+  for(let index=0;index<numberCount;index+=1)gaps[secureRandomInt(gaps.length)].push(String(secureRandomInt(10)));
+  const tokens=[];selected.forEach((word,index)=>{tokens.push(word);if(index<selected.length-1)tokens.push(...gaps[index]);});
+  if(dateToken){const index=datePosition==='middle'?Math.floor(tokens.length/2):tokens.length;tokens.splice(index,0,dateToken);}
+  const value = tokens.join(separator);
+  const entropy = words * Math.log2(PASSPHRASE_WORDS.length) + numberCount * Math.log2(10);
   return { value, poolSize: PASSPHRASE_WORDS.length, entropy };
 }
 
