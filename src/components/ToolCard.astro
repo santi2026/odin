@@ -2,7 +2,7 @@
 import type { OdinTool } from '../data/tools';
 interface Props { tool: OdinTool }
 const { tool } = Astro.props;
-const href = tool.status === 'available' ? `/herramientas/${tool.slug}/` : undefined;
+const href = tool.status === 'available' ? tool.href : undefined;
 const statusLabel = tool.status === 'available' ? 'Disponible' : tool.status === 'next' ? 'Próximamente' : 'Planificada';
 ---
 <article class:list={['tool-card', `status-${tool.status}`]} data-tool-name={`${tool.name} ${tool.description} ${tool.category}`.toLowerCase()}>

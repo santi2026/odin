@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "categoryOrder": ["Tiempo", "Cálculo", "Texto y datos", "Seguridad", "Creación", "Conexión", "Productividad"],
+  "tools": [
+    {
+      "id": "U01", "order": 1, "slug": "reloj-negro", "category": "Tiempo", "name": "Reloj negro",
+      "description": "Hora limpia a pantalla completa, con movimiento protector.", "status": "available", "href": "/preview/", "cover": "clock", "icon": "◷", "featured": true,
+      "preview": "<b id=\"live-local-time\">--:--</b><small>hora local</small>"
+    },
+    {
+      "id": "U02", "order": 2, "slug": "calendario", "category": "Tiempo", "name": "Calendario",
+      "description": "Consulta calendarios mensuales o anuales con sus festivos.", "status": "available", "href": "/preview-calendar/", "cover": "calendar", "icon": "▦", "featured": true,
+      "preview": "<div class=\"calendar-cover\"><strong id=\"live-calendar-month\">MES</strong><span>1</span><span>2</span><span class=\"national\">3</span><span>4</span><span class=\"barcelona\">5</span><span class=\"overlap\">6</span><span>7</span></div><i id=\"live-calendar-next\">Próxima celebración</i>"
+    },
+    {
+      "id": "U03", "order": 3, "slug": "cuenta-atras", "category": "Tiempo", "name": "Cuenta atrás",
+      "description": "Sigue el tiempo restante hasta tus acontecimientos.", "status": "available", "href": "/preview-countdown/", "cover": "countdown", "icon": "⌛", "featured": true,
+      "preview": "<small id=\"live-countdown-name\">Próximo acontecimiento</small><b id=\"live-countdown-days\">--</b><i id=\"live-countdown-unit\">días</i>"
+    },
+    {
+      "id": "U04", "order": 4, "slug": "alarmas", "category": "Tiempo", "name": "Alarmas",
+      "description": "Programa avisos web y recupera los que vencieron.", "status": "available", "href": "/preview-alarms/", "cover": "alarm", "icon": "⏰", "featured": true,
+      "preview": "<small>Próxima alarma</small><b id=\"live-next-alarm\">--:--</b><i id=\"live-alarm-days\">Ninguna programada</i>"
+    },
+    {
+      "id": "U05", "order": 5, "slug": "temporizador-cronometro", "category": "Tiempo", "name": "Temporizador y cronómetro",
+      "description": "Programa una cuenta atrás o mide el tiempo transcurrido.", "status": "available", "href": "/preview-timer/", "cover": "timer", "icon": "⏱", "featured": true,
+      "preview": "<b id=\"live-timer-cover\">25:00</b><span id=\"live-timer-state\">Preparado</span>"
+    },
+    {
+      "id": "U06", "order": 6, "slug": "concentracion-pomodoro", "category": "Productividad", "name": "Concentración · Pomodoro",
+      "description": "Alterna sesiones de concentración y descanso configurables.", "status": "available", "href": "/preview-focus/", "cover": "focus", "icon": "◎", "featured": true,
+      "preview": "<div class=\"focus-ring\"><b id=\"live-focus-time\">25</b><small id=\"live-focus-unit\">min</small></div><i id=\"live-focus-phase\">Sesión 1 de 4</i>"
+    },
+    {
+      "id": "U07", "order": 7, "slug": "calculadora-fechas", "category": "Cálculo", "name": "Calculadora de fechas",
+      "description": "Suma días y calcula periodos entre fechas.", "status": "available", "href": "/preview-dates/", "cover": "dates", "icon": "±", "featured": false,
+      "preview": "<span><small>12 NOV</small><b>+ 45 días</b></span><strong>27 DIC</strong>"
+    },
+    {
+      "id": "U08", "order": 8, "slug": "conversor-universal", "category": "Cálculo", "name": "Conversor universal",
+      "description": "Convierte unidades habituales con claridad.", "status": "available", "href": "/preview-convert/", "cover": "convert", "icon": "⇄", "featured": false,
+      "preview": "<span><b>24</b><small>km</small></span><i>⇄</i><span><b>14,91</b><small>mi</small></span>"
+    },
+    {
+      "id": "U09", "order": 9, "slug": "relojes-del-mundo", "category": "Tiempo", "name": "Relojes del mundo",
+      "description": "Compara ciudades con sus zonas horarias reales.", "status": "available", "href": "/preview-world/", "cover": "world", "icon": "◉", "featured": false,
+      "preview": "<span><small>Barcelona</small><b id=\"live-barcelona\">--:--</b></span><span><small>Washington</small><b id=\"live-washington\">--:--</b></span>"
+    },
+    {
+      "id": "U10", "order": 10, "slug": "fases-lunares", "category": "Tiempo", "name": "Fases lunares",
+      "description": "Consulta la fase actual de la Luna y sus próximos cambios.", "status": "available", "href": "/preview-moon/", "cover": "moon", "icon": "◐", "featured": false,
+      "preview": "<div class=\"moon-orbit\"><span class=\"moon-phase\" id=\"live-moon-disc\"></span></div><i id=\"live-moon-phase\">Fase actual</i>"
+    },
+    {
+      "id": "U11", "order": 11, "slug": "mi-ip", "category": "Conexión", "name": "Mi IP",
+      "description": "Tu dirección pública y la información disponible de la conexión.", "status": "available", "href": "/preview-ip/", "cover": "ip", "icon": "⌁", "featured": false,
+      "preview": "<small>Tu IP pública</small><b id=\"live-public-ip\">Consultando…</b><i id=\"live-ip-type\">Conexión actual</i>"
+    },
+    {
+      "id": "U12", "order": 12, "slug": "generador-qr", "category": "Creación", "name": "Generador QR",
+      "description": "Crea y lee códigos QR localmente, sin enviar el contenido.", "status": "available", "href": "/preview-qr/", "cover": "qr", "icon": "▦", "featured": false,
+      "preview": "<div class=\"qr-mark\">▦</div><span>Generar · Leer</span>"
+    },
+    {
+      "id": "U13", "order": 13, "slug": "html-a-texto", "category": "Texto y datos", "name": "HTML a texto",
+      "description": "Extrae el texto legible de un documento HTML sin ejecutarlo.", "status": "available", "href": "/preview-html-text/", "cover": "html-clean", "icon": "Aa", "featured": false,
+      "preview": "<div class=\"html-clean-cover\"><span>&lt;html&gt;</span><b>Texto limpio</b></div>"
+    },
+    {
+      "id": "U14", "order": 14, "slug": "codificador-texto-url", "category": "Texto y datos", "name": "Codificador de texto y URL",
+      "description": "Codifica, analiza URLs y cifra texto localmente.", "status": "available", "href": "/preview-codec/", "cover": "codec", "icon": "%", "featured": false,
+      "preview": "<div class=\"codec-cover\"><span>%20 · 64</span><b>Texto ⇄ datos</b></div>"
+    },
+    {
+      "id": "U15", "order": 15, "slug": "generador-contrasenas", "category": "Seguridad", "name": "Generador de contraseñas",
+      "description": "Crea contraseñas, frases de paso y PIN aleatorios sin guardar historial.", "status": "available", "href": "/preview-password/", "cover": "password", "icon": "✦", "featured": false,
+      "preview": "<div class=\"password-cover\"><span>A7·x#9K</span><b>Generación local</b></div>"
+    },
+    {
+      "id": "U16", "order": 16, "slug": "identificadores-control", "category": "Seguridad", "name": "Identificadores y dígitos de control",
+      "description": "Valida, calcula y genera ejemplos de NIF, NIE, CIF, IBAN y NUSS/NAF.", "status": "available", "href": "/preview-identifiers/", "cover": "identity", "icon": "✓", "featured": false,
+      "preview": "<div class=\"identity-cover\"><span>12345678·Z</span><b>Validar · Calcular</b></div>"
+    }
+  ]
+}

@@ -1,58 +1,9 @@
-const tools = [
-  ['U01','Tiempo','Reloj negro','Hora limpia a pantalla completa, con movimiento protector.','available','/preview/','clock','<b id="live-local-time">--:--</b><small>hora local</small>'],
-  ['U02','Conexión','Mi IP','Tu dirección pública y la información disponible de la conexión.','next','','ip','<small>Tu IP pública</small><b id="live-public-ip">Consultando…</b><i id="live-ip-type">Conexión actual</i>'],
-  ['U03','Tiempo','Relojes del mundo','Compara ciudades con sus zonas horarias reales.','next','','world','<span><small>Barcelona</small><b id="live-barcelona">--:--</b></span><span><small>Washington</small><b id="live-washington">--:--</b></span>'],
-  ['U06','Tiempo','Cronómetro y temporizador','Mide, pausa y recupera sesiones mediante tiempo real.','next','','timer','<b>25:00</b><span>▶ &nbsp; ↻</span>'],
-  ['U10','Tiempo','Alarmas','Programa avisos web y recupera los que vencieron.','next','','alarm','<small>Próxima alarma</small><b>07:30</b><i>Lun · Mar · Mié · Jue · Vie</i>'],
-  ['U04','Productividad','Concentración','Ciclos de trabajo y descanso ajustables.','planned','','focus','<div class="focus-ring"><b>18</b><small>min</small></div><i>Sesión 2 de 4</i>'],
-  ['U05','Tiempo','Cuenta atrás','Sigue el tiempo restante hasta tus acontecimientos.','planned','','countdown','<small>Vacaciones</small><b>18</b><i>días</i>'],
-  ['U07','Creación','Generador QR','Crea y lee códigos QR localmente, sin enviar el contenido.','planned','','qr','<div class="qr-mark">▦</div><span>Generar · Leer</span>'],
-  ['U08','Cálculo','Calculadora de fechas','Suma días y calcula periodos entre fechas.','planned','','dates','<span><small>12 NOV</small><b>+ 45 días</b></span><strong>27 DIC</strong>'],
-  ['U09','Cálculo','Conversor universal','Convierte unidades habituales con claridad.','planned','','convert','<span><b>24</b><small>km</small></span><i>⇄</i><span><b>14,91</b><small>mi</small></span>']
-  ,['U11','Tiempo','Fases lunares','Consulta la fase actual de la Luna y sus próximos cambios.','planned','','moon','<div class="moon-orbit"><span class="moon-phase"></span></div><i>Cuarto creciente</i>']
-];
-tools.push(['U12','Tiempo','Calendario','Consulta calendarios mensuales o anuales con sus festivos.','planned','','calendar','<div class="calendar-cover"><strong>NOV</strong><span>10</span><span>11</span><span class="national">12</span><span>13</span><span class="barcelona">14</span><span class="overlap">15</span><span>16</span></div><i>España · Madrid · Barcelona</i>']);
-tools.push(['U13','Texto y datos','HTML a texto','Extrae el texto legible de un documento HTML sin ejecutarlo.','available','/preview-html-text/','html-clean','<div class="html-clean-cover"><span>&lt;html&gt;</span><b>Texto limpio</b></div>']);
-tools.push(['U14','Texto y datos','Codificador de texto y URL','Codifica, analiza URLs y cifra texto localmente.','available','/preview-codec/','codec','<div class="codec-cover"><span>%20 · 64</span><b>Texto ⇄ datos</b></div>']);
-tools.push(['U15','Seguridad','Generador de contraseñas','Crea contraseñas, frases de paso y PIN aleatorios sin guardar historial.','available','/preview-password/','password','<div class="password-cover"><span>A7·x#9K</span><b>Generación local</b></div>']);
-tools.push(['U16','Seguridad','Identificadores y dígitos de control','Valida, calcula y genera ejemplos de NIF, NIE, CIF, IBAN y NUSS/NAF.','available','/preview-identifiers/','identity','<div class="identity-cover"><span>12345678·Z</span><b>Validar · Calcular</b></div>']);
-tools[1][4] = 'available';
-tools[1][5] = '/preview-ip/';
-tools[2][4] = 'available';
-tools[2][5] = '/preview-world/';
-tools[3][4] = 'available';
-tools[3][5] = '/preview-timer/';
-tools[3][2] = 'Temporizador y cronómetro';
-tools[3][3] = 'Programa una cuenta atrás o mide el tiempo transcurrido.';
-tools[3][7] = '<b id="live-timer-cover">25:00</b><span id="live-timer-state">Preparado</span>';
-tools[4][4] = 'available';
-tools[4][5] = '/preview-alarms/';
-tools[4][7] = '<small>Próxima alarma</small><b id="live-next-alarm">--:--</b><i id="live-alarm-days">Ninguna programada</i>';
-tools[5][2] = 'Concentración · Pomodoro';
-tools[5][3] = 'Alterna sesiones de concentración y descanso configurables.';
-tools[5][4] = 'available';
-tools[5][5] = '/preview-focus/';
-tools[5][7] = '<div class="focus-ring"><b id="live-focus-time">25</b><small id="live-focus-unit">min</small></div><i id="live-focus-phase">Sesión 1 de 4</i>';
-tools[6][4] = 'available';
-tools[6][5] = '/preview-countdown/';
-tools[10][4] = 'available';
-tools[10][5] = '/preview-moon/';
-tools[10][7] = '<div class="moon-orbit"><span class="moon-phase" id="live-moon-disc"></span></div><i id="live-moon-phase">Fase actual</i>';
-tools[11][4] = 'available';
-tools[11][5] = '/preview-calendar/';
-tools[11][7] = '<div class="calendar-cover"><strong id="live-calendar-month">MES</strong><span>1</span><span>2</span><span class="national">3</span><span>4</span><span class="barcelona">5</span><span class="overlap">6</span><span>7</span></div><i id="live-calendar-next">Próxima celebración</i>';
-tools[8][4] = 'available';
-tools[8][5] = '/preview-dates/';
-tools[9][4] = 'available';
-tools[9][5] = '/preview-convert/';
-tools[7][4] = 'available';
-tools[7][5] = '/preview-qr/';
-tools[6][7] = '<small id="live-countdown-name">Próximo acontecimiento</small><b id="live-countdown-days">--</b><i id="live-countdown-unit">días</i>';
-const orderedToolNames=['Reloj negro','Calendario','Cuenta atrás','Alarmas','Temporizador y cronómetro','Concentración · Pomodoro','Calculadora de fechas','Conversor universal','Relojes del mundo','Fases lunares','Mi IP','Generador QR','HTML a texto','Codificador de texto y URL','Generador de contraseñas','Identificadores y dígitos de control'];
-const orderedTools=orderedToolNames.map(name=>tools.find(tool=>tool[2]===name)).filter(Boolean);
-orderedTools.forEach((tool,index)=>tool[0]=`U${String(index+1).padStart(2,'0')}`);
-tools.splice(0,tools.length,...orderedTools);
-const preferredCategoryOrder = ['Tiempo','Cálculo','Texto y datos','Seguridad','Creación','Conexión','Productividad'];
+const catalogResponse = await fetch('/catalog-data.json?v=1', { cache: 'no-store' });
+if (!catalogResponse.ok) throw new Error('No se pudo cargar el catálogo de ODÍN.');
+const catalog = await catalogResponse.json();
+const tools = catalog.tools.map((tool) => [tool.id, tool.category, tool.name, tool.description, tool.status, tool.href, tool.cover, tool.preview]);
+const preferredCategoryOrder = catalog.categoryOrder;
+
 const categoryCounts = tools.reduce((counts, tool) => counts.set(tool[1], (counts.get(tool[1]) || 0) + 1), new Map());
 const remainingCategories = [...categoryCounts.keys()].filter(category => !preferredCategoryOrder.includes(category)).sort((a,b) => a.localeCompare(b,'es'));
 const categories = preferredCategoryOrder.filter(category => categoryCounts.has(category)).concat(remainingCategories);
