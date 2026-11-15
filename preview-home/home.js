@@ -1,4 +1,4 @@
-import {nextOccurrence,readCountdownState} from '/countdown-data.js?v=1';
+import {nextOccurrence,readCountdownState} from '/countdown-data.js?v=2';
 
 const catalogResponse = await fetch('/catalog-data.json?v=1', { cache: 'no-store' });
 if (!catalogResponse.ok) throw new Error('No se pudo cargar el catálogo de ODÍN.');

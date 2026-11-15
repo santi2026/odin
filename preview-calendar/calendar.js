@@ -1,5 +1,5 @@
 import {LOCAL_HOLIDAY_SEED_VERSION,officialLocalPeriods,officialEventsForYear} from '/calendar-data.js?v=1';
-import {categoryInfo,occurrenceForYear,personalEventsForDate,readCountdownState} from '/countdown-data.js?v=1';
+import {categoryInfo,occurrenceForYear,personalEventsForDate,readCountdownState} from '/countdown-data.js?v=2';
 
 const STORAGE_KEY='odin-calendar-v1';
 const defaults={colors:{spain:'#d8a63c',madrid:'#f3d36a',barcelona:'#4fb879',vacation:'#4f8de8',other:'#7c3aed',birthday:'#ef6f9d',saint:'#45b8b0',anniversary:'#a877e8',reminder:'#e58b45'},layers:{spain:true,madrid:true,barcelona:true,vacation:true,other:true,birthday:true,saint:true,anniversary:true,reminder:true},view:{startMonth:0,months:12},vacations:[],localHolidaySeedVersion:0};

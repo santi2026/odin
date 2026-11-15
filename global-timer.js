@@ -1,4 +1,4 @@
-import {nextOccurrence,readCountdownState,writeCountdownState} from '/countdown-data.js?v=1';
+import {nextOccurrence,readCountdownState,writeCountdownState} from '/countdown-data.js?v=2';
 
 const ODIN_TIMER_KEY = 'odin-timer-v1';
 const ODIN_ALARMS_KEY = 'odin-alarms-v1';

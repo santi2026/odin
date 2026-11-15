@@ -1,6 +1,6 @@
 export const COUNTDOWN_KEY='odin-countdowns-v1';
 export const COUNTDOWN_SCHEMA_VERSION=2;
-export const COUNTDOWN_MAX=20;
+export const COUNTDOWN_MAX=200;
 export const COUNTDOWN_CATEGORIES=[
   {id:'birthday',label:'Cumpleaños',annual:true,color:'#ef6f9d'},
   {id:'saint',label:'Santos',annual:true,color:'#45b8b0'},

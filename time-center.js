@@ -1,4 +1,4 @@
-import {nextOccurrence,readCountdownState} from '/countdown-data.js?v=1';
+import {nextOccurrence,readCountdownState} from '/countdown-data.js?v=2';
 
 const TIME_CENTER_KEYS={timer:'odin-timer-v1',alarms:'odin-alarms-v1',focus:'odin-focus-v1',countdowns:'odin-countdowns-v1'};
 const tcRead=key=>{try{return JSON.parse(localStorage.getItem(key)||'null')}catch{return null}};

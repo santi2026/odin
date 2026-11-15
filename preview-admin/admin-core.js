@@ -1,4 +1,4 @@
-import {COUNTDOWN_CATEGORY_IDS,normalizeCountdownItem,normalizeCountdownState} from '../countdown-data.js?v=1';
+import {COUNTDOWN_CATEGORY_IDS,normalizeCountdownItem,normalizeCountdownState} from '../countdown-data.js?v=2';
 
 export const BACKUP_FORMAT = 'odin-copia-v2';
 export const LEGACY_BACKUP_FORMAT = 'odin-copia-v1';

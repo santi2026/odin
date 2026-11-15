@@ -1,4 +1,4 @@
-import {COUNTDOWN_CATEGORIES,COUNTDOWN_MAX,categoryInfo,nextOccurrence,normalizeCountdownItem,occurrenceLabel,readCountdownState,writeCountdownState} from '/countdown-data.js?v=1';
+import {COUNTDOWN_CATEGORIES,COUNTDOWN_MAX,categoryInfo,nextOccurrence,normalizeCountdownItem,occurrenceLabel,readCountdownState,writeCountdownState} from '/countdown-data.js?v=2';
 
 const $=selector=>document.querySelector(selector),defaults=[['christmas','Navidad',11,25],['new-year','Año Nuevo',0,1],['kings','Reyes',0,6],['sant-jordi','Sant Jordi',3,23],['san-juan','San Juan',5,24],['all-saints','Todos los Santos',10,1],['clock-summer','Cambio al horario de verano',2,-1],['clock-winter','Cambio al horario de invierno',9,-1]];
 let state=readCountdownState(),editingId=null,activeFilter='all';
