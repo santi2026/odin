@@ -11,6 +11,12 @@ export const officialLocalPeriods=[
   {id:'official-local-madrid-2027-almudena',name:'Festivo en Madrid · Nuestra Señora de la Almudena',start:'2027-11-09',end:'2027-11-09',type:'other'}
 ];
 
+export const recurringFixedHolidays={
+  spain:[['01-01','Año Nuevo'],['01-06','Epifanía del Señor / Reyes'],['05-01','Fiesta del Trabajo'],['08-15','Asunción de la Virgen'],['10-12','Fiesta Nacional de España'],['11-01','Todos los Santos'],['12-06','Día de la Constitución'],['12-08','Inmaculada Concepción'],['12-25','Navidad']],
+  barcelona:[['06-24','San Juan / Sant Joan','Festivo autonómico fijo'],['09-11','Diada Nacional de Cataluña','Festivo autonómico fijo'],['12-26','San Esteban / Sant Esteve','Festivo autonómico fijo']],
+  madrid:[['05-02','Fiesta de la Comunidad de Madrid','Festivo autonómico fijo']]
+};
+
 export const officialHolidays={
   2026:{
     spain:[['01-01','Año Nuevo'],['01-06','Epifanía del Señor / Reyes'],['04-03','Viernes Santo'],['05-01','Fiesta del Trabajo'],['08-15','Asunción de la Virgen'],['10-12','Fiesta Nacional de España'],['12-08','Inmaculada Concepción'],['12-25','Navidad']],
@@ -26,6 +32,10 @@ export const officialHolidays={
 
 export function officialEventsForYear(year){
   const calendar=officialHolidays[year];
-  if(!calendar)return[];
-  return Object.entries(calendar).flatMap(([layer,items])=>items.map(([monthDay,name,type='Festivo nacional'])=>({date:`${year}-${monthDay}`,name,layer,type})));
+  const events=new Map();
+  for(const [layer,items] of Object.entries(recurringFixedHolidays))for(const [monthDay,name,type=layer==='spain'?'Festivo nacional fijo':'Festivo autonómico fijo'] of items)events.set(`${layer}:${monthDay}`,{date:`${year}-${monthDay}`,name,layer,type});
+  for(const [layer,items] of Object.entries(calendar||{}))for(const [monthDay,name,type='Festivo nacional'] of items)events.set(`${layer}:${monthDay}`,{date:`${year}-${monthDay}`,name,layer,type});
+  return [...events.values()];
 }
+
+export function hasVerifiedAnnualCalendar(year){return Object.prototype.hasOwnProperty.call(officialHolidays,year)}

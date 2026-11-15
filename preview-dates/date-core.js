@@ -1,4 +1,4 @@
-import {officialEventsForYear} from '../calendar-data.js?v=1';
+import {officialEventsForYear} from '../calendar-data.js?v=2';
 
 const DAY_MS=86400000;
 

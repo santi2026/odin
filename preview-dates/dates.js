@@ -1,6 +1,6 @@
-import {LOCAL_HOLIDAY_SEED_VERSION,officialLocalPeriods} from '../calendar-data.js?v=1';
+import {LOCAL_HOLIDAY_SEED_VERSION,officialLocalPeriods} from '../calendar-data.js?v=2';
 import {COUNTDOWN_MAX,normalizeCountdownItem,readCountdownState,writeCountdownState} from '../countdown-data.js?v=2';
-import {addAmount,addDays,analyzeRange,dateKey,dayInfo,parseDate} from './date-core.js?v=1';
+import {addAmount,addDays,analyzeRange,dateKey,dayInfo,parseDate} from './date-core.js?v=2';
 
 const CALENDAR_KEY='odin-calendar-v1',PREFERENCES_KEY='odin-date-calculator-v1';
 const $=selector=>document.querySelector(selector);
@@ -58,7 +58,7 @@ function renderBetween(){
 function renderPolicy(){
   for(const input of document.querySelectorAll('[data-policy]'))input.checked=policy[input.dataset.policy]!==false;
   const vacationCount=periods.filter(item=>item.type!=='other').length,otherCount=periods.filter(item=>item.type==='other').length;
-  $('#policy-status').textContent=`Calendario conectado: ${vacationCount} ${vacationCount===1?'periodo de vacaciones':'periodos de vacaciones'} y ${otherCount} en Otros. Festivos oficiales disponibles para 2026 y 2027.`;
+  $('#policy-status').textContent=`Calendario conectado: ${vacationCount} ${vacationCount===1?'periodo de vacaciones':'periodos de vacaciones'} y ${otherCount} en Otros. Festivos fijos disponibles para cualquier año; calendarios oficiales completos para 2026 y 2027.`;
 }
 function render(){renderAdd();renderBetween();renderPolicy()}
 
