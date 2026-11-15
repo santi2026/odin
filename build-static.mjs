@@ -11,7 +11,7 @@ await cp(join(root, 'time-center.js'), join(dist, 'time-center.js'), { force: tr
 await cp(join(root, 'calendar-data.js'), join(dist, 'calendar-data.js'), { force: true });
 await cp(join(root, 'logo.ico'), join(dist, 'logo.ico'), { force: true });
 
-for (const folder of ['preview','preview-home','preview-ip','preview-world','preview-timer','preview-alarms','preview-focus','preview-countdown','preview-moon','preview-calendar','preview-dates','preview-convert','preview-qr','preview-html-text']) {
+for (const folder of ['preview','preview-home','preview-ip','preview-world','preview-timer','preview-alarms','preview-focus','preview-countdown','preview-moon','preview-calendar','preview-dates','preview-convert','preview-qr','preview-html-text','preview-codec']) {
   await cp(join(root, folder), join(dist, folder), { recursive: true, force: true });
 }
 

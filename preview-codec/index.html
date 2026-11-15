@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Codifica y descodifica URL, Base64, HTML, XML, JSON, hexadecimal y Unicode; analiza URLs y cifra texto localmente." />
+  <title>Codificador de texto y URL · ODÍN</title>
+  <link rel="icon" href="/logo.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="/src/styles/global.css?v=codec-1" />
+</head>
+<body class="tool-page codec-body">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="site-header"><a class="brand" href="/preview-home/" aria-label="ODÍN, volver a la portada"><span class="brand-mark">◆</span><span>ODÍN</span></a><nav aria-label="Navegación de la herramienta"><a class="back-to-catalog" href="/preview-home/#herramientas"><span aria-hidden="true">←</span> Catálogo</a></nav></header>
+  <main id="contenido" class="codec-page">
+    <header class="codec-heading">
+      <div><p class="eyebrow">U14 · TEXTO Y DATOS</p><h1>Codificador de texto y URL</h1><p>Transforma texto, analiza direcciones completas o protege contenido con una contraseña. Todo sucede en este navegador.</p></div>
+      <div class="codec-privacy"><strong>LOCAL</strong><span>sin cargas</span><small>Contenido no almacenado</small></div>
+    </header>
+
+    <div class="codec-tabs" role="tablist" aria-label="Funciones del codificador">
+      <button type="button" role="tab" aria-selected="true" data-tab="convert">Codificar texto</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="url">Analizar URL</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="secure">Cifrado seguro</button>
+    </div>
+
+    <section class="codec-tab-panel" data-panel="convert">
+      <article class="codec-settings-panel">
+        <div class="codec-panel-heading"><div><span class="map-kicker">FORMATO</span><h2>Cómo transformar</h2></div><span id="codec-format-badge">UTF‑8</span></div>
+        <label class="codec-mode-field"><span>Codificación</span><select id="codec-mode"></select></label>
+        <p class="codec-mode-note" id="codec-mode-note"></p>
+        <div class="codec-options">
+          <label><input id="codec-live" type="checkbox" checked /><i></i><span><b>Conversión en directo</b><small>Actualiza al escribir según la última operación.</small></span></label>
+          <label><input id="codec-lines" type="checkbox" /><i></i><span><b>Cada línea por separado</b><small>Procesa una lista sin mezclar sus entradas.</small></span></label>
+          <label><input id="codec-recursive" type="checkbox" /><i></i><span><b>Descodificación recursiva</b><small>Elimina hasta 16 capas consecutivas.</small></span></label>
+          <label><input id="codec-plus" type="checkbox" /><i></i><span><b>Interpretar + como espacio</b><small>Útil para queries y formularios web.</small></span></label>
+        </div>
+        <label class="codec-file" for="codec-file"><span>↑ Abrir archivo de texto</span><small>Máximo 5 MB</small></label><input id="codec-file" type="file" accept=".txt,.json,.xml,.html,.csv,text/*" hidden />
+      </article>
+      <article class="codec-converter-panel">
+        <div class="codec-text-grid">
+          <label><span>Entrada <b id="codec-input-count">0 caracteres</b></span><textarea id="codec-input" spellcheck="false" placeholder="Escribe o pega el contenido…"></textarea></label>
+          <label><span>Salida <b id="codec-output-count">0 caracteres</b></span><textarea id="codec-output" spellcheck="false" readonly placeholder="El resultado aparecerá aquí…"></textarea></label>
+        </div>
+        <div class="codec-action-row">
+          <button class="primary" id="codec-encode" type="button">Codificar →</button>
+          <button id="codec-decode" type="button">Descodificar →</button>
+          <button id="codec-swap" type="button">⇄ Intercambiar</button>
+          <button id="codec-copy" type="button" disabled>Copiar salida</button>
+          <button id="codec-download" type="button" disabled>Descargar</button>
+          <button id="codec-clear" type="button">Limpiar</button>
+        </div>
+        <div class="codec-status-line"><p id="codec-status">Introduce contenido para comenzar.</p><span id="codec-hint">Sin detección</span></div>
+      </article>
+    </section>
+
+    <section class="codec-tab-panel" data-panel="url" hidden>
+      <article class="url-builder">
+        <div class="codec-panel-heading"><div><span class="map-kicker">URL COMPLETA</span><h2>Separar, editar y reconstruir</h2></div><span id="url-kind">Sin analizar</span></div>
+        <div class="url-source-row"><input id="url-source" type="text" inputmode="url" placeholder="https://ejemplo.com/ruta?utm_source=odin#seccion" /><button id="url-parse" type="button">Analizar</button><button id="url-example" type="button">Ejemplo</button></div>
+        <div class="url-components">
+          <label><span>Esquema</span><input id="url-protocol" type="text" placeholder="https:" /></label>
+          <label><span>Host</span><input id="url-host" type="text" placeholder="ejemplo.com" /></label>
+          <label><span>Puerto</span><input id="url-port" type="text" inputmode="numeric" placeholder="—" /></label>
+          <label class="url-path-field"><span>Ruta</span><input id="url-path" type="text" placeholder="/" /></label>
+          <label class="url-fragment-field"><span>Fragmento, sin #</span><input id="url-fragment" type="text" placeholder="seccion" /></label>
+        </div>
+        <div class="url-summary"><span>Ruta decodificada: <b id="url-path-preview">—</b></span><span>Query original: <b id="url-query-raw">—</b></span></div>
+      </article>
+      <article class="url-parameters">
+        <div class="codec-panel-heading"><div><span class="map-kicker">QUERY</span><h2>Parámetros editables</h2></div><span id="url-param-count">0 parámetros</span></div>
+        <div class="url-param-actions"><button id="url-add-param" type="button">+ Añadir parámetro</button><button id="url-sort-params" type="button">Ordenar A–Z</button><button id="url-to-json" type="button">Query a JSON</button></div>
+        <div class="url-param-list" id="url-param-list"><p class="url-empty-params">Analiza una URL para ver sus parámetros.</p></div>
+        <label class="url-result"><span>URL reconstruida</span><textarea id="url-result" readonly></textarea></label>
+        <div class="codec-action-row url-result-actions"><button class="primary" id="url-rebuild" type="button">Reconstruir URL</button><button id="url-copy" type="button" disabled>Copiar resultado</button><button id="url-clear" type="button">Limpiar</button></div>
+        <p class="codec-inline-status" id="url-status">Las claves repetidas se conservan y se señalan.</p>
+      </article>
+    </section>
+
+    <section class="codec-tab-panel" data-panel="secure" hidden>
+      <article class="secure-intro">
+        <span class="map-kicker">AES‑256‑GCM</span><h2>Cifrado con contraseña maestra</h2><p>La contraseña deriva una clave mediante PBKDF2‑SHA‑256 y 600.000 iteraciones. Cada cifrado utiliza sal e IV aleatorios.</p>
+        <div class="secure-warning"><b>No es una codificación</b><span>Sin la contraseña correcta no se puede recuperar el contenido. ODÍN no guarda ninguna copia.</span></div>
+      </article>
+      <article class="secure-workspace">
+        <label class="secure-password"><span>Contraseña maestra</span><div><input id="secure-password" type="password" autocomplete="new-password" maxlength="256" placeholder="Mínimo 10 caracteres" /><button id="secure-show-password" type="button">Ver</button></div><small id="secure-password-note">No se almacena ni se incluye en el resultado.</small></label>
+        <div class="codec-text-grid">
+          <label><span>Entrada</span><textarea id="secure-input" spellcheck="false" placeholder="Texto para cifrar o paquete ODIN1 para descifrar…"></textarea></label>
+          <label><span>Resultado</span><textarea id="secure-output" spellcheck="false" readonly placeholder="El resultado aparecerá aquí…"></textarea></label>
+        </div>
+        <div class="codec-action-row"><button class="primary" id="secure-encrypt" type="button">Cifrar</button><button id="secure-decrypt" type="button">Descifrar</button><button id="secure-copy" type="button" disabled>Copiar resultado</button><button id="secure-clear" type="button">Borrar todo</button></div>
+        <p class="codec-inline-status" id="secure-status">El cifrado puede tardar un instante para dificultar ataques de fuerza bruta.</p>
+      </article>
+    </section>
+
+    <section class="codec-note"><span>◎</span><div><b>Codificar no significa cifrar</b><p>URL, Base64, HTML, XML, JSON, hexadecimal y Unicode son reversibles sin contraseña. Para información privada utiliza exclusivamente la pestaña «Cifrado seguro».</p></div></section>
+  </main>
+  <footer class="site-footer"><span>ODÍN · Codificador de texto y URL</span><span>Procesamiento local · sin seguimiento</span></footer>
+  <script type="module" src="/preview-codec/codec.js?v=1"></script>
+  <script type="module" src="/global-timer.js?v=countdown-2"></script>
+  <script type="module" src="/time-center.js?v=4"></script>
+</body>
+</html>
