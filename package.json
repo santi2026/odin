@@ -10,6 +10,7 @@
     "check:catalog": "node scripts/validate-catalog.mjs",
     "test:countdown": "node scripts/test-countdown.mjs",
     "test:text-workshop": "node scripts/test-text-workshop.mjs",
+    "test:shared-expenses": "node scripts/test-shared-expenses.mjs",
     "check": "astro check",
     "preview": "astro preview"
   },

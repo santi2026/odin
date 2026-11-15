@@ -10,6 +10,7 @@ export const SECTIONS = [
   { id:'cuentas_atras', label:'Acontecimientos y cuentas atrás', group:'data', key:'odin-countdowns-v1' },
   { id:'vacaciones', label:'Vacaciones', group:'data', key:'odin-calendar-v1', kind:'periods', periodType:'vacation' },
   { id:'otros_festivos', label:'Otros y festivos locales', group:'data', key:'odin-calendar-v1', kind:'periods', periodType:'other' },
+  { id:'gastos_compartidos', label:'Grupos y facturas compartidas', group:'data', key:'odin-shared-expenses-v1' },
   { id:'reloj_negro', label:'Reloj negro', group:'preferences', key:'odin:u01:sony-clock:v1' },
   { id:'temporizador', label:'Temporizador y cronómetro', group:'preferences', key:'odin-timer-v1' },
   { id:'pomodoro', label:'Concentración · Pomodoro', group:'preferences', key:'odin-focus-v1' },
@@ -66,6 +67,7 @@ export function sectionCount(id, value) {
   if (id === 'alarmas') return Array.isArray(value?.alarms) ? value.alarms.length : 0;
   if (id === 'cuentas_atras') return Array.isArray(value?.personal) ? value.personal.length : 0;
   if (id === 'vacaciones' || id === 'otros_festivos') return Array.isArray(value) ? value.length : 0;
+  if (id === 'gastos_compartidos') return Array.isArray(value?.groups) ? value.groups.length : 0;
   return value == null ? 0 : 1;
 }
 
@@ -151,6 +153,7 @@ export function applySections(storage, sections, selectedIds=Object.keys(section
     }else if(incoming==null){if(mode==='merge')continue;storage.removeItem(section.key);}
     else if(mode==='merge'&&id==='alarmas'){const current=parseJson(storage.getItem(section.key))||{alarms:[]};current.alarms=mergeUnique(Array.isArray(current.alarms)?current.alarms:[],Array.isArray(incoming.alarms)?incoming.alarms:[],alarmKey);storage.setItem(section.key,JSON.stringify(current));}
     else if(mode==='merge'&&id==='cuentas_atras'){const current=normalizeCountdownState(parseJson(storage.getItem(section.key))||{}),next=normalizeCountdownState(incoming||{}),merged={...current,personal:mergeUnique(current.personal,next.personal,countdownKey)};if(Object.prototype.hasOwnProperty.call(incoming||{},'defaults'))merged.defaults={...current.defaults,...next.defaults};if(Object.prototype.hasOwnProperty.call(incoming||{},'notifiedDefaults'))merged.notifiedDefaults={...current.notifiedDefaults,...next.notifiedDefaults};if(Object.prototype.hasOwnProperty.call(incoming||{},'settings'))merged.settings={...current.settings,...next.settings};storage.setItem(section.key,JSON.stringify(normalizeCountdownState(merged)));}
+    else if(mode==='merge'&&id==='gastos_compartidos'){const current=parseJson(storage.getItem(section.key))||{version:1,groups:[]},groups=mergeUnique(Array.isArray(current.groups)?current.groups:[],Array.isArray(incoming.groups)?incoming.groups:[],item=>item.id);storage.setItem(section.key,JSON.stringify({...current,version:1,groups,activeGroupId:current.activeGroupId||incoming.activeGroupId||groups[0]?.id}));}
     else if(id==='cuentas_atras')storage.setItem(section.key,JSON.stringify(normalizeCountdownState(incoming||{})));
     else storage.setItem(section.key,JSON.stringify(incoming));applied.push(id);
   }
@@ -166,5 +169,5 @@ export function resetSections(storage, ids) {
 }
 
 export function validateImportedSections(sections) {
-  let total=0;for(const [id,data] of Object.entries(sections)){if(!byId(id))continue;if(id==='vacaciones'||id==='otros_festivos'){if(!Array.isArray(data))throw new Error(`${byId(id).label} debe ser una lista.`);for(const item of data)internalPeriod(item,id==='otros_festivos'?'other':'vacation');total+=data.length;}else if(id==='cuentas_atras'){const normalized=normalizeCountdownState(data||{});for(const item of normalized.personal){if(!COUNTDOWN_CATEGORY_IDS.includes(item.category)||!item.name||item.month<1||item.month>12||item.day<1||item.day>31)throw new Error('Hay un acontecimiento personal no válido.');}total+=normalized.personal.length;}else total+=sectionCount(id,data);if(total>2000)throw new Error('La importación supera el límite de 2.000 elementos.');}return true;
+  let total=0;for(const [id,data] of Object.entries(sections)){if(!byId(id))continue;if(id==='vacaciones'||id==='otros_festivos'){if(!Array.isArray(data))throw new Error(`${byId(id).label} debe ser una lista.`);for(const item of data)internalPeriod(item,id==='otros_festivos'?'other':'vacation');total+=data.length;}else if(id==='cuentas_atras'){const normalized=normalizeCountdownState(data||{});for(const item of normalized.personal){if(!COUNTDOWN_CATEGORY_IDS.includes(item.category)||!item.name||item.month<1||item.month>12||item.day<1||item.day>31)throw new Error('Hay un acontecimiento personal no válido.');}total+=normalized.personal.length;}else if(id==='gastos_compartidos'){if(!data||!Array.isArray(data.groups))throw new Error('Grupos y facturas compartidas no tiene una estructura válida.');for(const group of data.groups){if(!group.id||!group.name||!Array.isArray(group.members)||!Array.isArray(group.families)||!Array.isArray(group.expenses))throw new Error('Hay un reparto de gastos no válido.');total+=1+group.members.length+group.expenses.length;}}else total+=sectionCount(id,data);if(total>2000)throw new Error('La importación supera el límite de 2.000 elementos.');}return true;
 }

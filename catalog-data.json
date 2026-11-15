@@ -89,7 +89,7 @@
     },
     {
       "id": "U18", "order": 18, "slug": "gastos-compartidos", "category": "Cálculo", "name": "Gastos compartidos",
-      "description": "Reparte varias facturas entre personas o familias y simplifica los pagos.", "status": "planned", "href": "", "cover": "shared-expenses", "icon": "€", "featured": false,
+      "description": "Reparte varias facturas entre personas o familias y simplifica los pagos.", "status": "available", "href": "/preview-shared-expenses/", "cover": "shared-expenses", "icon": "€", "featured": false,
       "preview": "<div class=\"shared-expenses-cover\"><div class=\"expense-ledger\"><span><i>Casa</i><b>480 €</b></span><span><i>Compra</i><b>126 €</b></span><span><i>Cena</i><b>84 €</b></span></div><div class=\"expense-settlement\"><small>3 facturas · 2 familias</small><b>Martín&nbsp; → &nbsp;García</b><strong>96 €</strong></div></div>"
     }
   ]

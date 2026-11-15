@@ -4,7 +4,7 @@ Colección de utilidades web cotidianas, rápidas y centradas en la privacidad. 
 
 - Producción: <https://odin.santiagosanz.info/>
 - Publicación: GitHub → Cloudflare Pages
-- Catálogo: 17 herramientas disponibles y 1 prevista, numeradas de U01 a U18
+- Catálogo: 18 herramientas disponibles, numeradas de U01 a U18
 - Administración: acceso independiente desde la cabecera; no forma parte del catálogo ni recibe número U
 
 ## Herramientas
@@ -28,11 +28,7 @@ Colección de utilidades web cotidianas, rápidas y centradas en la privacidad. 
 | U15 | Generador de contraseñas | Seguridad |
 | U16 | Identificadores y dígitos de control | Seguridad |
 | U17 | Taller de texto | Texto y datos |
-| U18 | Gastos compartidos (planificada) | Cálculo |
-
-## Herramientas previstas
-
-- **U18 · Gastos compartidos:** registra varias facturas con uno o varios pagadores, las reparte entre personas o familias y propone una liquidación comprensible con pocas operaciones.
+| U18 | Gastos compartidos | Cálculo |
 
 El motor de U18 será determinista y funcionará sin IA. Antes de publicarlo se retará con numerosos casos simples, familiares, parciales, con varios pagadores, redondeos y saldos cruzados. Cada resultado se comprobará mediante invariantes matemáticas, resultados esperados y validaciones externas asistidas por IA. La herramienta no se considerará terminada hasta superar esa batería.
 

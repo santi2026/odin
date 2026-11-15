@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Reparte varias facturas entre amigos o familias y obtén una liquidación clara con el menor número de pagos que ODÍN pueda demostrar." />
+  <title>Gastos compartidos · ODÍN</title>
+  <link rel="icon" href="/logo.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="/src/styles/global.css?v=shared-expenses-1" />
+  <link rel="stylesheet" href="/preview-shared-expenses/shared-expenses.css?v=1" />
+</head>
+<body class="tool-page expenses-body">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="site-header"><a class="brand" href="/preview-home/" aria-label="ODÍN, volver a la portada"><span class="brand-mark">✦</span><span>ODÍN</span></a><nav aria-label="Navegación de la herramienta"><a class="back-to-catalog" href="/preview-home/#herramientas"><span aria-hidden="true">←</span> Catálogo</a></nav></header>
+  <main id="contenido" class="expenses-page">
+    <header class="expenses-heading">
+      <div><p class="eyebrow">U18 · CÁLCULO</p><h1>Gastos compartidos</h1><p>Registra cada factura, reparte el coste entre quienes participaron y obtén instrucciones claras sobre quién paga a quién.</p></div>
+      <div class="expenses-assurance"><strong>CÉNTIMO A CÉNTIMO</strong><span>balance comprobado</span><small>Sin cuentas ni servidores</small></div>
+    </header>
+
+    <section class="group-toolbar">
+      <label><span>Reparto activo</span><select id="group-select"></select></label>
+      <div><button id="new-group" type="button">+ Nuevo reparto</button><button id="rename-group" type="button">Renombrar</button><button id="delete-group" class="danger-ghost" type="button">Eliminar</button></div>
+      <p id="group-toolbar-summary">Prepara el grupo para comenzar.</p>
+    </section>
+
+    <nav class="expenses-tabs" role="tablist" aria-label="Secciones del reparto">
+      <button type="button" role="tab" aria-selected="true" data-tab="group"><span>1</span>Grupo</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="expenses"><span>2</span>Facturas</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="balance"><span>3</span>Balance</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="settle"><span>4</span>Liquidar</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="summary"><span>5</span>Resumen</button>
+    </nav>
+
+    <section class="expenses-panel" data-panel="group" role="tabpanel">
+      <div class="panel-title"><div><span class="map-kicker">QUIÉNES PARTICIPAN</span><h2>Personas y familias</h2><p>Las facturas siempre se reparten entre personas. Al liquidar puedes agrupar sus saldos por familia.</p></div><label class="settlement-mode"><span>Liquidación final</span><select id="settlement-mode"><option value="family">Agrupada por familias</option><option value="individual">Individual por persona</option></select></label></div>
+      <div class="group-columns">
+        <article class="entity-box"><div class="entity-head"><div><span class="map-kicker">FAMILIAS</span><h3>Agrupaciones</h3></div><b id="family-count">0</b></div><form id="family-form" class="quick-add"><input id="family-name" maxlength="60" placeholder="Nombre de la familia" required /><button type="submit">Añadir</button></form><div id="families-list" class="entity-list"></div></article>
+        <article class="entity-box"><div class="entity-head"><div><span class="map-kicker">PERSONAS</span><h3>Participantes</h3></div><b id="member-count">0</b></div><form id="member-form" class="person-add"><input id="member-name" maxlength="60" placeholder="Nombre" required /><select id="member-family"><option value="">Sin familia</option></select><label><span>Peso habitual</span><input id="member-weight" type="number" min="0.1" max="100" step="0.1" value="1" /></label><button type="submit">Añadir persona</button></form><div id="members-list" class="entity-list"></div></article>
+      </div>
+      <aside class="weight-help"><b>¿Qué es el peso habitual?</b><p>Solo sirve como valor inicial en repartos por participaciones. Por ejemplo, adulto 1 y niño 0,5. Puedes cambiarlo en cada factura; ODÍN nunca presupone que un niño deba pagar menos.</p></aside>
+    </section>
+
+    <section class="expenses-panel" data-panel="expenses" role="tabpanel" hidden>
+      <div class="panel-title"><div><span class="map-kicker">GASTOS INDEPENDIENTES</span><h2>Facturas</h2><p>Cada compra, alojamiento o actividad se registra por separado, aunque la pague la misma persona o familia.</p></div><button id="reset-expense-form" type="button">Nueva factura</button></div>
+      <div class="expense-layout">
+        <form id="expense-form" class="expense-form">
+          <div class="expense-form-title"><div><span class="map-kicker" id="expense-form-kicker">NUEVA FACTURA</span><h3 id="expense-form-title">Datos del gasto</h3></div><span id="expense-form-state">Sin guardar</span></div>
+          <div class="expense-basics"><label class="wide"><span>Concepto</span><input id="expense-concept" maxlength="100" placeholder="Ej.: Casa rural" required /></label><label><span>Fecha</span><input id="expense-date" type="date" required /></label><label><span>Categoría</span><select id="expense-category"><option>Alojamiento</option><option>Comida</option><option>Bebidas</option><option>Transporte</option><option>Actividades</option><option>Compras</option><option>Otros</option></select></label><label><span>Importe total</span><div class="money-field"><input id="expense-total" inputmode="decimal" placeholder="0,00" required /><i>€</i></div></label></div>
+          <section class="expense-subsection"><div class="subsection-head"><div><b>Quién pagó</b><span>Puede haber uno o varios pagadores.</span></div><button id="add-payer" type="button">+ Otro pagador</button></div><div id="payer-rows" class="payer-rows"></div><p id="payer-total" class="calculation-hint">Pagos indicados: 0,00 €</p></section>
+          <section class="expense-subsection"><div class="subsection-head"><div><b>Cómo se reparte</b><span>Selecciona las personas que disfrutaron de este gasto.</span></div><select id="split-mode"><option value="equal">A partes iguales</option><option value="shares">Por participaciones</option><option value="exact">Importes exactos</option></select></div><div class="participant-actions"><button id="select-all-participants" type="button">Seleccionar todos</button><button id="clear-participants" type="button">Quitar todos</button></div><div id="participants-grid" class="participants-grid"></div><p id="allocation-total" class="calculation-hint">Selecciona participantes.</p></section>
+          <label class="expense-notes"><span>Notas opcionales</span><textarea id="expense-notes" maxlength="500" placeholder="Detalles que ayuden a recordar el gasto."></textarea></label>
+          <div class="expense-save-row"><button class="primary" id="save-expense" type="submit">Añadir factura</button><button id="cancel-expense-edit" type="button" hidden>Cancelar edición</button></div>
+        </form>
+        <aside class="expenses-ledger"><div class="ledger-head"><div><span class="map-kicker">HISTORIAL</span><h3>Facturas registradas</h3></div><b id="expense-count">0</b></div><div id="expenses-list" class="expenses-list"></div></aside>
+      </div>
+    </section>
+
+    <section class="expenses-panel" data-panel="balance" role="tabpanel" hidden>
+      <div class="panel-title"><div><span class="map-kicker">ANTES DE PAGAR</span><h2>Qué adelantó cada uno</h2><p>«Balance» es la diferencia entre lo pagado y lo que correspondía asumir.</p></div><span class="mode-badge" id="balance-mode"></span></div>
+      <div id="balance-content"></div>
+    </section>
+
+    <section class="expenses-panel" data-panel="settle" role="tabpanel" hidden>
+      <div class="panel-title"><div><span class="map-kicker">PLAN DE LIQUIDACIÓN</span><h2>Quién paga a quién</h2><p>ODÍN compensa los saldos completos para evitar pagos pequeños a todos los compradores.</p></div><span class="optimization-badge" id="optimization-badge">Pendiente</span></div>
+      <div id="settlement-content"></div>
+    </section>
+
+    <section class="expenses-panel" data-panel="summary" role="tabpanel" hidden>
+      <div class="panel-title"><div><span class="map-kicker">EXPLICACIÓN COMPLETA</span><h2>Resumen del reparto</h2><p>Desde las facturas originales hasta las transferencias finales.</p></div><div class="summary-actions"><button id="copy-summary" type="button">Copiar</button><button id="download-summary" type="button">Descargar TXT</button><button id="print-summary" type="button">Imprimir</button></div></div>
+      <div id="summary-content" class="summary-content"></div>
+    </section>
+
+    <p class="expenses-status" id="expenses-status" role="status">Añade las personas que participarán en el reparto.</p>
+    <section class="expenses-note"><span>✓</span><div><b>El balance debe ser exactamente cero</b><p>ODÍN trabaja en céntimos y comprueba que cada factura, reparto y liquidación cuadre antes de mostrar resultados. Si detecta una inconsistencia, bloquea el cálculo y explica qué debes corregir.</p></div></section>
+  </main>
+  <footer class="site-footer"><span>ODÍN · Gastos compartidos</span><span>Datos locales · sin sincronización bancaria</span></footer>
+  <script type="module" src="/preview-shared-expenses/shared-expenses.js?v=1"></script>
+  <script type="module" src="/global-timer.js?v=calendar-merge-1"></script>
+  <script type="module" src="/time-center.js?v=calendar-merge-1"></script>
+</body>
+</html>
