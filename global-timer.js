@@ -1,3 +1,5 @@
+import {nextOccurrence,readCountdownState,writeCountdownState} from '/countdown-data.js?v=1';
+
 const ODIN_TIMER_KEY = 'odin-timer-v1';
 const ODIN_ALARMS_KEY = 'odin-alarms-v1';
 const ODIN_FOCUS_KEY = 'odin-focus-v1';
@@ -87,11 +89,11 @@ function dueDefaultEvents(state,now=new Date()){
 }
 function checkGlobalCountdowns(){
   try{
-    const state={personal:[],defaults:{},notifiedDefaults:{},settings:{soundEnabled:true,soundChoice:'bell'},...JSON.parse(localStorage.getItem(ODIN_COUNTDOWNS_KEY)||'{}')};
-    const due=[...(state.personal||[]).filter(item=>item.enabled!==false&&item.targetAt<=Date.now()).map(item=>({id:item.id,name:item.name,targetAt:item.targetAt,item})),...dueDefaultEvents(state)];
+    const state=readCountdownState(),today=new Date().setHours(0,0,0,0);
+    const due=[...state.personal.filter(item=>item.enabled!==false).map(item=>({item,occurrence:nextOccurrence(item)})).filter(({occurrence})=>occurrence&&occurrence.targetAt<=Date.now()&&occurrence.targetAt>=today).map(({item,occurrence})=>({id:item.id,name:item.name,targetAt:occurrence.targetAt,item})),...dueDefaultEvents(state)];
     let changed=false;
-    for(const event of due){const key=`${event.id}:${event.targetAt}`;const notified=event.item?event.item.notifiedAt===event.targetAt:state.notifiedDefaults?.[event.id]===event.targetAt;if(notified||handledCountdowns.has(key))continue;handledCountdowns.add(key);if(event.item)event.item.notifiedAt=event.targetAt;else{state.notifiedDefaults ||= {};state.notifiedDefaults[event.id]=event.targetAt;}changed=true;showGlobalNotice({badge:'HOY',title:event.name,message:'La cuenta atrás ha llegado a su fecha. Pulsa para abrirla.',href:'/preview-countdown/'});if(state.settings?.soundEnabled!==false)playGlobalSound(state.settings?.soundChoice||'bell');}
-    if(changed){localStorage.setItem(ODIN_COUNTDOWNS_KEY,JSON.stringify(state));window.dispatchEvent(new Event('odin:countdowns-updated'));}
+    for(const event of due){const key=`${event.id}:${event.targetAt}`,notified=event.item?event.item.notifiedOccurrence===String(event.targetAt):state.notifiedDefaults?.[event.id]===event.targetAt;if(notified||handledCountdowns.has(key))continue;handledCountdowns.add(key);if(event.item)event.item.notifiedOccurrence=String(event.targetAt);else{state.notifiedDefaults ||= {};state.notifiedDefaults[event.id]=event.targetAt;}changed=true;showGlobalNotice({badge:'HOY',title:event.name,message:'La cuenta atrás ha llegado a su fecha. Pulsa para abrirla.',href:'/preview-countdown/'});if(state.settings?.soundEnabled!==false)playGlobalSound(state.settings?.soundChoice||'bell');}
+    if(changed){writeCountdownState(state);window.dispatchEvent(new Event('odin:countdowns-updated'));}
   }catch{}
 }
 

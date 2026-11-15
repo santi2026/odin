@@ -1,3 +1,5 @@
+import {nextOccurrence,readCountdownState} from '/countdown-data.js?v=1';
+
 const catalogResponse = await fetch('/catalog-data.json?v=1', { cache: 'no-store' });
 if (!catalogResponse.ok) throw new Error('No se pudo cargar el catálogo de ODÍN.');
 const catalog = await catalogResponse.json();
@@ -78,12 +80,11 @@ function updateFocusCover(){
 updateFocusCover();setInterval(updateFocusCover,500);
 
 const countdownDefaults=[['christmas','Navidad',11,25],['new-year','Año Nuevo',0,1],['kings','Reyes',0,6],['sant-jordi','Sant Jordi',3,23],['san-juan','San Juan',5,24],['all-saints','Todos los Santos',10,1]];
-function nextAnnual(month,day,now=new Date()){let target=new Date(now.getFullYear(),month,day,0,0,0,0);if(target<=now)target.setFullYear(target.getFullYear()+1);return target.getTime();}
+function nextAnnual(month,day,now=new Date()){let target=new Date(now.getFullYear(),month,day,0,0,0,0),today=new Date(now.getFullYear(),now.getMonth(),now.getDate());if(target<today)target.setFullYear(target.getFullYear()+1);return target.getTime();}
 function lastSunday(year,month){const date=new Date(Date.UTC(year,month+1,0));return date.getUTCDate()-date.getUTCDay();}
 function clockChanges(now=new Date()){const items=[];for(const year of [now.getFullYear(),now.getFullYear()+1])for(const [id,name,month] of [['clock-summer','Inicio del horario de verano',2],['clock-winter','Inicio del horario de invierno',9]]){const targetAt=Date.UTC(year,month,lastSunday(year,month),1);if(targetAt>now.getTime())items.push({id,name,targetAt});}return items;}
 function upcomingCountdowns(){
-  let state={personal:[],defaults:{}};try{state={...state,...JSON.parse(localStorage.getItem('odin-countdowns-v1'))};}catch{}
-  const now=Date.now(), items=(state.personal||[]).filter(item=>item.enabled!==false&&item.targetAt>now).map(item=>({name:item.name,targetAt:item.targetAt}));
+  const state=readCountdownState(),today=new Date().setHours(0,0,0,0),items=state.personal.filter(item=>item.enabled!==false).map(item=>({name:item.name,...nextOccurrence(item)})).filter(item=>item.targetAt>=today);
   for(const [id,name,month,day] of countdownDefaults)if(state.defaults?.[id]!==false)items.push({name,targetAt:nextAnnual(month,day)});
   for(const change of clockChanges())if(state.defaults?.[change.id]!==false&&state.defaults?.['clock-change']!==false)items.push(change);
   return items.sort((a,b)=>a.targetAt-b.targetAt);

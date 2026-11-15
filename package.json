@@ -8,6 +8,7 @@
     "build": "astro check && astro build",
     "build:static": "node scripts/validate-catalog.mjs && node build-static.mjs",
     "check:catalog": "node scripts/validate-catalog.mjs",
+    "test:countdown": "node scripts/test-countdown.mjs",
     "check": "astro check",
     "preview": "astro preview"
   },

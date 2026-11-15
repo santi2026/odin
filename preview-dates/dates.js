@@ -1,7 +1,8 @@
 import {LOCAL_HOLIDAY_SEED_VERSION,officialLocalPeriods} from '../calendar-data.js?v=1';
+import {COUNTDOWN_MAX,normalizeCountdownItem,readCountdownState,writeCountdownState} from '../countdown-data.js?v=1';
 import {addAmount,addDays,analyzeRange,dateKey,dayInfo,parseDate} from './date-core.js?v=1';
 
-const CALENDAR_KEY='odin-calendar-v1',PREFERENCES_KEY='odin-date-calculator-v1',COUNTDOWN_KEY='odin-countdowns-v1',COUNTDOWN_MAX=20;
+const CALENDAR_KEY='odin-calendar-v1',PREFERENCES_KEY='odin-date-calculator-v1';
 const $=selector=>document.querySelector(selector);
 const today=new Date();today.setHours(12,0,0,0);
 let periods=loadCalendarPeriods(),resultDate=new Date(today),activeTab='add';
@@ -64,10 +65,9 @@ function render(){renderAdd();renderBetween();renderPolicy()}
 function createCountdown(){
   const message=$('#result-message'),targetAt=new Date(resultDate.getFullYear(),resultDate.getMonth(),resultDate.getDate(),0,0,0,0).getTime(),name=$('#countdown-name').value.trim()||'Fecha calculada';
   if(targetAt<=Date.now()){message.textContent='La cuenta atrás necesita una fecha futura.';message.hidden=false;return}
-  let state;try{state=JSON.parse(localStorage.getItem(COUNTDOWN_KEY)||'{}')}catch{state={}}
-  state.personal=Array.isArray(state.personal)?state.personal:[];state.defaults=state.defaults||{};state.notifiedDefaults=state.notifiedDefaults||{};state.settings=state.settings||{soundEnabled:true,soundChoice:'bell'};
+  const state=readCountdownState();
   if(state.personal.length>=COUNTDOWN_MAX){message.textContent='Has alcanzado el límite de 20 cuentas personales.';message.hidden=false;return}
-  state.personal.push({id:crypto.randomUUID(),name,targetAt,enabled:true,notifiedAt:0});localStorage.setItem(COUNTDOWN_KEY,JSON.stringify(state));window.dispatchEvent(new Event('odin:countdowns-updated'));message.innerHTML='Cuenta atrás creada. <a href="/preview-countdown/">Abrir Cuenta atrás</a>';message.hidden=false;
+  state.personal.push(normalizeCountdownItem({id:crypto.randomUUID(),name,category:'reminder',year:resultDate.getFullYear(),month:resultDate.getMonth()+1,day:resultDate.getDate(),time:'00:00',annual:false,yearKnown:true,enabled:true}));writeCountdownState(state);window.dispatchEvent(new Event('odin:countdowns-updated'));message.innerHTML='Recordatorio creado. <a href="/preview-countdown/">Abrir Cuenta atrás</a>';message.hidden=false;
 }
 
 const nextMonth=addDays(today,30);

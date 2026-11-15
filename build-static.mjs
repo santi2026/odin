@@ -9,6 +9,7 @@ await cp(join(root, 'preview-home', 'index.html'), join(dist, 'index.html'), { f
 await cp(join(root, 'global-timer.js'), join(dist, 'global-timer.js'), { force: true });
 await cp(join(root, 'time-center.js'), join(dist, 'time-center.js'), { force: true });
 await cp(join(root, 'calendar-data.js'), join(dist, 'calendar-data.js'), { force: true });
+await cp(join(root, 'countdown-data.js'), join(dist, 'countdown-data.js'), { force: true });
 await cp(join(root, 'catalog-data.json'), join(dist, 'catalog-data.json'), { force: true });
 await cp(join(root, 'logo.ico'), join(dist, 'logo.ico'), { force: true });
 

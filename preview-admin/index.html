@@ -25,14 +25,15 @@
       <div class="admin-panel-head"><div><span class="map-kicker">EXPORTACIÓN SELECTIVA</span><h2>Elige qué quieres guardar</h2></div><div class="admin-quick-actions"><button type="button" data-select-set="all">Todo</button><button type="button" data-select-set="data">Solo datos personales</button><button type="button" data-select-set="preferences">Solo preferencias</button><button type="button" data-select-set="none">Nada</button></div></div>
       <div class="admin-section-list" id="export-sections"></div>
       <div class="admin-export-actions"><button class="admin-primary" id="export-json" type="button">Exportar selección en JSON</button><button id="export-csv" type="button">Exportar vacaciones y festivos en CSV</button></div>
+      <div class="admin-info-card admin-countdown-export"><div><b>Exportar acontecimientos por categoría</b><p>Elige todas las categorías o solamente una. El año puede quedar vacío en cumpleaños de edad desconocida.</p></div><label><span>Categoría</span><select id="countdown-export-category"><option value="all">Todas</option><option value="birthday">Cumpleaños</option><option value="saint">Santos</option><option value="anniversary">Aniversarios</option><option value="reminder">Recordatorios</option></select></label><div><button id="export-countdowns-json" type="button">Descargar JSON</button><button id="export-countdowns-csv" type="button">Descargar CSV</button></div></div>
       <p class="admin-inline-status" id="export-status">El CSV utiliza punto y coma (;) como separador.</p>
       <details class="admin-template-box"><summary>Plantillas para vacaciones y festivos</summary><div><button type="button" id="template-json">Descargar plantilla JSON</button><button type="button" id="template-csv">Descargar plantilla CSV</button><button type="button" id="copy-holiday-prompt">Copiar prompt para generar festivos</button></div><pre id="holiday-prompt"></pre></details>
     </section>
 
     <section class="admin-panel" data-admin-panel="import" hidden>
-      <div class="admin-panel-head"><div><span class="map-kicker">IMPORTAR</span><h2>Revisa antes de aplicar</h2><p>Admite copias ODÍN en JSON y periodos en JSON o CSV con separador ;.</p></div></div>
+      <div class="admin-panel-head"><div><span class="map-kicker">IMPORTAR</span><h2>Revisa antes de aplicar</h2><p>Admite copias ODÍN en JSON, periodos y acontecimientos en CSV con separador ;.</p></div></div>
       <ol class="admin-import-steps"><li><b>1. Introduce el contenido</b><span>Abre un archivo o pega su texto.</span></li><li><b>2. Analízalo</b><span>ODÍN comprueba el formato sin modificar nada.</span></li><li><b>3. Elige y confirma</b><span>Verás las secciones detectadas antes de importarlas.</span></li></ol>
-      <aside class="admin-detection-help"><b>¿Cómo sabe ODÍN dónde aplicar cada dato?</b><p>La copia completa identifica sus secciones internamente. En vacaciones y festivos se utiliza el campo <code>tipo</code>; en CSV, la columna <code>tipo</code>. Después del análisis verás exactamente si corresponde a Alarmas, Cuentas atrás, Vacaciones, Otros u otra configuración.</p></aside>
+      <aside class="admin-detection-help"><b>¿Cómo sabe ODÍN dónde aplicar cada dato?</b><p>La copia completa identifica sus secciones internamente. En CSV, <code>tipo</code> identifica periodos y <code>categoria</code> identifica acontecimientos. Después del análisis verás exactamente dónde se aplicará cada dato.</p></aside>
       <div class="admin-import-source"><label class="admin-file-button" for="import-file"><b>Abrir archivo</b><small>.json o .csv · máximo 2 MB</small></label><input id="import-file" type="file" accept=".json,.csv,application/json,text/csv" hidden /><span>o</span><label><b>Pegar contenido</b><textarea id="import-text" spellcheck="false" placeholder="Pega aquí una copia JSON o una lista CSV"></textarea></label><button id="analyze-import" type="button">Analizar contenido</button></div>
       <div class="admin-import-preview" id="import-preview" hidden><div class="admin-panel-head"><div><span class="map-kicker">CONTENIDO DETECTADO</span><h3 id="import-title">Copia compatible</h3><p id="import-detection"></p></div><label class="admin-mode"><span>Cómo importar</span><select id="import-mode"><option value="merge">Combinar sin duplicar</option><option value="replace">Sustituir las secciones marcadas</option></select></label></div><div class="admin-section-list" id="import-sections"></div><label class="admin-safety"><input id="preimport-backup" type="checkbox" checked /><span><b>Descargar una copia preventiva</b><small>Guarda el estado actual antes de importar.</small></span></label><button class="admin-primary" id="apply-import" type="button">Importar secciones marcadas</button></div>
       <p class="admin-inline-status" id="import-status">Todavía no se ha analizado ningún archivo.</p>
@@ -47,8 +48,8 @@
     <section class="admin-note"><span>!</span><div><b>Los archivos permanecen bajo tu control</b><p>ODÍN no sube las copias a ningún servidor. La importación solo acepta estructuras conocidas y nunca ejecuta código incluido en los archivos.</p></div></section>
   </main>
   <footer class="site-footer"><span>ODÍN · Administración</span><span>JSON y CSV local · sin seguimiento</span></footer>
-  <script type="module" src="/preview-admin/admin.js?v=2"></script>
-  <script type="module" src="/global-timer.js?v=countdown-2"></script>
-  <script type="module" src="/time-center.js?v=5"></script>
+  <script type="module" src="/preview-admin/admin.js?v=backup-v2"></script>
+  <script type="module" src="/global-timer.js?v=countdown-categories-1"></script>
+  <script type="module" src="/time-center.js?v=countdown-categories-1"></script>
 </body>
 </html>

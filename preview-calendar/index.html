@@ -12,7 +12,7 @@
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
   <header class="site-header"><a class="brand" href="/preview-home/" aria-label="ODÍN, inicio"><span class="brand-mark" aria-hidden="true">✦</span><span>ODÍN</span></a><nav aria-label="Navegación principal"><a href="/preview-home/#herramientas">Catálogo</a></nav></header>
   <main id="contenido" class="calendar-page">
-    <section class="tool-hero calendar-hero"><p class="eyebrow">U12 · TIEMPO</p><h1>Calendario anual</h1><p>Todo el año de un vistazo, con celebraciones recurrentes y tus vacaciones guardadas en este navegador.</p></section>
+    <section class="tool-hero calendar-hero"><p class="eyebrow">U02 · TIEMPO</p><h1>Calendario anual</h1><p>Todo el año de un vistazo, con celebraciones recurrentes, acontecimientos personales y tus vacaciones guardadas en este navegador.</p></section>
 
     <section class="calendar-toolbar">
       <div class="year-summary calendar-start-summary"><strong>Año <span id="start-year-label">2026</span></strong><span id="year-description">(Año común · 365 días)</span></div>
@@ -33,8 +33,9 @@
           <label><input type="checkbox" data-layer="barcelona" checked /><span class="layer-dot" data-color="barcelona"></span>Barcelona</label>
           <label><input type="checkbox" data-layer="madrid" checked /><span class="layer-dot" data-color="madrid"></span>Madrid</label>
           <label><input type="checkbox" data-layer="other" checked /><span class="layer-dot" data-color="other"></span>Otros</label>
+          <details class="personal-layer-settings"><summary><span class="layer-dot" data-color="birthday"></span>Personales</summary><div><label><input type="checkbox" data-layer="birthday" checked /><span class="layer-dot" data-color="birthday"></span>Cumpleaños</label><label><input type="checkbox" data-layer="saint" checked /><span class="layer-dot" data-color="saint"></span>Santos</label><label><input type="checkbox" data-layer="anniversary" checked /><span class="layer-dot" data-color="anniversary"></span>Aniversarios</label><label><input type="checkbox" data-layer="reminder" checked /><span class="layer-dot" data-color="reminder"></span>Recordatorios</label></div></details>
         </div>
-        <details class="color-settings"><summary>Personalizar colores</summary><div class="color-grid"><label>España <input type="color" data-picker="spain" /></label><label>Madrid <input type="color" data-picker="madrid" /></label><label>Barcelona <input type="color" data-picker="barcelona" /></label><label>Vacaciones <input type="color" data-picker="vacation" /></label><label>Otros <input type="color" data-picker="other" /></label><button id="reset-colors" type="button">Restablecer</button></div></details>
+        <details class="color-settings"><summary>Personalizar colores</summary><div class="color-grid"><label>España <input type="color" data-picker="spain" /></label><label>Madrid <input type="color" data-picker="madrid" /></label><label>Barcelona <input type="color" data-picker="barcelona" /></label><label>Vacaciones <input type="color" data-picker="vacation" /></label><label>Otros <input type="color" data-picker="other" /></label><label>Cumpleaños <input type="color" data-picker="birthday" /></label><label>Santos <input type="color" data-picker="saint" /></label><label>Aniversarios <input type="color" data-picker="anniversary" /></label><label>Recordatorios <input type="color" data-picker="reminder" /></label><button id="reset-colors" type="button">Restablecer</button></div></details>
       </div>
     </section>
 
@@ -79,6 +80,6 @@
     </form>
   </dialog>
   <footer class="site-footer"><span>ODÍN · Calendario anual</span><span>Datos locales · sin seguimiento</span></footer>
-  <script type="module" src="/global-timer.js?v=countdown-2"></script><script type="module" src="/time-center.js?v=5"></script><script type="module" src="/preview-calendar/calendar.js?v=11"></script>
+  <script type="module" src="/global-timer.js?v=countdown-categories-1"></script><script type="module" src="/time-center.js?v=countdown-categories-1"></script><script type="module" src="/preview-calendar/calendar.js?v=personal-1"></script>
 </body>
 </html>
