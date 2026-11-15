@@ -23,6 +23,7 @@ function viewPeriod(){const start=new Date(year,state.view.startMonth,1,12),end=
 function render(){
   countdownState=readCountdownState();yearInput.value=year;document.querySelector('#start-month').value=state.view.startMonth;document.querySelector('#months-count').value=state.view.months;
   const info=yearInfo(year),period=viewPeriod();document.querySelector('#start-year-label').textContent=year;document.querySelector('#year-description').textContent=`(${info.label} · ${info.days} días)`;document.querySelector('#period-range').textContent=`${fmt(period.start,{month:'long',year:'numeric'})} — ${fmt(period.end,{month:'long',year:'numeric'})} · ${state.view.months} ${state.view.months===1?'mes':'meses'}`;
+  const missingYears=[];for(let value=period.start.getFullYear();value<=period.end.getFullYear();value++)if(!eventsForYear(value).length)missingYears.push(value);const coverageNote=document.querySelector('#calendar-coverage-note');coverageNote.hidden=!missingYears.length;if(missingYears.length){const yearsText=missingYears.length===1?String(missingYears[0]):`${missingYears.slice(0,-1).join(', ')} y ${missingYears.at(-1)}`;coverageNote.textContent=`No hay festivos oficiales cargados para ${yearsText}. ${missingYears.length===1?'Ese año se muestra':'Esos años se muestran'} sin festivos nacionales ni autonómicos.`}
   grid.innerHTML='';let renderedYear=null;
   for(let index=0;index<state.view.months;index++){
     const monthDate=new Date(year,state.view.startMonth+index,1,12),displayYear=monthDate.getFullYear(),month=monthDate.getMonth();
