@@ -65,22 +65,22 @@
     {
       "id": "U13", "order": 13, "slug": "html-a-texto", "category": "Texto y datos", "name": "HTML a texto",
       "description": "Extrae el texto legible de un documento HTML sin ejecutarlo.", "status": "available", "href": "/preview-html-text/", "cover": "html-clean", "icon": "Aa", "featured": false,
-      "preview": "<div class=\"html-clean-cover\"><span>&lt;html&gt;</span><b>Texto limpio</b></div>"
+      "preview": "<div class=\"html-clean-cover\"><div class=\"html-source\"><i>&lt;h1&gt;</i><i>&lt;p&gt;</i><i>&lt;b&gt;</i></div><span class=\"cover-flow\">→</span><div class=\"html-output\"><b>Texto limpio</b><i></i><i></i><i></i></div></div>"
     },
     {
       "id": "U14", "order": 14, "slug": "codificador-texto-url", "category": "Texto y datos", "name": "Codificador de texto y URL",
       "description": "Codifica, analiza URLs y cifra texto localmente.", "status": "available", "href": "/preview-codec/", "cover": "codec", "icon": "%", "featured": false,
-      "preview": "<div class=\"codec-cover\"><span>%20 · 64</span><b>Texto ⇄ datos</b></div>"
+      "preview": "<div class=\"codec-cover\"><div class=\"codec-input\"><small>Texto</small><b>Hola mundo</b></div><span>⇄</span><div class=\"codec-stack\"><i>%48%6F...</i><i>SG9sYQ==</i></div></div>"
     },
     {
       "id": "U15", "order": 15, "slug": "generador-contrasenas", "category": "Seguridad", "name": "Generador de contraseñas",
       "description": "Crea contraseñas, frases de paso y PIN aleatorios sin guardar historial.", "status": "available", "href": "/preview-password/", "cover": "password", "icon": "✦", "featured": false,
-      "preview": "<div class=\"password-cover\"><span>A7·x#9K</span><b>Generación local</b></div>"
+      "preview": "<div class=\"password-cover\"><div class=\"password-window\"><small>Contraseña segura</small><b>A7·x#9K!</b><div class=\"strength-bars\"><i></i><i></i><i></i><i></i></div><span>Excelente · 16 caracteres</span></div></div>"
     },
     {
       "id": "U16", "order": 16, "slug": "identificadores-control", "category": "Seguridad", "name": "Identificadores y dígitos de control",
       "description": "Valida, calcula y genera ejemplos de NIF, NIE, CIF, IBAN y NUSS/NAF.", "status": "available", "href": "/preview-identifiers/", "cover": "identity", "icon": "✓", "featured": false,
-      "preview": "<div class=\"identity-cover\"><span>12345678·Z</span><b>Validar · Calcular</b></div>"
+      "preview": "<div class=\"identity-cover\"><div class=\"identity-doc\"><span>NIF</span><b>12345678·Z</b><i>✓ Válido</i></div><div class=\"identity-types\"><span>IBAN</span><span>CIF</span><span>NUSS</span></div></div>"
     }
   ]
 }
