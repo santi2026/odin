@@ -1,23 +1,20 @@
 import {COUNTDOWN_CATEGORIES,COUNTDOWN_MAX,categoryInfo,nextOccurrence,normalizeCountdownItem,occurrenceLabel,readCountdownState,writeCountdownState} from '/countdown-data.js?v=2';
+import {isGeneralEventEnabled,nextGeneralEvents} from '/countdown-general.js?v=1';
 
-const $=selector=>document.querySelector(selector),defaults=[['christmas','Navidad',11,25],['new-year','Año Nuevo',0,1],['kings','Reyes',0,6],['sant-jordi','Sant Jordi',3,23],['san-juan','San Juan',5,24],['all-saints','Todos los Santos',10,1],['clock-summer','Cambio al horario de verano',2,-1],['clock-winter','Cambio al horario de invierno',9,-1]];
+const $=selector=>document.querySelector(selector);
 let state=readCountdownState(),editingId=null,activeFilter='all';
 const pad=value=>String(value).padStart(2,'0'),dateKey=date=>`${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
 const html=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const searchable=value=>String(value??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('es');
-const lastSunday=(year,month)=>{const date=new Date(year,month+1,0);return date.getDate()-date.getDay()};
-function nextAnnual(month,day,now=new Date()){let target=new Date(now.getFullYear(),month,day,0,0,0,0);if(dateKey(target)<dateKey(now))target.setFullYear(target.getFullYear()+1);return target.getTime()}
-function clockTarget(id,now=new Date()){const month=id==='clock-summer'?2:9;for(const year of [now.getFullYear(),now.getFullYear()+1]){const target=new Date(year,month,lastSunday(year,month),2).getTime();if(dateKey(new Date(target))>=dateKey(now))return target}return 0}
-function defaultEnabled(id){return state.defaults[id]!==false&&(id!=='clock-summer'&&id!=='clock-winter'||state.defaults['clock-change']!==false)}
-function defaultTarget(id,month,day){return id==='clock-summer'||id==='clock-winter'?clockTarget(id):nextAnnual(month,day)}
-function generalItems(){return defaults.filter(([id])=>defaultEnabled(id)).map(([id,name,month,day])=>({id:`default:${id}`,name,category:'general',targetAt:defaultTarget(id,month,day),general:true,annual:true,occurrenceYear:new Date(defaultTarget(id,month,day)).getFullYear()}))}
+function generalCatalog(){return nextGeneralEvents(new Date())}
+function generalItems(){return generalCatalog().filter(item=>isGeneralEventEnabled(state,item.id))}
 function personalItems(){return state.personal.filter(item=>item.enabled!==false).map(item=>{const occurrence=nextOccurrence(item);return occurrence?{...item,...occurrence}:null}).filter(Boolean)}
-function allItems(){return[...personalItems(),...generalItems()].sort((a,b)=>a.targetAt-b.targetAt||a.name.localeCompare(b.name,'es'))}
+function allItems(){const seen=new Set();return[...personalItems(),...generalItems()].filter(item=>{const key=`${dateKey(new Date(item.targetAt))}:${searchable(item.name)}`;if(seen.has(key))return false;seen.add(key);return true}).sort((a,b)=>a.targetAt-b.targetAt||a.name.localeCompare(b.name,'es'))}
 function parts(targetAt){const diff=Math.max(0,targetAt-Date.now()),total=Math.floor(diff/1000);return{days:Math.floor(total/86400),hours:Math.floor(total/3600)%24,minutes:Math.floor(total/60)%60,due:dateKey(new Date(targetAt))===dateKey(new Date())||targetAt<=Date.now()}}
 function dateLabel(targetAt){return new Intl.DateTimeFormat('es-ES',{weekday:'long',day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}).format(targetAt)}
 function save(){state=writeCountdownState(state);window.dispatchEvent(new Event('odin:countdowns-updated'))}
 function categoryMeta(item){return item.general?{label:'Generales',color:'#d6b35d'}:categoryInfo(item.category)}
-function itemDetail(item){const detail=occurrenceLabel(item,item.occurrenceYear);if(item.category==='birthday'&&detail&&!detail.startsWith('Edad'))return`Cumple ${detail}`;if(item.category==='anniversary'&&detail&&!detail.startsWith('Se'))return`${detail} de aniversario`;return detail}
+function itemDetail(item){if(item.general)return item.detail||'Calendario';const detail=occurrenceLabel(item,item.occurrenceYear);if(item.category==='birthday'&&detail&&!detail.startsWith('Edad'))return`Cumple ${detail}`;if(item.category==='anniversary'&&detail&&!detail.startsWith('Se'))return`${detail} de aniversario`;return detail}
 
 function render(){
   const items=allItems(),query=searchable($('#event-search').value.trim()),filtered=items.filter(item=>(activeFilter==='all'||item.category===activeFilter)&&(!query||searchable(item.name).includes(query))),list=$('#countdown-list');
@@ -26,7 +23,7 @@ function render(){
   $('#countdown-limit').hidden=state.personal.length<COUNTDOWN_MAX||Boolean(editingId);$('#save-countdown').disabled=state.personal.length>=COUNTDOWN_MAX&&!editingId;
   list.innerHTML=filtered.length?filtered.map(item=>{const p=parts(item.targetAt),meta=categoryMeta(item),detail=itemDetail(item);return`<article class="countdown-item ${p.due?'is-due':''}" style="--countdown-category:${meta.color}"><div class="countdown-main"><span>${meta.label}${item.annual?' · Anual':''}</span><h3>${html(item.name)}</h3><time>${dateLabel(item.targetAt)}</time>${detail?`<small class="countdown-detail">${html(detail)}</small>`:''}</div><div class="countdown-units">${p.due?'<strong>Es hoy</strong>':`<b>${p.days}<small>${p.days===1?'día':'días'}</small></b><b>${pad(p.hours)}<small>horas</small></b><b>${pad(p.minutes)}<small>min</small></b>`}</div>${item.general?'':`<div class="countdown-controls"><button data-edit="${item.id}">Editar</button><button data-delete="${item.id}">Eliminar</button></div>`}</article>`}).join(''):'<div class="empty-alarms"><span>◇</span><h3>No hay acontecimientos en esta categoría</h3><p>Crea uno nuevo o cambia el filtro.</p></div>';
   if(!filtered.length&&query)list.innerHTML='<div class="empty-alarms"><span>⌕</span><h3>No hay coincidencias</h3><p>Prueba con otro nombre o cambia la categoría.</p></div>';
-  $('#general-event-grid').innerHTML=defaults.map(([id,name,month,day])=>{const enabled=defaultEnabled(id),target=defaultTarget(id,month,day);return`<label class="general-event"><span><b>${name}</b><small>${dateLabel(target)}</small></span><input type="checkbox" data-default="${id}" ${enabled?'checked':''}/><i aria-hidden="true"></i></label>`}).join('');
+  $('#general-event-grid').innerHTML=generalCatalog().map(item=>`<label class="general-event"><span><b>${html(item.name)}</b><small>${html(item.detail)} · ${dateLabel(item.targetAt)}</small></span><input type="checkbox" data-default="${html(item.id)}" ${isGeneralEventEnabled(state,item.id)?'checked':''}/><i aria-hidden="true"></i></label>`).join('');
 }
 
 function syncFormVisibility(){const birthday=$('#event-category').value==='birthday',annual=$('#event-annual').checked,unknown=birthday&&annual&&$('#event-year-unknown').checked;$('#unknown-year-setting').hidden=!(birthday&&annual);$('#known-date-fields').hidden=unknown;$('#unknown-date-fields').hidden=!unknown;$('#event-date').required=!unknown;$('#event-day').required=unknown;$('#event-month').required=unknown}
@@ -40,4 +37,5 @@ $('#general-event-grid').addEventListener('change',event=>{const id=event.target
 $('#event-category').addEventListener('change',()=>{const meta=categoryInfo($('#event-category').value);$('#event-annual').checked=meta.annual;$('#event-year-unknown').checked=false;syncFormVisibility()});
 $('#event-annual').addEventListener('change',syncFormVisibility);$('#event-year-unknown').addEventListener('change',syncFormVisibility);$('#event-search').addEventListener('input',render);$('#event-filter').addEventListener('change',event=>{activeFilter=event.target.value;render()});$('#cancel-edit').addEventListener('click',resetForm);
 $('#countdown-sound').checked=state.settings.soundEnabled!==false;$('#countdown-sound').addEventListener('change',event=>{state.settings.soundEnabled=event.target.checked;save()});
+window.addEventListener('odin:calendar-updated',render);window.addEventListener('odin:countdowns-updated',()=>{state=readCountdownState();render()});window.addEventListener('storage',event=>{if(event.key==='odin-calendar-v1'||event.key==='odin-countdowns-v1'){state=readCountdownState();render()}});
 resetForm();setInterval(render,30000);

@@ -1,4 +1,5 @@
 import {nextOccurrence,readCountdownState,writeCountdownState} from '/countdown-data.js?v=2';
+import {dueGeneralEvents,isGeneralEventEnabled} from '/countdown-general.js?v=1';
 
 const ODIN_TIMER_KEY = 'odin-timer-v1';
 const ODIN_ALARMS_KEY = 'odin-alarms-v1';
@@ -80,12 +81,8 @@ function checkGlobalFocus(){
   try{const state=JSON.parse(localStorage.getItem(ODIN_FOCUS_KEY)),session=state?.session;if(!session?.running||!session.endAt||session.endAt>Date.now()||handledFocusEndAt===session.endAt)return;handledFocusEndAt=session.endAt;advanceFocus(state);}
   catch{}
 }
-const countdownDefaults=[['christmas','Navidad',11,25],['new-year','Año Nuevo',0,1],['kings','Reyes',0,6],['sant-jordi','Sant Jordi',3,23],['san-juan','San Juan',5,24],['all-saints','Todos los Santos',10,1]];
 function dueDefaultEvents(state,now=new Date()){
-  const due=[];
-  for(const [id,name,month,day] of countdownDefaults){if(state.defaults?.[id]===false)continue;const target=new Date(now.getFullYear(),month,day,0,0,0,0).getTime();if(target<=now.getTime()&&now.getTime()-target<7*86400000)due.push({id:`default:${id}`,name,targetAt:target});}
-  for(const [id,name,month] of [['clock-summer','Inicio del horario de verano',2],['clock-winter','Inicio del horario de invierno',9]]){if(state.defaults?.[id]===false||state.defaults?.['clock-change']===false)continue;const last=new Date(Date.UTC(now.getFullYear(),month+1,0)),target=Date.UTC(now.getFullYear(),month,last.getUTCDate()-last.getUTCDay(),1);if(target<=now.getTime()&&now.getTime()-target<7*86400000)due.push({id:`default:${id}`,name,targetAt:target});}
-  return due;
+  return dueGeneralEvents(now).filter(item=>isGeneralEventEnabled(state,item.id)).map(item=>({...item,id:`general:${item.id}`}));
 }
 function checkGlobalCountdowns(){
   try{

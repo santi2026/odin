@@ -1,4 +1,5 @@
 import {nextOccurrence,readCountdownState} from '/countdown-data.js?v=2';
+import {isGeneralEventEnabled,nextGeneralEvents} from '/countdown-general.js?v=1';
 
 const catalogResponse = await fetch('/catalog-data.json?v=1', { cache: 'no-store' });
 if (!catalogResponse.ok) throw new Error('No se pudo cargar el catálogo de ODÍN.');
@@ -79,18 +80,13 @@ function updateFocusCover(){
 }
 updateFocusCover();setInterval(updateFocusCover,500);
 
-const countdownDefaults=[['christmas','Navidad',11,25],['new-year','Año Nuevo',0,1],['kings','Reyes',0,6],['sant-jordi','Sant Jordi',3,23],['san-juan','San Juan',5,24],['all-saints','Todos los Santos',10,1]];
-function nextAnnual(month,day,now=new Date()){let target=new Date(now.getFullYear(),month,day,0,0,0,0),today=new Date(now.getFullYear(),now.getMonth(),now.getDate());if(target<today)target.setFullYear(target.getFullYear()+1);return target.getTime();}
-function lastSunday(year,month){const date=new Date(Date.UTC(year,month+1,0));return date.getUTCDate()-date.getUTCDay();}
-function clockChanges(now=new Date()){const items=[];for(const year of [now.getFullYear(),now.getFullYear()+1])for(const [id,name,month] of [['clock-summer','Inicio del horario de verano',2],['clock-winter','Inicio del horario de invierno',9]]){const targetAt=Date.UTC(year,month,lastSunday(year,month),1);if(targetAt>now.getTime())items.push({id,name,targetAt});}return items;}
 function upcomingCountdowns(){
   const state=readCountdownState(),today=new Date().setHours(0,0,0,0),items=state.personal.filter(item=>item.enabled!==false).map(item=>({name:item.name,...nextOccurrence(item)})).filter(item=>item.targetAt>=today);
-  for(const [id,name,month,day] of countdownDefaults)if(state.defaults?.[id]!==false)items.push({name,targetAt:nextAnnual(month,day)});
-  for(const change of clockChanges())if(state.defaults?.[change.id]!==false&&state.defaults?.['clock-change']!==false)items.push(change);
-  return items.sort((a,b)=>a.targetAt-b.targetAt);
+  items.push(...nextGeneralEvents().filter(item=>isGeneralEventEnabled(state,item.id)));
+  const seen=new Set();return items.sort((a,b)=>a.targetAt-b.targetAt).filter(item=>{const key=`${new Date(item.targetAt).toDateString()}:${item.name.toLocaleLowerCase('es')}`;if(seen.has(key))return false;seen.add(key);return true});
 }
 function updateCountdownCover(){const name=document.querySelector('#live-countdown-name'),days=document.querySelector('#live-countdown-days'),unit=document.querySelector('#live-countdown-unit');if(!name||!days||!unit)return;const next=upcomingCountdowns()[0];if(!next){name.textContent='Sin acontecimientos';days.textContent='--';unit.textContent='días';return;}const remaining=next.targetAt-Date.now(),dayCount=Math.ceil(remaining/86400000);name.textContent=next.name;days.textContent=dayCount;unit.textContent=dayCount===1?'día':'días';}
-updateCountdownCover();setInterval(updateCountdownCover,30000);window.addEventListener('odin:countdowns-updated',updateCountdownCover);
+updateCountdownCover();setInterval(updateCountdownCover,30000);window.addEventListener('odin:countdowns-updated',updateCountdownCover);window.addEventListener('odin:calendar-updated',updateCountdownCover);
 
 async function updatePublicIp() {
   const value = document.querySelector('#live-public-ip');
