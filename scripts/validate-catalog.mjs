@@ -10,18 +10,25 @@ const expectedCategories = new Set(catalog.categoryOrder);
 if (!Array.isArray(tools) || tools.length === 0) throw new Error('El catálogo no contiene herramientas.');
 
 const unique = (field) => new Set(tools.map((tool) => tool[field])).size === tools.length;
-for (const field of ['id', 'order', 'slug', 'name', 'href']) {
+for (const field of ['id', 'order', 'slug', 'name']) {
   if (!unique(field)) throw new Error(`El catálogo contiene valores duplicados en ${field}.`);
 }
+
+const routes = tools.map((tool) => tool.href).filter(Boolean);
+if (new Set(routes).size !== routes.length) throw new Error('El catálogo contiene rutas duplicadas.');
 
 for (const [index, tool] of tools.entries()) {
   const order = index + 1;
   const expectedId = `U${String(order).padStart(2, '0')}`;
   if (tool.order !== order || tool.id !== expectedId) throw new Error(`Orden incorrecto: se esperaba ${expectedId}.`);
   if (!expectedCategories.has(tool.category)) throw new Error(`Categoría desconocida en ${tool.id}: ${tool.category}.`);
-  if (tool.status !== 'available') throw new Error(`${tool.id} no está disponible: ${tool.status}.`);
-  if (!tool.href?.startsWith('/') || !tool.href.endsWith('/')) throw new Error(`Ruta inválida en ${tool.id}.`);
-  await access(join(root, tool.href.slice(1), 'index.html'));
+  if (!['available', 'next', 'planned'].includes(tool.status)) throw new Error(`Estado desconocido en ${tool.id}: ${tool.status}.`);
+  if (tool.status === 'available') {
+    if (!tool.href?.startsWith('/') || !tool.href.endsWith('/')) throw new Error(`Ruta inválida en ${tool.id}.`);
+    await access(join(root, tool.href.slice(1), 'index.html'));
+  } else if (tool.href) {
+    throw new Error(`${tool.id} no debe enlazar a una pantalla antes de estar disponible.`);
+  }
 }
 
 console.log(`CATALOG_OK=${tools.length}`);
