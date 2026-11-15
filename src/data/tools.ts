@@ -6,7 +6,7 @@ export interface OdinTool {
   slug: string;
   name: string;
   description: string;
-  category: 'Tiempo' | 'Conexión' | 'Productividad' | 'Creación' | 'Cálculo' | 'Texto y datos' | 'Seguridad';
+  category: 'Tiempo' | 'Conexión' | 'Productividad' | 'Creación' | 'Cálculo' | 'Texto y datos' | 'Seguridad' | 'Administración';
   icon: string;
   status: ToolStatus;
   featured: boolean;
@@ -55,3 +55,4 @@ tools.push({ id: 'U13', order: 13, slug: 'html-a-texto', name: 'HTML a texto', d
 tools.push({ id: 'U14', order: 14, slug: 'codificador-texto-url', name: 'Codificador de texto y URL', description: 'Codifica, analiza URLs y cifra texto localmente.', category: 'Texto y datos', icon: '%', status: 'available', featured: false });
 tools.push({ id: 'U15', order: 15, slug: 'generador-contrasenas', name: 'Generador de contraseñas', description: 'Crea contraseñas, frases de paso y PIN aleatorios sin guardar historial.', category: 'Seguridad', icon: '✦', status: 'available', featured: false });
 tools.push({ id: 'U16', order: 16, slug: 'identificadores-control', name: 'Identificadores y dígitos de control', description: 'Valida, calcula y genera ejemplos de NIF, NIE, CIF, IBAN y NUSS/NAF.', category: 'Seguridad', icon: '✓', status: 'available', featured: false });
+tools.push({ id: 'U17', order: 17, slug: 'administracion-copias', name: 'Administración y copias', description: 'Exporta, importa y restablece los datos y preferencias de ODÍN.', category: 'Administración', icon: '⇩', status: 'available', featured: false });
