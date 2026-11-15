@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Transforma, ordena, reemplaza, cuenta, limpia y extrae correos y URL de cualquier texto sin enviarlo fuera del dispositivo." />
+  <title>Taller de texto · ODÍN</title>
+  <link rel="icon" href="/logo.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="/src/styles/global.css?v=text-workshop-1" />
+  <link rel="stylesheet" href="/preview-text-workshop/text-workshop.css?v=1" />
+</head>
+<body class="tool-page text-tool-body">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="site-header"><a class="brand" href="/preview-home/" aria-label="ODÍN, volver a la portada"><span class="brand-mark">✦</span><span>ODÍN</span></a><nav aria-label="Navegación de la herramienta"><a class="back-to-catalog" href="/preview-home/#herramientas"><span aria-hidden="true">←</span> Catálogo</a></nav></header>
+
+  <main id="contenido" class="text-tool-page">
+    <header class="text-tool-heading">
+      <div><p class="eyebrow">U17 · TEXTO Y DATOS</p><h1>Taller de texto</h1><p>Un único espacio para transformar, ordenar, reemplazar, contar, extraer y limpiar texto. El contenido nunca sale de este dispositivo.</p></div>
+      <div class="text-tool-privacy"><strong>LOCAL</strong><span>sin envíos</span><small>El texto no se guarda</small></div>
+    </header>
+
+    <section class="text-tool-editors" aria-label="Texto de trabajo">
+      <article class="text-editor-card">
+        <div class="text-editor-head"><div><span class="map-kicker">ENTRADA</span><h2>Tu texto</h2></div><div><button id="text-example" type="button">Ejemplo</button><label for="text-file" class="text-file-button">Abrir TXT</label><input id="text-file" type="file" accept=".txt,.csv,.md,.json,text/*" hidden /></div></div>
+        <textarea id="text-input" spellcheck="false" placeholder="Escribe o pega aquí el texto que quieres trabajar."></textarea>
+        <div class="text-editor-foot"><span id="text-input-stats">0 caracteres · 0 palabras</span><button id="text-clear" type="button">Limpiar</button></div>
+      </article>
+      <article class="text-editor-card text-result-card">
+        <div class="text-editor-head"><div><span class="map-kicker">RESULTADO</span><h2 id="text-result-title">Transformación</h2></div><span id="text-result-badge">Sin resultado</span></div>
+        <textarea id="text-output" spellcheck="false" readonly placeholder="El resultado aparecerá aquí."></textarea>
+        <div class="text-editor-foot text-result-actions"><span id="text-output-stats">0 caracteres</span><div><button id="text-use-result" type="button" disabled>Usar como entrada</button><button id="text-copy" type="button" disabled>Copiar</button><button id="text-download" type="button" disabled>Descargar</button></div></div>
+      </article>
+    </section>
+
+    <nav class="text-tool-tabs" role="tablist" aria-label="Operaciones de texto">
+      <button type="button" role="tab" aria-selected="true" aria-controls="panel-transform" data-tab="transform"><span>Aa</span>Transformar</button>
+      <button type="button" role="tab" aria-selected="false" aria-controls="panel-list" data-tab="list"><span>≡</span>Listas</button>
+      <button type="button" role="tab" aria-selected="false" aria-controls="panel-replace" data-tab="replace"><span>↔</span>Reemplazar</button>
+      <button type="button" role="tab" aria-selected="false" aria-controls="panel-count" data-tab="count"><span>42</span>Contar</button>
+      <button type="button" role="tab" aria-selected="false" aria-controls="panel-extract" data-tab="extract"><span>@</span>Extraer</button>
+      <button type="button" role="tab" aria-selected="false" aria-controls="panel-clean" data-tab="clean"><span>◇</span>Limpiar</button>
+    </nav>
+
+    <section class="text-tool-panel" id="panel-transform" role="tabpanel" data-panel="transform">
+      <div class="text-panel-heading"><div><span class="map-kicker">CAMBIAR FORMA</span><h2>Transformar el texto</h2><p>Las variantes Unicode son caracteres reales: comprueba su compatibilidad antes de utilizarlas en sistemas importantes.</p></div></div>
+      <div class="text-transform-grid" id="transform-actions">
+        <button type="button" data-transform="upper"><b>ABC</b><span>MAYÚSCULAS</span></button>
+        <button type="button" data-transform="lower"><b>abc</b><span>minúsculas</span></button>
+        <button type="button" data-transform="title"><b>Abc Def</b><span>Tipo título</span></button>
+        <button type="button" data-transform="sentence"><b>Abc. Def.</b><span>Tipo oración</span></button>
+        <button type="button" data-transform="camel"><b>abcDef</b><span>camelCase</span></button>
+        <button type="button" data-transform="pascal"><b>AbcDef</b><span>PascalCase</span></button>
+        <button type="button" data-transform="snake"><b>abc_def</b><span>snake_case</span></button>
+        <button type="button" data-transform="kebab"><b>abc-def</b><span>kebab-case</span></button>
+        <button type="button" data-transform="constant"><b>ABC_DEF</b><span>CONSTANTE</span></button>
+        <button type="button" data-transform="reverse"><b>← cba</b><span>Invertir</span></button>
+        <button type="button" data-transform="script"><b>𝒞𝓊𝓇𝓈𝒾𝓋𝒶</b><span>Cursiva Unicode</span></button>
+        <button type="button" data-transform="bold"><b>𝐍𝐞𝐠𝐫𝐢𝐭𝐚</b><span>Negrita Unicode</span></button>
+        <button type="button" data-transform="monospace"><b>𝙼𝚘𝚗𝚘</b><span>Monoespaciada</span></button>
+      </div>
+    </section>
+
+    <section class="text-tool-panel" id="panel-list" role="tabpanel" data-panel="list" hidden>
+      <div class="text-panel-heading"><div><span class="map-kicker">UNA ENTRADA POR LÍNEA</span><h2>Ordenar y preparar listas</h2><p>Orden natural: «elemento 2» aparece antes que «elemento 10».</p></div><button class="text-run-button" id="list-run" type="button">Procesar lista</button></div>
+      <div class="text-options-grid">
+        <label><span>Operación</span><select id="list-action"><option value="asc">Ordenar A → Z</option><option value="desc">Ordenar Z → A</option><option value="reverse">Invertir orden</option><option value="shuffle">Mezclar al azar</option><option value="keep">Conservar orden</option></select></label>
+        <label><span>Filtrar líneas que</span><select id="list-filter-mode"><option value="include">contienen</option><option value="exclude">no contienen</option></select></label>
+        <label class="text-wide-field"><span>Texto del filtro</span><input id="list-filter" type="text" placeholder="Opcional" /></label>
+        <label><span>Prefijo</span><input id="list-prefix" type="text" placeholder="Ej.: • " /></label>
+        <label><span>Sufijo</span><input id="list-suffix" type="text" placeholder="Opcional" /></label>
+        <label><span>Separador de salida</span><select id="list-separator"><option value="newline">Nueva línea</option><option value="comma">Coma</option><option value="semicolon">Punto y coma</option><option value="space">Espacio</option></select></label>
+      </div>
+      <div class="text-check-row"><label><input id="list-unique" type="checkbox" checked /> Eliminar duplicados</label><label><input id="list-case" type="checkbox" /> Distinguir mayúsculas</label><label><input id="list-trim" type="checkbox" checked /> Recortar espacios</label><label><input id="list-empty" type="checkbox" checked /> Quitar líneas vacías</label></div>
+    </section>
+
+    <section class="text-tool-panel" id="panel-replace" role="tabpanel" data-panel="replace" hidden>
+      <div class="text-panel-heading"><div><span class="map-kicker">BUSCAR Y CAMBIAR</span><h2>Reemplazar texto</h2><p>El modo expresión regular admite grupos como <code>$1</code>. Si no lo necesitas, utiliza el modo literal.</p></div><button class="text-run-button" id="replace-run" type="button">Reemplazar</button></div>
+      <div class="replace-grid"><label><span>Buscar</span><textarea id="replace-search" placeholder="Texto o patrón"></textarea></label><label><span>Sustituir por</span><textarea id="replace-value" placeholder="Puede quedar vacío"></textarea></label></div>
+      <div class="text-check-row"><label><input id="replace-regex" type="checkbox" /> Expresión regular</label><label><input id="replace-case" type="checkbox" /> Distinguir mayúsculas</label><label><input id="replace-all" type="checkbox" checked /> Reemplazar todas</label></div>
+    </section>
+
+    <section class="text-tool-panel" id="panel-count" role="tabpanel" data-panel="count" hidden>
+      <div class="text-panel-heading"><div><span class="map-kicker">ANÁLISIS EN DIRECTO</span><h2>Contar el contenido</h2><p>El tiempo de lectura utiliza la velocidad seleccionada.</p></div><label class="count-speed"><span>Palabras por minuto</span><input id="count-speed" type="number" min="50" max="1000" step="10" value="200" /></label></div>
+      <div class="text-count-grid" id="text-count-grid"></div>
+    </section>
+
+    <section class="text-tool-panel" id="panel-extract" role="tabpanel" data-panel="extract" hidden>
+      <div class="text-panel-heading"><div><span class="map-kicker">DATOS ENCONTRADOS</span><h2>Extraer correos y URL</h2><p>Reconoce direcciones HTTP/HTTPS, URL que empiezan por www. y correos con dominio completo.</p></div><button class="text-run-button" id="extract-run" type="button">Extraer</button></div>
+      <div class="text-options-grid compact"><label><span>Qué extraer</span><select id="extract-kind"><option value="both">Correos y URL</option><option value="emails">Solo correos</option><option value="urls">Solo URL</option></select></label><label><span>Separador</span><select id="extract-separator"><option value="newline">Nueva línea</option><option value="semicolon">Punto y coma</option><option value="comma">Coma</option></select></label></div>
+      <div class="text-check-row"><label><input id="extract-unique" type="checkbox" checked /> Eliminar duplicados</label><label><input id="extract-sort" type="checkbox" checked /> Ordenar resultados</label><label><input id="extract-headings" type="checkbox" checked /> Incluir títulos</label></div>
+      <div class="extract-summary"><div><b id="extract-email-count">0</b><span>correos</span></div><div><b id="extract-url-count">0</b><span>URL</span></div></div>
+    </section>
+
+    <section class="text-tool-panel" id="panel-clean" role="tabpanel" data-panel="clean" hidden>
+      <div class="text-panel-heading"><div><span class="map-kicker">NORMALIZAR CONTENIDO</span><h2>Limpiar texto</h2><p>Selecciona únicamente las correcciones que quieras aplicar.</p></div><button class="text-run-button" id="clean-run" type="button">Limpiar texto</button></div>
+      <div class="clean-options">
+        <label><input id="clean-trim-lines" type="checkbox" checked /><span><b>Recortar cada línea</b><small>Quita espacios al inicio y al final.</small></span></label>
+        <label><input id="clean-spaces" type="checkbox" checked /><span><b>Reducir espacios repetidos</b><small>Conserva un único espacio.</small></span></label>
+        <label><input id="clean-blank" type="checkbox" /><span><b>Eliminar líneas vacías</b><small>Une los bloques separados.</small></span></label>
+        <label><input id="clean-join" type="checkbox" /><span><b>Convertir saltos en espacios</b><small>Deja todo como texto continuo.</small></span></label>
+        <label><input id="clean-invisible" type="checkbox" checked /><span><b>Eliminar caracteres invisibles</b><small>Quita marcas de ancho cero y BOM.</small></span></label>
+        <label><input id="clean-unicode" type="checkbox" checked /><span><b>Normalizar Unicode</b><small>Unifica caracteres visualmente equivalentes.</small></span></label>
+        <label><input id="clean-tabs" type="checkbox" /><span><b>Convertir tabulaciones</b><small>Las sustituye por dos espacios.</small></span></label>
+        <label><input id="clean-document" type="checkbox" checked /><span><b>Recortar el documento</b><small>Quita espacios y saltos exteriores.</small></span></label>
+      </div>
+    </section>
+
+    <p class="text-tool-status" id="text-status" role="status">Introduce texto para comenzar.</p>
+    <section class="text-tool-note"><span>i</span><div><b>Privacidad real</b><p>ODÍN procesa el texto dentro del navegador. Solo recuerda las opciones elegidas; nunca conserva el texto de entrada ni el resultado.</p></div></section>
+  </main>
+
+  <footer class="site-footer"><span>ODÍN · Taller de texto</span><span>Procesamiento local · sin seguimiento</span></footer>
+  <script type="module" src="/preview-text-workshop/text-workshop.js?v=1"></script>
+  <script type="module" src="/global-timer.js?v=calendar-merge-1"></script>
+  <script type="module" src="/time-center.js?v=calendar-merge-1"></script>
+</body>
+</html>

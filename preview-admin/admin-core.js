@@ -19,6 +19,7 @@ export const SECTIONS = [
   { id:'qr', label:'Generador QR', group:'preferences', key:'odin-qr-preferences-v1' },
   { id:'codificador', label:'Codificador de texto y URL', group:'preferences', key:'odin-codec-preferences-v1' },
   { id:'contrasenas', label:'Generador de contraseñas', group:'preferences', key:'odin-password-settings-v2' },
+  { id:'taller_texto', label:'Taller de texto', group:'preferences', key:'odin-text-workshop-preferences-v1' },
 ];
 
 const byId = id => SECTIONS.find(section => section.id === id);

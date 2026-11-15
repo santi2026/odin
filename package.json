@@ -9,6 +9,7 @@
     "build:static": "node scripts/validate-catalog.mjs && node build-static.mjs",
     "check:catalog": "node scripts/validate-catalog.mjs",
     "test:countdown": "node scripts/test-countdown.mjs",
+    "test:text-workshop": "node scripts/test-text-workshop.mjs",
     "check": "astro check",
     "preview": "astro preview"
   },

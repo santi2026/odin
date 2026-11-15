@@ -84,7 +84,7 @@
     },
     {
       "id": "U17", "order": 17, "slug": "taller-de-texto", "category": "Texto y datos", "name": "Taller de texto",
-      "description": "Transforma, ordena, reemplaza, cuenta y extrae correos y URL.", "status": "next", "href": "", "cover": "text-workshop", "icon": "Aa", "featured": false,
+      "description": "Transforma, ordena, reemplaza, cuenta y extrae correos y URL.", "status": "available", "href": "/preview-text-workshop/", "cover": "text-workshop", "icon": "Aa", "featured": false,
       "preview": "<div class=\"text-workshop-cover\"><div class=\"text-workshop-tabs\"><span class=\"is-active\">Aa</span><span>A-Z</span><span>42</span></div><div class=\"text-workshop-sheet\"><b>Un texto, muchas tareas</b><i></i><i></i><div><span>128 palabras</span><span>@ 3 correos</span><span>↗ 2 URL</span></div></div></div>"
     },
     {
