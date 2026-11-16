@@ -10,5 +10,5 @@ const nested={grupo:{families:[{id:'f1',nombre:'Ana'}],members:[{id:'m1',familyI
 const source=formatJson(nested),memberOffset=source.indexOf('familyId');assert.deepEqual(pathAtOffset(source,memberOffset),['grupo','members',0,'familyId']);
 const csv=toCsv(EXAMPLE_DATA);assert.match(csv,/"\[""ventas""/);assert.match(csv,/ana@empresa\.com/);assert.throws(()=>toCsv({a:1}),/tabla de objetos/);
 assert.match(toCsv(nested,['grupo','families']),/f1,Ana/);
-const xml=toXml(EXAMPLE_DATA);assert.match(xml,/<raiz tipo="array">/);assert.match(xml,/<etiquetas tipo="array">/);assert.match(xml,/<elemento tipo="texto">ventas<\/elemento>/);assert.match(xml,/<telefonos tipo="array"\/>/);
+const xml=toXml(EXAMPLE_DATA);assert.match(xml,/odin-json-editor-v1/);assert.match(xml,/<raiz tipo="array">/);assert.match(xml,/<etiquetas tipo="array">/);assert.match(xml,/<elemento tipo="texto">ventas<\/elemento>/);assert.match(xml,/<telefonos tipo="array"\/>/);
 console.log('JSON_STUDIO_TESTS=PASS');
