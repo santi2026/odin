@@ -1,0 +1,1240 @@
+{
+  "formato": "odin-gastos-compartidos-v1",
+  "version": 1,
+  "exportado": "2026-11-16T12:00:00.000Z",
+  "origen": "ODÍN",
+  "grupo": {
+    "id": "caso-01",
+    "name": "Encuentro de siete familias · 23 comensales",
+    "currency": "EUR",
+    "settlementMode": "family",
+    "families": [
+      {
+        "id": "robles",
+        "name": "Robles"
+      },
+      {
+        "id": "vega",
+        "name": "Vega"
+      },
+      {
+        "id": "soler",
+        "name": "Soler"
+      },
+      {
+        "id": "campos",
+        "name": "Campos"
+      },
+      {
+        "id": "rios",
+        "name": "Ríos"
+      },
+      {
+        "id": "luna",
+        "name": "Luna"
+      },
+      {
+        "id": "mar",
+        "name": "Mar"
+      }
+    ],
+    "members": [
+      {
+        "id": "robles-1",
+        "name": "Elena",
+        "familyId": "robles",
+        "weight": 1
+      },
+      {
+        "id": "robles-2",
+        "name": "Marcos",
+        "familyId": "robles",
+        "weight": 1
+      },
+      {
+        "id": "robles-3",
+        "name": "Leo",
+        "familyId": "robles",
+        "weight": 1
+      },
+      {
+        "id": "robles-4",
+        "name": "Alba",
+        "familyId": "robles",
+        "weight": 1
+      },
+      {
+        "id": "vega-1",
+        "name": "Laura",
+        "familyId": "vega",
+        "weight": 1
+      },
+      {
+        "id": "vega-2",
+        "name": "Daniel",
+        "familyId": "vega",
+        "weight": 1
+      },
+      {
+        "id": "vega-3",
+        "name": "Nico",
+        "familyId": "vega",
+        "weight": 1
+      },
+      {
+        "id": "vega-4",
+        "name": "Sara",
+        "familyId": "vega",
+        "weight": 1
+      },
+      {
+        "id": "soler-1",
+        "name": "Marta",
+        "familyId": "soler",
+        "weight": 1
+      },
+      {
+        "id": "soler-2",
+        "name": "Iván",
+        "familyId": "soler",
+        "weight": 1
+      },
+      {
+        "id": "soler-3",
+        "name": "Hugo",
+        "familyId": "soler",
+        "weight": 1
+      },
+      {
+        "id": "campos-1",
+        "name": "Nuria",
+        "familyId": "campos",
+        "weight": 1
+      },
+      {
+        "id": "campos-2",
+        "name": "Óscar",
+        "familyId": "campos",
+        "weight": 1
+      },
+      {
+        "id": "campos-3",
+        "name": "Emma",
+        "familyId": "campos",
+        "weight": 1
+      },
+      {
+        "id": "rios-1",
+        "name": "Clara",
+        "familyId": "rios",
+        "weight": 1
+      },
+      {
+        "id": "rios-2",
+        "name": "Sergio",
+        "familyId": "rios",
+        "weight": 1
+      },
+      {
+        "id": "rios-3",
+        "name": "Lucas",
+        "familyId": "rios",
+        "weight": 1
+      },
+      {
+        "id": "luna-1",
+        "name": "Irene",
+        "familyId": "luna",
+        "weight": 1
+      },
+      {
+        "id": "luna-2",
+        "name": "Pablo",
+        "familyId": "luna",
+        "weight": 1
+      },
+      {
+        "id": "luna-3",
+        "name": "Noa",
+        "familyId": "luna",
+        "weight": 1
+      },
+      {
+        "id": "mar-1",
+        "name": "Alicia",
+        "familyId": "mar",
+        "weight": 1
+      },
+      {
+        "id": "mar-2",
+        "name": "Raúl",
+        "familyId": "mar",
+        "weight": 1
+      },
+      {
+        "id": "mar-3",
+        "name": "Eric",
+        "familyId": "mar",
+        "weight": 1
+      }
+    ],
+    "expenses": [
+      {
+        "id": "e1",
+        "concept": "Frutería La Huerta · fruta y verdura",
+        "date": "2026-11-16",
+        "category": "Comida",
+        "amountCents": 5840,
+        "payers": [
+          {
+            "accountType": "family",
+            "accountId": "robles",
+            "amountCents": 5840
+          }
+        ],
+        "participants": [
+          {
+            "memberId": "robles-1"
+          },
+          {
+            "memberId": "vega-1"
+          },
+          {
+            "memberId": "soler-1"
+          },
+          {
+            "memberId": "campos-1"
+          },
+          {
+            "memberId": "rios-1"
+          },
+          {
+            "memberId": "luna-1"
+          },
+          {
+            "memberId": "mar-1"
+          },
+          {
+            "memberId": "robles-2"
+          },
+          {
+            "memberId": "vega-2"
+          },
+          {
+            "memberId": "soler-2"
+          },
+          {
+            "memberId": "campos-2"
+          },
+          {
+            "memberId": "rios-2"
+          },
+          {
+            "memberId": "luna-2"
+          },
+          {
+            "memberId": "mar-2"
+          },
+          {
+            "memberId": "robles-3"
+          },
+          {
+            "memberId": "vega-3"
+          },
+          {
+            "memberId": "soler-3"
+          },
+          {
+            "memberId": "campos-3"
+          },
+          {
+            "memberId": "rios-3"
+          },
+          {
+            "memberId": "luna-3"
+          },
+          {
+            "memberId": "mar-3"
+          },
+          {
+            "memberId": "robles-4"
+          },
+          {
+            "memberId": "vega-4"
+          }
+        ],
+        "splitMode": "equal",
+        "notes": "Fruta y verdura para las comidas compartidas."
+      },
+      {
+        "id": "e2",
+        "concept": "Panadería El Trigal · pan y postres",
+        "date": "2026-11-16",
+        "category": "Comida",
+        "amountCents": 2280,
+        "payers": [
+          {
+            "accountType": "family",
+            "accountId": "robles",
+            "amountCents": 2280
+          }
+        ],
+        "participants": [
+          {
+            "memberId": "robles-4"
+          },
+          {
+            "memberId": "vega-4"
+          },
+          {
+            "memberId": "robles-1"
+          },
+          {
+            "memberId": "vega-1"
+          },
+          {
+            "memberId": "soler-1"
+          },
+          {
+            "memberId": "campos-1"
+          },
+          {
+            "memberId": "rios-1"
+          },
+          {
+            "memberId": "luna-1"
+          },
+          {
+            "memberId": "mar-1"
+          },
+          {
+            "memberId": "robles-2"
+          },
+          {
+            "memberId": "vega-2"
+          },
+          {
+            "memberId": "soler-2"
+          },
+          {
+            "memberId": "campos-2"
+          },
+          {
+            "memberId": "rios-2"
+          },
+          {
+            "memberId": "luna-2"
+          },
+          {
+            "memberId": "mar-2"
+          },
+          {
+            "memberId": "robles-3"
+          },
+          {
+            "memberId": "vega-3"
+          },
+          {
+            "memberId": "soler-3"
+          },
+          {
+            "memberId": "campos-3"
+          },
+          {
+            "memberId": "rios-3"
+          },
+          {
+            "memberId": "luna-3"
+          },
+          {
+            "memberId": "mar-3"
+          }
+        ],
+        "splitMode": "equal",
+        "notes": "Pan, bollería y postres."
+      },
+      {
+        "id": "e3",
+        "concept": "Supermercado Central · alimentación",
+        "date": "2026-11-16",
+        "category": "Comida",
+        "amountCents": 9675,
+        "payers": [
+          {
+            "accountType": "family",
+            "accountId": "vega",
+            "amountCents": 9675
+          }
+        ],
+        "participants": [
+          {
+            "memberId": "vega-1"
+          },
+          {
+            "memberId": "soler-1"
+          },
+          {
+            "memberId": "campos-1"
+          },
+          {
+            "memberId": "rios-1"
+          },
+          {
+            "memberId": "luna-1"
+          },
+          {
+            "memberId": "mar-1"
+          },
+          {
+            "memberId": "robles-2"
+          },
+          {
+            "memberId": "vega-2"
+          },
+          {
+            "memberId": "soler-2"
+          },
+          {
+            "memberId": "campos-2"
+          },
+          {
+            "memberId": "rios-2"
+          },
+          {
+            "memberId": "luna-2"
+          },
+          {
+            "memberId": "mar-2"
+          },
+          {
+            "memberId": "robles-3"
+          },
+          {
+            "memberId": "vega-3"
+          },
+          {
+            "memberId": "robles-1"
+          },
+          {
+            "memberId": "soler-3"
+          },
+          {
+            "memberId": "campos-3"
+          },
+          {
+            "memberId": "rios-3"
+          },
+          {
+            "memberId": "luna-3"
+          },
+          {
+            "memberId": "mar-3"
+          },
+          {
+            "memberId": "robles-4"
+          },
+          {
+            "memberId": "vega-4"
+          }
+        ],
+        "splitMode": "equal",
+        "notes": "Compra general de alimentación."
+      },
+      {
+        "id": "e4",
+        "concept": "Bodega del Barrio · bebidas",
+        "date": "2026-11-16",
+        "category": "Bebidas",
+        "amountCents": 3420,
+        "payers": [
+          {
+            "accountType": "family",
+            "accountId": "vega",
+            "amountCents": 3420
+          }
+        ],
+        "participants": [
+          {
+            "memberId": "soler-3"
+          },
+          {
+            "memberId": "campos-3"
+          },
+          {
+            "memberId": "rios-3"
+          },
+          {
+            "memberId": "luna-3"
+          },
+          {
+            "memberId": "mar-3"
+          },
+          {
+            "memberId": "robles-4"
+          },
+          {
+            "memberId": "vega-4"
+          },
+          {
+            "memberId": "robles-1"
+          },
+          {
+            "memberId": "vega-1"
+          },
+          {
+            "memberId": "soler-1"
+          },
+          {
+            "memberId": "campos-1"
+          },
+          {
+            "memberId": "rios-1"
+          },
+          {
+            "memberId": "luna-1"
+          },
+          {
+            "memberId": "mar-1"
+          },
+          {
+            "memberId": "robles-2"
+          },
+          {
+            "memberId": "vega-2"
+          },
+          {
+            "memberId": "soler-2"
+          },
+          {
+            "memberId": "campos-2"
+          },
+          {
+            "memberId": "rios-2"
+          },
+          {
+            "memberId": "luna-2"
+          },
+          {
+            "memberId": "mar-2"
+          },
+          {
+            "memberId": "robles-3"
+          },
+          {
+            "memberId": "vega-3"
+          }
+        ],
+        "splitMode": "equal",
+        "notes": "Agua, refrescos y otras bebidas."
+      },
+      {
+        "id": "e5",
+        "concept": "Carnicería El Prado · carne",
+        "date": "2026-11-16",
+        "category": "Comida",
+        "amountCents": 14860,
+        "payers": [
+          {
+            "accountType": "family",
+            "accountId": "soler",
+            "amountCents": 14860
+          }
+        ],
+        "participants": [
+          {
+            "memberId": "soler-2"
+          },
+          {
+            "memberId": "campos-2"
+          },
+          {
+            "memberId": "robles-1"
+          },
+          {
+            "memberId": "vega-1"
+          },
+          {
+            "memberId": "soler-1"
+          },
+          {
+            "memberId": "campos-1"
+          },
+          {
+            "memberId": "rios-1"
+          },
+          {
+            "memberId": "luna-1"
+          },
+          {
+            "memberId": "mar-1"
+          },
+          {
+            "memberId": "robles-2"
+          },
+          {
+            "memberId": "vega-2"
+          },
+          {
+            "memberId": "rios-2"
+          },
+          {
+            "memberId": "luna-2"
+          },
+          {
+            "memberId": "mar-2"
+          },
+          {
+            "memberId": "robles-3"
+          },
+          {
+            "memberId": "vega-3"
+          },
+          {
+            "memberId": "soler-3"
+          },
+          {
+            "memberId": "campos-3"
+          },
+          {
+            "memberId": "rios-3"
+          },
+          {
+            "memberId": "luna-3"
+          },
+          {
+            "memberId": "mar-3"
+          },
+          {
+            "memberId": "robles-4"
+          },
+          {
+            "memberId": "vega-4"
+          }
+        ],
+        "splitMode": "equal",
+        "notes": "Carne y preparados para la comida principal."
+      },
+      {
+        "id": "e6",
+        "concept": "Hipermercado Norte · compra general",
+        "date": "2026-11-16",
+        "category": "Compras",
+        "amountCents": 8395,
+        "payers": [
+          {
+            "accountType": "family",
+            "accountId": "campos",
+            "amountCents": 8395
+          }
+        ],
+        "participants": [
+          {
+            "memberId": "robles-1"
+          },
+          {
+            "memberId": "vega-1"
+          },
+          {
+            "memberId": "soler-1"
+          },
+          {
+            "memberId": "campos-1"
+          },
+          {
+            "memberId": "rios-1"
+          },
+          {
+            "memberId": "luna-1"
+          },
+          {
+            "memberId": "mar-1"
+          },
+          {
+            "memberId": "robles-2"
+          },
+          {
+            "memberId": "vega-2"
+          },
+          {
+            "memberId": "soler-2"
+          },
+          {
+            "memberId": "campos-2"
+          },
+          {
+            "memberId": "rios-2"
+          },
+          {
+            "memberId": "luna-2"
+          },
+          {
+            "memberId": "mar-2"
+          },
+          {
+            "memberId": "robles-3"
+          },
+          {
+            "memberId": "vega-3"
+          },
+          {
+            "memberId": "soler-3"
+          },
+          {
+            "memberId": "campos-3"
+          },
+          {
+            "memberId": "rios-3"
+          },
+          {
+            "memberId": "luna-3"
+          },
+          {
+            "memberId": "mar-3"
+          },
+          {
+            "memberId": "robles-4"
+          },
+          {
+            "memberId": "vega-4"
+          }
+        ],
+        "splitMode": "equal",
+        "notes": "Productos variados para el encuentro."
+      },
+      {
+        "id": "e7",
+        "concept": "Estación de servicio · hielo y carbón",
+        "date": "2026-11-16",
+        "category": "Compras",
+        "amountCents": 2750,
+        "payers": [
+          {
+            "accountType": "family",
+            "accountId": "campos",
+            "amountCents": 2750
+          }
+        ],
+        "participants": [
+          {
+            "memberId": "rios-2"
+          },
+          {
+            "memberId": "luna-2"
+          },
+          {
+            "memberId": "mar-2"
+          },
+          {
+            "memberId": "robles-3"
+          },
+          {
+            "memberId": "vega-3"
+          },
+          {
+            "memberId": "soler-3"
+          },
+          {
+            "memberId": "campos-3"
+          },
+          {
+            "memberId": "rios-3"
+          },
+          {
+            "memberId": "luna-3"
+          },
+          {
+            "memberId": "mar-3"
+          },
+          {
+            "memberId": "robles-4"
+          },
+          {
+            "memberId": "vega-4"
+          },
+          {
+            "memberId": "robles-1"
+          },
+          {
+            "memberId": "vega-1"
+          },
+          {
+            "memberId": "soler-1"
+          },
+          {
+            "memberId": "campos-1"
+          },
+          {
+            "memberId": "rios-1"
+          },
+          {
+            "memberId": "luna-1"
+          },
+          {
+            "memberId": "mar-1"
+          },
+          {
+            "memberId": "robles-2"
+          },
+          {
+            "memberId": "vega-2"
+          },
+          {
+            "memberId": "soler-2"
+          },
+          {
+            "memberId": "campos-2"
+          }
+        ],
+        "splitMode": "equal",
+        "notes": "Hielo, carbón y encendedores."
+      },
+      {
+        "id": "e8",
+        "concept": "Pescadería Mar Azul · pescado",
+        "date": "2026-11-16",
+        "category": "Comida",
+        "amountCents": 7230,
+        "payers": [
+          {
+            "accountType": "family",
+            "accountId": "rios",
+            "amountCents": 7230
+          }
+        ],
+        "participants": [
+          {
+            "memberId": "vega-1"
+          },
+          {
+            "memberId": "soler-1"
+          },
+          {
+            "memberId": "campos-1"
+          },
+          {
+            "memberId": "rios-1"
+          },
+          {
+            "memberId": "luna-1"
+          },
+          {
+            "memberId": "mar-1"
+          },
+          {
+            "memberId": "robles-2"
+          },
+          {
+            "memberId": "vega-2"
+          },
+          {
+            "memberId": "robles-1"
+          },
+          {
+            "memberId": "soler-2"
+          },
+          {
+            "memberId": "campos-2"
+          },
+          {
+            "memberId": "rios-2"
+          },
+          {
+            "memberId": "luna-2"
+          },
+          {
+            "memberId": "mar-2"
+          },
+          {
+            "memberId": "robles-3"
+          },
+          {
+            "memberId": "vega-3"
+          },
+          {
+            "memberId": "soler-3"
+          },
+          {
+            "memberId": "campos-3"
+          },
+          {
+            "memberId": "rios-3"
+          },
+          {
+            "memberId": "luna-3"
+          },
+          {
+            "memberId": "mar-3"
+          },
+          {
+            "memberId": "robles-4"
+          },
+          {
+            "memberId": "vega-4"
+          }
+        ],
+        "splitMode": "equal",
+        "notes": "Pescado y marisco."
+      },
+      {
+        "id": "e9",
+        "concept": "Droguería Limpia · menaje y limpieza",
+        "date": "2026-11-16",
+        "category": "Compras",
+        "amountCents": 1985,
+        "payers": [
+          {
+            "accountType": "family",
+            "accountId": "rios",
+            "amountCents": 1985
+          }
+        ],
+        "participants": [
+          {
+            "memberId": "soler-2"
+          },
+          {
+            "memberId": "campos-2"
+          },
+          {
+            "memberId": "rios-2"
+          },
+          {
+            "memberId": "luna-2"
+          },
+          {
+            "memberId": "mar-2"
+          },
+          {
+            "memberId": "robles-3"
+          },
+          {
+            "memberId": "vega-3"
+          },
+          {
+            "memberId": "robles-1"
+          },
+          {
+            "memberId": "vega-1"
+          },
+          {
+            "memberId": "soler-1"
+          },
+          {
+            "memberId": "campos-1"
+          },
+          {
+            "memberId": "rios-1"
+          },
+          {
+            "memberId": "luna-1"
+          },
+          {
+            "memberId": "mar-1"
+          },
+          {
+            "memberId": "robles-2"
+          },
+          {
+            "memberId": "vega-2"
+          },
+          {
+            "memberId": "soler-3"
+          },
+          {
+            "memberId": "campos-3"
+          },
+          {
+            "memberId": "rios-3"
+          },
+          {
+            "memberId": "luna-3"
+          },
+          {
+            "memberId": "mar-3"
+          },
+          {
+            "memberId": "robles-4"
+          },
+          {
+            "memberId": "vega-4"
+          }
+        ],
+        "splitMode": "equal",
+        "notes": "Platos, servilletas y productos de limpieza."
+      },
+      {
+        "id": "e10",
+        "concept": "Pastelería Dulce Encuentro · tartas",
+        "date": "2026-11-16",
+        "category": "Comida",
+        "amountCents": 4680,
+        "payers": [
+          {
+            "accountType": "family",
+            "accountId": "luna",
+            "amountCents": 4680
+          }
+        ],
+        "participants": [
+          {
+            "memberId": "soler-3"
+          },
+          {
+            "memberId": "campos-3"
+          },
+          {
+            "memberId": "rios-3"
+          },
+          {
+            "memberId": "luna-3"
+          },
+          {
+            "memberId": "mar-3"
+          },
+          {
+            "memberId": "robles-4"
+          },
+          {
+            "memberId": "vega-4"
+          },
+          {
+            "memberId": "robles-1"
+          },
+          {
+            "memberId": "vega-1"
+          },
+          {
+            "memberId": "soler-1"
+          },
+          {
+            "memberId": "campos-1"
+          },
+          {
+            "memberId": "rios-1"
+          },
+          {
+            "memberId": "luna-1"
+          },
+          {
+            "memberId": "mar-1"
+          },
+          {
+            "memberId": "robles-2"
+          },
+          {
+            "memberId": "vega-2"
+          },
+          {
+            "memberId": "soler-2"
+          },
+          {
+            "memberId": "campos-2"
+          },
+          {
+            "memberId": "rios-2"
+          },
+          {
+            "memberId": "luna-2"
+          },
+          {
+            "memberId": "mar-2"
+          },
+          {
+            "memberId": "robles-3"
+          },
+          {
+            "memberId": "vega-3"
+          }
+        ],
+        "splitMode": "equal",
+        "notes": "Tartas y dulces para todos."
+      },
+      {
+        "id": "e11",
+        "concept": "Gasolinera Ruta · desplazamiento",
+        "date": "2026-11-16",
+        "category": "Transporte",
+        "amountCents": 5420,
+        "payers": [
+          {
+            "accountType": "family",
+            "accountId": "luna",
+            "amountCents": 5420
+          }
+        ],
+        "participants": [
+          {
+            "memberId": "rios-1"
+          },
+          {
+            "memberId": "luna-1"
+          },
+          {
+            "memberId": "mar-1"
+          },
+          {
+            "memberId": "robles-2"
+          },
+          {
+            "memberId": "vega-2"
+          },
+          {
+            "memberId": "soler-2"
+          },
+          {
+            "memberId": "campos-2"
+          },
+          {
+            "memberId": "rios-2"
+          },
+          {
+            "memberId": "luna-2"
+          },
+          {
+            "memberId": "mar-2"
+          },
+          {
+            "memberId": "robles-3"
+          },
+          {
+            "memberId": "vega-3"
+          },
+          {
+            "memberId": "soler-3"
+          },
+          {
+            "memberId": "campos-3"
+          },
+          {
+            "memberId": "rios-3"
+          },
+          {
+            "memberId": "robles-1"
+          },
+          {
+            "memberId": "vega-1"
+          },
+          {
+            "memberId": "soler-1"
+          },
+          {
+            "memberId": "campos-1"
+          },
+          {
+            "memberId": "luna-3"
+          },
+          {
+            "memberId": "mar-3"
+          },
+          {
+            "memberId": "robles-4"
+          },
+          {
+            "memberId": "vega-4"
+          }
+        ],
+        "splitMode": "equal",
+        "notes": "Combustible del desplazamiento común."
+      }
+    ],
+    "paidTransferKeys": []
+  },
+  "comprobacion": {
+    "estado": "comprobado",
+    "facturas": 11,
+    "totalCentimos": 66535,
+    "totalFormateado": "665,35 €",
+    "modoLiquidacion": "family",
+    "balanceGlobalCentimos": 0,
+    "unidades": [
+      {
+        "id": "f:campos",
+        "nombre": "Familia Campos",
+        "pagadoCentimos": 11145,
+        "correspondiaCentimos": 8679,
+        "balanceCentimos": 2466
+      },
+      {
+        "id": "f:luna",
+        "nombre": "Familia Luna",
+        "pagadoCentimos": 10100,
+        "correspondiaCentimos": 8678,
+        "balanceCentimos": 1422
+      },
+      {
+        "id": "f:mar",
+        "nombre": "Familia Mar",
+        "pagadoCentimos": 0,
+        "correspondiaCentimos": 8678,
+        "balanceCentimos": -8678
+      },
+      {
+        "id": "f:rios",
+        "nombre": "Familia Ríos",
+        "pagadoCentimos": 9215,
+        "correspondiaCentimos": 8679,
+        "balanceCentimos": 536
+      },
+      {
+        "id": "f:robles",
+        "nombre": "Familia Robles",
+        "pagadoCentimos": 8120,
+        "correspondiaCentimos": 11571,
+        "balanceCentimos": -3451
+      },
+      {
+        "id": "f:soler",
+        "nombre": "Familia Soler",
+        "pagadoCentimos": 14860,
+        "correspondiaCentimos": 8679,
+        "balanceCentimos": 6181
+      },
+      {
+        "id": "f:vega",
+        "nombre": "Familia Vega",
+        "pagadoCentimos": 13095,
+        "correspondiaCentimos": 11571,
+        "balanceCentimos": 1524
+      }
+    ],
+    "transferencias": [
+      {
+        "de": "Familia Mar",
+        "a": "Familia Soler",
+        "importeCentimos": 6181
+      },
+      {
+        "de": "Familia Mar",
+        "a": "Familia Campos",
+        "importeCentimos": 2466
+      },
+      {
+        "de": "Familia Mar",
+        "a": "Familia Vega",
+        "importeCentimos": 31
+      },
+      {
+        "de": "Familia Robles",
+        "a": "Familia Vega",
+        "importeCentimos": 1493
+      },
+      {
+        "de": "Familia Robles",
+        "a": "Familia Luna",
+        "importeCentimos": 1422
+      },
+      {
+        "de": "Familia Robles",
+        "a": "Familia Ríos",
+        "importeCentimos": 536
+      }
+    ],
+    "optimizacion": "minimo_verificado"
+  },
+  "caso_prueba": {
+    "numero": 1,
+    "titulo": "Ejemplo completo · 23 comensales y 7 familias",
+    "objetivo": "Validar once compras, seis familias pagadoras, nombres individuales, comercios, tipos de compra y reparto equitativo de céntimos.",
+    "resultado_ia": "Debe cerrar 665,35 € sin ajustes manuales. Familia Robles y Familia Mar pagan; las otras cinco familias reciben exactamente sus adelantos."
+  }
+}

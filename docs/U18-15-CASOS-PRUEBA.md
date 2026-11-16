@@ -6,7 +6,7 @@ Generados el 2026-11-16. Los casos 1–14 deben importarse correctamente; el cas
 
 | Nº | Caso | Archivo | Resultado esperado |
 |---:|---|---|---|
-| 1 | Caso real · 23 comensales y 7 familias | `01-caso-real-23-comensales.json` | 325,50 €; 6 transferencias |
+| 1 | Ejemplo completo · 23 comensales y 7 familias | `01-ejemplo-23-comensales.json` | 665,35 €; 6 transferencias |
 | 2 | Dos amigos · uno paga todo | `02-dos-amigos-un-pagador.json` | 100,00 €; 1 transferencias |
 | 3 | Cinco amigos · dos facturas y dos pagadores | `03-cinco-amigos-dos-pagadores.json` | 250,00 €; 3 transferencias |
 | 4 | Una factura · varios pagadores | `04-una-factura-varios-pagadores.json` | 120,00 €; 3 transferencias |
@@ -22,16 +22,16 @@ Generados el 2026-11-16. Los casos 1–14 deben importarse correctamente; el cas
 | 14 | Exportación e importación idénticas | `14-exportacion-importacion-identica.json` | 123,45 €; 2 transferencias |
 | 15 | Archivo manipulado · debe rechazarse | `15-archivo-manipulado-rechazado.json` | Importación bloqueada |
 
-## 1. Caso real · 23 comensales y 7 familias
+## 1. Ejemplo completo · 23 comensales y 7 familias
 
-Verificar el reparto por persona, la agrupación familiar, cinco facturas, cuatro familias pagadoras y la liquidación exacta.
+Validar once compras, seis familias pagadoras, nombres individuales, comercios, tipos de compra y reparto equitativo de céntimos.
 
-**Evaluación IA:** Debe cerrar 325,50 € con seis transferencias. Corrige el descuadre histórico de 0,02 € y deja todos los saldos a cero.
+**Evaluación IA:** Debe cerrar 665,35 € sin ajustes manuales. Familia Robles y Familia Mar pagan; las otras cinco familias reciben exactamente sus adelantos.
 
 - Familias: 7.
 - Personas: 23.
-- Facturas: 5.
-- Total: **325,50 €**.
+- Facturas: 11.
+- Total: **665,35 €**.
 - Balance global: **0,00 €**.
 - Optimización: **minimo verificado**.
 
@@ -39,22 +39,22 @@ Verificar el reparto por persona, la agrupación familiar, cinco facturas, cuatr
 
 | Persona o familia | Pagó | Le correspondía | Resultado |
 |---|---:|---:|---|
-| Familia Con&Ton | 0,00 € | 56,61 € | Paga 56,61 € |
-| Familia Fer&Raq | 50,00 € | 56,61 € | Paga 6,61 € |
-| Familia Gustavo | 140,00 € | 42,46 € | Cobra 97,54 € |
-| Familia Isa&Sol | 0,00 € | 42,45 € | Paga 42,45 € |
-| Familia Jau&Xes | 90,00 € | 42,46 € | Cobra 47,54 € |
-| Familia Jaume | 0,00 € | 42,45 € | Paga 42,45 € |
-| Familia Sil&San | 45,50 € | 42,46 € | Cobra 3,04 € |
+| Familia Campos | 111,45 € | 86,79 € | Cobra 24,66 € |
+| Familia Luna | 101,00 € | 86,78 € | Cobra 14,22 € |
+| Familia Mar | 0,00 € | 86,78 € | Paga 86,78 € |
+| Familia Ríos | 92,15 € | 86,79 € | Cobra 5,36 € |
+| Familia Robles | 81,20 € | 115,71 € | Paga 34,51 € |
+| Familia Soler | 148,60 € | 86,79 € | Cobra 61,81 € |
+| Familia Vega | 130,95 € | 115,71 € | Cobra 15,24 € |
 
 ### Transferencias esperadas
 
-1. **Familia Con&Ton** paga **56,61 €** a **Familia Gustavo**.
-2. **Familia Isa&Sol** paga **40,93 €** a **Familia Gustavo**.
-3. **Familia Isa&Sol** paga **1,52 €** a **Familia Jau&Xes**.
-4. **Familia Jaume** paga **42,45 €** a **Familia Jau&Xes**.
-5. **Familia Fer&Raq** paga **3,57 €** a **Familia Jau&Xes**.
-6. **Familia Fer&Raq** paga **3,04 €** a **Familia Sil&San**.
+1. **Familia Mar** paga **61,81 €** a **Familia Soler**.
+2. **Familia Mar** paga **24,66 €** a **Familia Campos**.
+3. **Familia Mar** paga **0,31 €** a **Familia Vega**.
+4. **Familia Robles** paga **14,93 €** a **Familia Vega**.
+5. **Familia Robles** paga **14,22 €** a **Familia Luna**.
+6. **Familia Robles** paga **5,36 €** a **Familia Ríos**.
 
 ## 2. Dos amigos · uno paga todo
 

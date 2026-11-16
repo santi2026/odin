@@ -1,4 +1,4 @@
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildGroupPackage, calculateGroup, formatMoney, settleBalances, transferKey } from '../preview-shared-expenses/shared-expenses-core.js';
@@ -24,9 +24,49 @@ function add(number,slug,title,objective,group,conclusion){
   return pack;
 }
 
-const realPack=JSON.parse(readFileSync(join(root,'preview-shared-expenses','examples','caso-real-comida-23.json'),'utf8'));
-realPack.caso_prueba={...(realPack.caso_prueba||{}),numero:1,titulo:'Caso real · 23 comensales y 7 familias',resultado_ia:'Debe cerrar 325,50 € con seis transferencias. Corrige el descuadre histórico de 0,02 € y deja todos los saldos a cero.'};
-cases.push({number:1,slug:'caso-real-23-comensales',title:realPack.caso_prueba.titulo,objective:realPack.caso_prueba.objetivo,conclusion:realPack.caso_prueba.resultado_ia,filename:'01-caso-real-23-comensales.json',pack:realPack,valid:true});
+{
+  const familySpecs=[
+    ['robles','Robles',['Elena','Marcos','Leo','Alba']],
+    ['vega','Vega',['Laura','Daniel','Nico','Sara']],
+    ['soler','Soler',['Marta','Iván','Hugo']],
+    ['campos','Campos',['Nuria','Óscar','Emma']],
+    ['rios','Ríos',['Clara','Sergio','Lucas']],
+    ['luna','Luna',['Irene','Pablo','Noa']],
+    ['mar','Mar',['Alicia','Raúl','Eric']]
+  ];
+  const families=familySpecs.map(([id,name])=>family(id,name));
+  const members=familySpecs.flatMap(([familyId,,names])=>names.map((name,index)=>member(`${familyId}-${index+1}`,name,familyId)));
+  const balanced=[];
+  for(let position=0;position<4;position+=1)for(const [familyId,,names] of familySpecs)if(names[position])balanced.push(members.find(item=>item.id===`${familyId}-${position+1}`));
+  const bills=[
+    ['e1','Frutería La Huerta · fruta y verdura',5840,'robles','Comida','Fruta y verdura para las comidas compartidas.'],
+    ['e2','Panadería El Trigal · pan y postres',2280,'robles','Comida','Pan, bollería y postres.'],
+    ['e3','Supermercado Central · alimentación',9675,'vega','Comida','Compra general de alimentación.'],
+    ['e4','Bodega del Barrio · bebidas',3420,'vega','Bebidas','Agua, refrescos y otras bebidas.'],
+    ['e5','Carnicería El Prado · carne',14860,'soler','Comida','Carne y preparados para la comida principal.'],
+    ['e6','Hipermercado Norte · compra general',8395,'campos','Compras','Productos variados para el encuentro.'],
+    ['e7','Estación de servicio · hielo y carbón',2750,'campos','Compras','Hielo, carbón y encendedores.'],
+    ['e8','Pescadería Mar Azul · pescado',7230,'rios','Comida','Pescado y marisco.'],
+    ['e9','Droguería Limpia · menaje y limpieza',1985,'rios','Compras','Platos, servilletas y productos de limpieza.'],
+    ['e10','Pastelería Dulce Encuentro · tartas',4680,'luna','Comida','Tartas y dulces para todos.'],
+    ['e11','Gasolinera Ruta · desplazamiento',5420,'luna','Transporte','Combustible del desplazamiento común.']
+  ];
+  const total=bills.reduce((sum,item)=>sum+item[2],0),basePerPerson=bills.reduce((sum,item)=>sum+Math.floor(item[2]/members.length),0),globalRemainder=total%members.length;
+  const targetExtras=new Set(balanced.slice(0,globalRemainder).map(item=>item.id));
+  const needs=new Map(members.map(item=>[item.id,Math.floor(total/members.length)+(targetExtras.has(item.id)?1:0)-basePerPerson]));
+  const balancedIndex=new Map(balanced.map((item,index)=>[item.id,index]));
+  let offset=0;
+  const expenses=bills.map(([id,concept,amountCents,familyId,category,notes])=>{
+    const remainder=amountCents%members.length;
+    const ranked=[...balanced].sort((a,b)=>needs.get(b.id)-needs.get(a.id)||((balancedIndex.get(a.id)-offset+members.length)%members.length)-((balancedIndex.get(b.id)-offset+members.length)%members.length));
+    const extra=ranked.slice(0,remainder);extra.forEach(item=>needs.set(item.id,needs.get(item.id)-1));offset=(offset+remainder)%members.length;
+    const extraIds=new Set(extra.map(item=>item.id)),ordered=[...extra,...balanced.filter(item=>!extraIds.has(item.id))];
+    return expense(id,concept,amountCents,[payer(familyId,amountCents,'family')],participants(ordered),{category,notes});
+  });
+  if([...needs.values()].some(Boolean))throw new Error('No se han distribuido correctamente los céntimos del caso 1.');
+  const group=baseGroup('caso-01','Encuentro de siete familias · 23 comensales',members,{families,settlementMode:'family',expenses});
+  add(1,'ejemplo-23-comensales','Ejemplo completo · 23 comensales y 7 familias','Validar once compras, seis familias pagadoras, nombres individuales, comercios, tipos de compra y reparto equitativo de céntimos.',group,'Debe cerrar 665,35 € sin ajustes manuales. Familia Robles y Familia Mar pagan; las otras cinco familias reciben exactamente sus adelantos.');
+}
 
 {
   const members=[member('ana','Ana'),member('beto','Beto')];
@@ -118,6 +158,7 @@ for(const item of cases){
 report.push('','## Criterio de aceptación','','Cada caso válido pasa si el total pagado coincide con el total repartido, el balance global es 0,00 €, las relaciones “paga a / cobra de” coinciden y una nueva exportación conserva el resultado. El caso 15 pasa únicamente si ODÍN bloquea la importación.','');
 
 for(const item of cases)writeFileSync(join(output,item.filename),`${JSON.stringify(item.pack,null,2)}\n`,'utf8');
+writeFileSync(join(root,'preview-shared-expenses','examples','caso-ejemplo-23-comensales.json'),`${JSON.stringify(cases[0].pack,null,2)}\n`,'utf8');
 const reportText=report.join('\n');
 writeFileSync(join(output,'RESULTADOS_ESPERADOS.md'),reportText,'utf8');
 writeFileSync(join(root,'docs','U18-15-CASOS-PRUEBA.md'),reportText,'utf8');

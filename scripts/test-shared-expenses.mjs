@@ -97,34 +97,34 @@ const emptyPackage=buildGroupPackage({id:'draft',name:'Borrador',currency:'EUR',
 assert.equal(emptyPackage.comprobacion.estado,'incompleto');
 assert.equal(parseGroupPackage(JSON.stringify(emptyPackage)).group.name,'Borrador');
 
-const realCaseText=readFileSync(new URL('../preview-shared-expenses/examples/caso-real-comida-23.json',import.meta.url),'utf8');
-const realCase=parseGroupPackage(realCaseText),realResult=calculateGroup(realCase.group),realSettlement=settleBalances(realResult.units);
-assert.equal(realCase.group.families.length,7);
-assert.equal(realCase.group.members.length,23);
-assert.equal(realCase.group.expenses.length,5);
-assert.equal(realResult.totalCents,32550);
-assert.equal(realResult.balanceSum,0);
-assert.deepEqual(Object.fromEntries(realResult.units.map(unit=>[unit.label,{paid:unit.paidCents,owed:unit.owedCents,balance:unit.balanceCents}])),{
-  'Familia Con&Ton':{paid:0,owed:5661,balance:-5661},
-  'Familia Fer&Raq':{paid:5000,owed:5661,balance:-661},
-  'Familia Gustavo':{paid:14000,owed:4246,balance:9754},
-  'Familia Isa&Sol':{paid:0,owed:4245,balance:-4245},
-  'Familia Jau&Xes':{paid:9000,owed:4246,balance:4754},
-  'Familia Jaume':{paid:0,owed:4245,balance:-4245},
-  'Familia Sil&San':{paid:4550,owed:4246,balance:304}
+const exampleText=readFileSync(new URL('../preview-shared-expenses/examples/caso-ejemplo-23-comensales.json',import.meta.url),'utf8');
+const exampleCase=parseGroupPackage(exampleText),exampleResult=calculateGroup(exampleCase.group),exampleSettlement=settleBalances(exampleResult.units);
+assert.equal(exampleCase.group.families.length,7);
+assert.equal(exampleCase.group.members.length,23);
+assert.equal(exampleCase.group.expenses.length,11);
+assert.equal(exampleResult.totalCents,66535);
+assert.equal(exampleResult.balanceSum,0);
+assert.deepEqual(Object.fromEntries(exampleResult.units.map(unit=>[unit.label,{paid:unit.paidCents,owed:unit.owedCents,balance:unit.balanceCents}])),{
+  'Familia Campos':{paid:11145,owed:8679,balance:2466},
+  'Familia Luna':{paid:10100,owed:8678,balance:1422},
+  'Familia Mar':{paid:0,owed:8678,balance:-8678},
+  'Familia Ríos':{paid:9215,owed:8679,balance:536},
+  'Familia Robles':{paid:8120,owed:11571,balance:-3451},
+  'Familia Soler':{paid:14860,owed:8679,balance:6181},
+  'Familia Vega':{paid:13095,owed:11571,balance:1524}
 });
-assert.equal(realSettlement.exact,true);
-assert.deepEqual(realSettlement.transfers.map(item=>[item.fromLabel,item.toLabel,item.amountCents]),[
-  ['Familia Con&Ton','Familia Gustavo',5661],
-  ['Familia Isa&Sol','Familia Gustavo',4093],
-  ['Familia Isa&Sol','Familia Jau&Xes',152],
-  ['Familia Jaume','Familia Jau&Xes',4245],
-  ['Familia Fer&Raq','Familia Jau&Xes',357],
-  ['Familia Fer&Raq','Familia Sil&San',304]
+assert.equal(exampleSettlement.exact,true);
+assert.deepEqual(exampleSettlement.transfers.map(item=>[item.fromLabel,item.toLabel,item.amountCents]),[
+  ['Familia Mar','Familia Soler',6181],
+  ['Familia Mar','Familia Campos',2466],
+  ['Familia Mar','Familia Vega',31],
+  ['Familia Robles','Familia Vega',1493],
+  ['Familia Robles','Familia Luna',1422],
+  ['Familia Robles','Familia Ríos',536]
 ]);
-assert.equal(realSettlement.transfers.reduce((sum,item)=>sum+item.amountCents,0),14812);
-assert.deepEqual(settlementRoutesForUnit('f:f-fer',realSettlement.transfers),{pays:[{name:'Familia Jau&Xes',amountCents:357},{name:'Familia Sil&San',amountCents:304}],receives:[]});
-assert.deepEqual(settlementRoutesForUnit('f:f-gus',realSettlement.transfers),{pays:[],receives:[{name:'Familia Con&Ton',amountCents:5661},{name:'Familia Isa&Sol',amountCents:4093}]});
+assert.equal(exampleSettlement.transfers.reduce((sum,item)=>sum+item.amountCents,0),12129);
+assert.deepEqual(settlementRoutesForUnit('f:robles',exampleSettlement.transfers),{pays:[{name:'Familia Vega',amountCents:1493},{name:'Familia Luna',amountCents:1422},{name:'Familia Ríos',amountCents:536}],receives:[]});
+assert.deepEqual(settlementRoutesForUnit('f:soler',exampleSettlement.transfers),{pays:[],receives:[{name:'Familia Mar',amountCents:6181}]});
 
 const casesDirectory=new URL('../preview-shared-expenses/examples/casos-prueba/',import.meta.url);
 const caseFiles=readdirSync(casesDirectory).filter(name=>name.endsWith('.json')).sort();
