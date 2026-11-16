@@ -80,30 +80,6 @@
             "amountCents": 21000
           }
         ],
-        "participants": [
-          {
-            "memberId": "s1"
-          },
-          {
-            "memberId": "d1"
-          },
-          {
-            "memberId": "d2"
-          },
-          {
-            "memberId": "g1"
-          },
-          {
-            "memberId": "g2"
-          },
-          {
-            "memberId": "g3"
-          },
-          {
-            "memberId": "g4"
-          }
-        ],
-        "splitMode": "equal",
         "notes": ""
       }
     ],

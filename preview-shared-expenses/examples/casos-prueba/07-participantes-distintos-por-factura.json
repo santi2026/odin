@@ -49,21 +49,6 @@
             "amountCents": 40000
           }
         ],
-        "participants": [
-          {
-            "memberId": "p1"
-          },
-          {
-            "memberId": "p2"
-          },
-          {
-            "memberId": "p3"
-          },
-          {
-            "memberId": "p4"
-          }
-        ],
-        "splitMode": "equal",
         "notes": ""
       },
       {
@@ -79,21 +64,6 @@
             "amountCents": 6000
           }
         ],
-        "participants": [
-          {
-            "memberId": "p1"
-          },
-          {
-            "memberId": "p2"
-          },
-          {
-            "memberId": "p3"
-          },
-          {
-            "memberId": "p4"
-          }
-        ],
-        "splitMode": "equal",
         "notes": ""
       },
       {
@@ -109,21 +79,6 @@
             "amountCents": 9000
           }
         ],
-        "participants": [
-          {
-            "memberId": "p1"
-          },
-          {
-            "memberId": "p2"
-          },
-          {
-            "memberId": "p3"
-          },
-          {
-            "memberId": "p4"
-          }
-        ],
-        "splitMode": "equal",
         "notes": ""
       }
     ],

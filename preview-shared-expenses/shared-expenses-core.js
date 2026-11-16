@@ -267,10 +267,11 @@ export function sanitizePortableGroup(source) {
     group.allocationDefaults={splitMode:defaults.splitMode,participants:normalized};
   }
   if(!group.allocationDefaults&&group.members.length){
-    const first=group.expenses[0],same=first&&['equal','shares'].includes(first.splitMode)&&group.expenses.every(expense=>expense.splitMode===first.splitMode&&JSON.stringify(expense.participants)===JSON.stringify(first.participants));
+    const first=group.expenses[0],sourceFirst=expenses[0],hasLegacyParticipants=Array.isArray(sourceFirst?.participants)&&sourceFirst.participants.length>0,same=hasLegacyParticipants&&['equal','shares'].includes(sourceFirst.splitMode)&&expenses.every(expense=>expense.splitMode===sourceFirst.splitMode&&JSON.stringify(expense.participants)===JSON.stringify(sourceFirst.participants));
     if(same)group.allocationDefaults={splitMode:first.splitMode,participants:first.participants.map(item=>first.splitMode==='shares'?{memberId:item.memberId,share:Number(item.share)}:{memberId:item.memberId})};
     else if(!group.expenses.length)group.allocationDefaults={splitMode:'equal',participants:group.members.map(member=>({memberId:member.id}))};
   }
+  group.expenses=group.expenses.map(({participants,splitMode,...expense})=>expense);
   if(!group.members.length&&group.expenses.length)throw new Error('Un reparto con facturas debe contener personas.');
   if(group.members.length&&(!group.expenses.length||group.allocationDefaults))calculateGroup(group,group.settlementMode);
   else for(const expense of group.expenses)validateExpensePayment(group,expense);

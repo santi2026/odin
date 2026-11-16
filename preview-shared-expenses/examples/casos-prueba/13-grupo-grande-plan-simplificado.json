@@ -122,33 +122,6 @@
             "amountCents": 50
           }
         ],
-        "participants": [
-          {
-            "memberId": "p1",
-            "amountCents": 100
-          },
-          {
-            "memberId": "p2",
-            "amountCents": 100
-          },
-          {
-            "memberId": "p3",
-            "amountCents": 100
-          },
-          {
-            "memberId": "p4",
-            "amountCents": 100
-          },
-          {
-            "memberId": "p5",
-            "amountCents": 100
-          },
-          {
-            "memberId": "p6",
-            "amountCents": 100
-          }
-        ],
-        "splitMode": "exact",
         "notes": ""
       }
     ],

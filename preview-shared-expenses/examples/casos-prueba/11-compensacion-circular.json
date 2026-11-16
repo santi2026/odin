@@ -32,7 +32,7 @@
     "expenses": [
       {
         "id": "e1",
-        "concept": "Ana paga por Beto",
+        "concept": "Ana adelanta",
         "date": "2026-11-16",
         "category": "Otros",
         "amountCents": 3000,
@@ -43,18 +43,11 @@
             "amountCents": 3000
           }
         ],
-        "participants": [
-          {
-            "memberId": "b",
-            "amountCents": 3000
-          }
-        ],
-        "splitMode": "exact",
         "notes": ""
       },
       {
         "id": "e2",
-        "concept": "Beto paga por Carla",
+        "concept": "Beto adelanta",
         "date": "2026-11-16",
         "category": "Otros",
         "amountCents": 2000,
@@ -65,18 +58,11 @@
             "amountCents": 2000
           }
         ],
-        "participants": [
-          {
-            "memberId": "c",
-            "amountCents": 2000
-          }
-        ],
-        "splitMode": "exact",
         "notes": ""
       },
       {
         "id": "e3",
-        "concept": "Carla paga por Ana",
+        "concept": "Carla adelanta",
         "date": "2026-11-16",
         "category": "Otros",
         "amountCents": 1000,
@@ -87,28 +73,24 @@
             "amountCents": 1000
           }
         ],
-        "participants": [
-          {
-            "memberId": "a",
-            "amountCents": 1000
-          }
-        ],
-        "splitMode": "exact",
         "notes": ""
       }
     ],
     "paidTransferKeys": [],
     "allocationDefaults": {
-      "splitMode": "equal",
+      "splitMode": "exact",
       "participants": [
         {
-          "memberId": "a"
+          "memberId": "a",
+          "amountCents": 1000
         },
         {
-          "memberId": "b"
+          "memberId": "b",
+          "amountCents": 3000
         },
         {
-          "memberId": "c"
+          "memberId": "c",
+          "amountCents": 2000
         }
       ]
     }
@@ -125,15 +107,15 @@
         "id": "m:a",
         "nombre": "Ana",
         "pagadoCentimos": 3000,
-        "correspondiaCentimos": 2000,
-        "balanceCentimos": 1000
+        "correspondiaCentimos": 1000,
+        "balanceCentimos": 2000
       },
       {
         "id": "m:b",
         "nombre": "Beto",
         "pagadoCentimos": 2000,
-        "correspondiaCentimos": 2000,
-        "balanceCentimos": 0
+        "correspondiaCentimos": 3000,
+        "balanceCentimos": -1000
       },
       {
         "id": "m:c",
@@ -144,6 +126,11 @@
       }
     ],
     "transferencias": [
+      {
+        "de": "Beto",
+        "a": "Ana",
+        "importeCentimos": 1000
+      },
       {
         "de": "Carla",
         "a": "Ana",
@@ -156,6 +143,6 @@
     "numero": 11,
     "titulo": "Compensación circular",
     "objetivo": "Demostrar que ODÍN compensa deudas cruzadas sin devolver cada compra por separado.",
-    "resultado_ia": "Después de compensar el círculo, Beto paga 10,00 € a Ana y Carla paga 10,00 € a Ana."
+    "resultado_ia": "Después de compensar todos los adelantos y el reparto global, Beto paga 10,00 € a Ana y Carla paga 10,00 € a Ana."
   }
 }

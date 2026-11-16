@@ -64,7 +64,7 @@ function add(number,slug,title,objective,group,conclusion){
     return expense(id,concept,amountCents,[payer(familyId,amountCents,'family')],participants(ordered),{category,notes});
   });
   if([...needs.values()].some(Boolean))throw new Error('No se han distribuido correctamente los céntimos del caso 1.');
-  const group=baseGroup('caso-01','Encuentro de siete familias · 23 comensales',members,{families,settlementMode:'family',expenses});
+  const group=baseGroup('caso-01','Encuentro de siete familias · 23 comensales',members,{families,settlementMode:'family',expenses,allocationDefaults:{splitMode:'equal',participants:participants(members)}});
   add(1,'ejemplo-23-comensales','Ejemplo completo · 23 comensales y 7 familias','Validar once compras, seis familias pagadoras, nombres individuales, comercios, tipos de compra y reparto equitativo de céntimos.',group,'Debe cerrar 665,35 € sin ajustes manuales. Familia Robles y Familia Mar pagan; las otras cinco familias reciben exactamente sus adelantos.');
 }
 
@@ -114,7 +114,7 @@ function add(number,slug,title,objective,group,conclusion){
 }
 {
   const members=[member('a','Ana'),member('b','Beto'),member('c','Carla')];
-  add(11,'compensacion-circular','Compensación circular','Demostrar que ODÍN compensa deudas cruzadas sin devolver cada compra por separado.',baseGroup('caso-11','Pagos cruzados',members,{expenses:[expense('e1','Ana paga por Beto',3000,[payer('a',3000)],[{memberId:'b',amountCents:3000}],{splitMode:'exact'}),expense('e2','Beto paga por Carla',2000,[payer('b',2000)],[{memberId:'c',amountCents:2000}],{splitMode:'exact'}),expense('e3','Carla paga por Ana',1000,[payer('c',1000)],[{memberId:'a',amountCents:1000}],{splitMode:'exact'})]}),'Después de compensar el círculo, Beto paga 10,00 € a Ana y Carla paga 10,00 € a Ana.');
+  add(11,'compensacion-circular','Compensación circular','Demostrar que ODÍN compensa deudas cruzadas sin devolver cada compra por separado.',baseGroup('caso-11','Pagos cruzados',members,{expenses:[expense('e1','Ana adelanta',3000,[payer('a',3000)],participants(members)),expense('e2','Beto adelanta',2000,[payer('b',2000)],participants(members)),expense('e3','Carla adelanta',1000,[payer('c',1000)],participants(members))],allocationDefaults:{splitMode:'exact',participants:[{memberId:'a',amountCents:1000},{memberId:'b',amountCents:3000},{memberId:'c',amountCents:2000}]}}),'Después de compensar todos los adelantos y el reparto global, Beto paga 10,00 € a Ana y Carla paga 10,00 € a Ana.');
 }
 {
   const members=[member('a','Ana'),member('b','Beto'),member('c','Carla')];
@@ -139,6 +139,17 @@ invalidBase.grupo.expenses[0].payers[0].amountCents=9999;
 invalidBase.caso_prueba={numero:15,titulo:'Archivo manipulado · debe rechazarse',objetivo:'Comprobar que ODÍN no importa una factura cuyos pagos no suman el total.',resultado_ia:'Resultado esperado: importación bloqueada. Los pagos suman 99,99 € y la factura exige 100,00 €.'};
 cases.push({number:15,slug:'archivo-manipulado-rechazado',title:invalidBase.caso_prueba.titulo,objective:invalidBase.caso_prueba.objetivo,conclusion:invalidBase.caso_prueba.resultado_ia,filename:'15-archivo-manipulado-rechazado.json',pack:invalidBase,valid:false});
 
+const practical23=JSON.parse(JSON.stringify(cases[0].pack));
+practical23.grupo.id='caso-practico-23-reparto-global';
+practical23.grupo.name='Encuentro de siete familias · 23 comensales';
+practical23.caso_practico={
+  descripcion:'Ejemplo completo listo para importar con las facturas separadas del reparto global.',
+  personas_registradas:23,
+  familias:7,
+  facturas:practical23.grupo.expenses.length,
+  total_centimos:practical23.comprobacion.totalCentimos
+};
+
 const euro=cents=>formatMoney(cents,'EUR');
 const report=['# U18 · Quince casos de prueba y resultados esperados','',`Generados el ${fixedDate}. Los casos 1–14 deben importarse correctamente; el caso 15 debe ser rechazado.`,'','## Resumen','','| Nº | Caso | Archivo | Resultado esperado |','|---:|---|---|---|'];
 for(const item of cases){
@@ -149,6 +160,7 @@ for(const item of cases){
   report.push('',`## ${item.number}. ${item.title}`,'',item.objective,'',`**Evaluación IA:** ${item.conclusion}`,'');
   if(!item.valid){report.push('- Estado esperado: **RECHAZADO**.','- Motivo: los pagadores suman 99,99 € para una factura de 100,00 €.','- El reparto guardado en el navegador no debe modificarse.');continue;}
   const {grupo,comprobacion}=item.pack;
+  if(comprobacion.estado!=='comprobado'){report.push(`- Estado: **INCOMPLETO**.`);report.push(`- Motivo: ${comprobacion.motivo}`);continue;}
   report.push(`- Familias: ${grupo.families.length}.`);report.push(`- Personas: ${grupo.members.length}.`);report.push(`- Facturas: ${grupo.expenses.length}.`);report.push(`- Total: **${comprobacion.totalFormateado}**.`);report.push(`- Balance global: **${euro(comprobacion.balanceGlobalCentimos)}**.`);report.push(`- Optimización: **${comprobacion.optimizacion.replaceAll('_',' ')}**.`,'','### Balance esperado','', '| Persona o familia | Pagó | Le correspondía | Resultado |','|---|---:|---:|---|');
   for(const unit of comprobacion.unidades){const result=unit.balanceCentimos>0?`Cobra ${euro(unit.balanceCentimos)}`:unit.balanceCentimos<0?`Paga ${euro(-unit.balanceCentimos)}`:'Saldo cero';report.push(`| ${unit.nombre} | ${euro(unit.pagadoCentimos)} | ${euro(unit.correspondiaCentimos)} | ${result} |`);}
   report.push('','### Transferencias esperadas','');
@@ -159,6 +171,7 @@ report.push('','## Criterio de aceptación','','Cada caso válido pasa si el tot
 
 for(const item of cases)writeFileSync(join(output,item.filename),`${JSON.stringify(item.pack,null,2)}\n`,'utf8');
 writeFileSync(join(root,'preview-shared-expenses','examples','caso-ejemplo-23-comensales.json'),`${JSON.stringify(cases[0].pack,null,2)}\n`,'utf8');
+writeFileSync(join(root,'preview-shared-expenses','examples','caso-23-comensales-reparto-global.json'),`${JSON.stringify(practical23,null,2)}\n`,'utf8');
 const reportText=report.join('\n');
 writeFileSync(join(output,'RESULTADOS_ESPERADOS.md'),reportText,'utf8');
 writeFileSync(join(root,'docs','U18-15-CASOS-PRUEBA.md'),reportText,'utf8');

@@ -43,18 +43,6 @@
             "amountCents": 12345
           }
         ],
-        "participants": [
-          {
-            "memberId": "alvaro"
-          },
-          {
-            "memberId": "ines"
-          },
-          {
-            "memberId": "noa"
-          }
-        ],
-        "splitMode": "equal",
         "notes": "Conserva acentos, símbolos y el estado de las transferencias."
       }
     ],

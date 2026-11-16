@@ -16,7 +16,7 @@ Generados el 2026-11-16. Los casos 1–14 deben importarse correctamente; el cas
 | 8 | Importes exactos personalizados | `08-reparto-importes-exactos.json` | 100,00 €; 2 transferencias |
 | 9 | Liquidación individual con cuentas familiares | `09-liquidacion-individual-con-familias.json` | 120,00 €; 4 transferencias |
 | 10 | Todos pagaron exactamente su parte | `10-todos-pagaron-su-parte.json` | 100,00 €; 0 transferencias |
-| 11 | Compensación circular | `11-compensacion-circular.json` | 60,00 €; 1 transferencias |
+| 11 | Compensación circular | `11-compensacion-circular.json` | 60,00 €; 2 transferencias |
 | 12 | Redondeo · 10 € entre tres | `12-redondeo-diez-entre-tres.json` | 10,00 €; 2 transferencias |
 | 13 | Doce saldos · plan simplificado | `13-grupo-grande-plan-simplificado.json` | 6,00 €; 8 transferencias |
 | 14 | Exportación e importación idénticas | `14-exportacion-importacion-identica.json` | 123,45 €; 2 transferencias |
@@ -300,7 +300,7 @@ No debe realizarse ninguna transferencia.
 
 Demostrar que ODÍN compensa deudas cruzadas sin devolver cada compra por separado.
 
-**Evaluación IA:** Después de compensar el círculo, Beto paga 10,00 € a Ana y Carla paga 10,00 € a Ana.
+**Evaluación IA:** Después de compensar todos los adelantos y el reparto global, Beto paga 10,00 € a Ana y Carla paga 10,00 € a Ana.
 
 - Familias: 0.
 - Personas: 3.
@@ -313,13 +313,14 @@ Demostrar que ODÍN compensa deudas cruzadas sin devolver cada compra por separa
 
 | Persona o familia | Pagó | Le correspondía | Resultado |
 |---|---:|---:|---|
-| Ana | 30,00 € | 20,00 € | Cobra 10,00 € |
-| Beto | 20,00 € | 20,00 € | Saldo cero |
+| Ana | 30,00 € | 10,00 € | Cobra 20,00 € |
+| Beto | 20,00 € | 30,00 € | Paga 10,00 € |
 | Carla | 10,00 € | 20,00 € | Paga 10,00 € |
 
 ### Transferencias esperadas
 
-1. **Carla** paga **10,00 €** a **Ana**.
+1. **Beto** paga **10,00 €** a **Ana**.
+2. **Carla** paga **10,00 €** a **Ana**.
 
 ## 12. Redondeo · 10 € entre tres
 

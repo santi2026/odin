@@ -152,6 +152,18 @@ assert.equal(exampleSettlement.transfers.reduce((sum,item)=>sum+item.amountCents
 assert.deepEqual(settlementRoutesForUnit('f:robles',exampleSettlement.transfers),{pays:[{name:'Familia Vega',amountCents:1494},{name:'Familia Luna',amountCents:1422},{name:'Familia Ríos',amountCents:536}],receives:[]});
 assert.deepEqual(settlementRoutesForUnit('f:soler',exampleSettlement.transfers),{pays:[],receives:[{name:'Familia Mar',amountCents:6181}]});
 
+const practical23Text=readFileSync(new URL('../preview-shared-expenses/examples/caso-23-comensales-reparto-global.json',import.meta.url),'utf8');
+const practical23=parseGroupPackage(practical23Text);
+assert.equal(practical23.group.families.length,7);
+assert.equal(practical23.group.members.length,23);
+assert.equal(practical23.group.expenses.length,11);
+assert.equal(practical23.check.totalCentimos,66535);
+assert.deepEqual(practical23.group.families.map(item=>item.name),['Robles','Vega','Soler','Campos','Ríos','Luna','Mar']);
+assert.deepEqual(practical23.group.members.slice(0,4).map(item=>item.name),['Elena','Marcos','Leo','Alba']);
+assert.equal(practical23.group.allocationDefaults.splitMode,'equal');
+assert.equal(practical23.group.allocationDefaults.participants.length,23);
+assert.equal(practical23.group.expenses.every(expense=>!('participants'in expense)&&!('splitMode'in expense)),true);
+
 const casesDirectory=new URL('../preview-shared-expenses/examples/casos-prueba/',import.meta.url);
 const caseFiles=readdirSync(casesDirectory).filter(name=>name.endsWith('.json')).sort();
 assert.equal(caseFiles.length,15);

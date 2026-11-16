@@ -37,15 +37,6 @@
             "amountCents": 9999
           }
         ],
-        "participants": [
-          {
-            "memberId": "ana"
-          },
-          {
-            "memberId": "beto"
-          }
-        ],
-        "splitMode": "equal",
         "notes": ""
       }
     ],

@@ -43,18 +43,6 @@
             "amountCents": 1000
           }
         ],
-        "participants": [
-          {
-            "memberId": "a"
-          },
-          {
-            "memberId": "b"
-          },
-          {
-            "memberId": "c"
-          }
-        ],
-        "splitMode": "equal",
         "notes": ""
       }
     ],
