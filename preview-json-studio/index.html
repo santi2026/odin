@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Consulta y edita JSON con vistas de código, tabla y árbol. Procesamiento completamente local." />
-  <title>JSON Editor · ODÍN</title>
+  <meta name="description" content="Editor JSON, CSV y XML con vistas de código, tabla y árbol. Procesamiento completamente local." />
+  <title>Editor JSON, CSV y XML · ODÍN</title>
   <link rel="icon" href="/logo.ico" type="image/x-icon" />
   <link rel="stylesheet" href="/src/styles/global.css?v=json-studio-1" />
   <link rel="stylesheet" href="/preview-json-studio/json-studio.css?v=1" />
@@ -14,12 +14,12 @@
   <header class="site-header"><a class="brand" href="/preview-home/" aria-label="ODÍN, volver a la portada"><span class="brand-mark">◆</span><span>ODÍN</span></a><nav><a class="back-to-catalog" href="/preview-home/#herramientas"><span aria-hidden="true">←</span> Catálogo</a></nav></header>
   <main id="contenido" class="json-page">
     <header class="json-heading">
-      <div><p class="eyebrow">U19 · TEXTO Y DATOS</p><h1>JSON Editor</h1><p>Explora, modifica y transforma datos estructurados sin salir de tu navegador.</p></div>
+      <div><p class="eyebrow">U19 · TEXTO Y DATOS</p><h1>Editor JSON, CSV y XML</h1><p>Explora, modifica y transforma datos estructurados sin salir de tu navegador.</p></div>
       <div class="json-privacy"><strong>LOCAL</strong><span>sin cargas</span><small>Máximo 5 MB</small></div>
     </header>
 
     <section class="json-toolbar" aria-label="Acciones del documento">
-      <label class="json-file-button">Abrir JSON<input id="json-file" type="file" accept="application/json,.json" hidden /></label>
+      <label class="json-file-button" title="Actualmente admite archivos JSON">Abrir fichero<input id="json-file" type="file" accept="application/json,.json" hidden /></label>
       <button id="paste-open" type="button">Pegar</button>
       <button id="load-example" type="button">Ejemplo múltiple</button>
       <div class="save-menu"><button id="save-toggle" type="button" aria-expanded="false">Guardar como <span>⌄</span></button><div id="save-options" hidden><button data-save="json" type="button">JSON (.json)</button><button data-save="csv" type="button">CSV (.csv)</button><button data-save="xml" type="button">XML (.xml)</button></div></div>
@@ -32,7 +32,7 @@
       <button id="clear-search" type="button" disabled>Limpiar</button><output id="search-count">Sin filtro</output>
     </section>
 
-    <div class="json-tabs" role="tablist" aria-label="Vistas de JSON Editor">
+    <div class="json-tabs" role="tablist" aria-label="Vistas del Editor JSON, CSV y XML">
       <button type="button" role="tab" aria-selected="true" data-view="json">JSON</button>
       <button type="button" role="tab" aria-selected="false" data-view="table">Tabla</button>
       <button type="button" role="tab" aria-selected="false" data-view="tree">Árbol</button>
@@ -58,10 +58,10 @@
         </form>
       </aside>
     </div>
-    <section class="json-note"><span>i</span><p><b>CSV sin pérdidas silenciosas:</b> arrays y objetos se conservan como JSON dentro de su celda. En XML, cada nodo incluye su tipo y los arrays usan elementos repetidos.</p></section>
+    <section class="json-note"><span>i</span><p><b>Compatibilidad actual:</b> la apertura de ficheros admite JSON; CSV y XML están disponibles al guardar. La apertura directa de CSV/XML y la exportación de varias tablas CSV se incorporarán en la próxima evolución. Las conversiones entre formatos pueden adaptar o perder parte de la estructura y se avisará antes de realizarlas.</p></section>
   </main>
   <dialog id="paste-dialog"><form method="dialog"><header><div><span>PEGAR JSON</span><h2>Contenido del documento</h2></div><button value="cancel" aria-label="Cerrar">×</button></header><textarea id="paste-value" spellcheck="false" placeholder="Pega aquí un objeto, array o valor JSON…"></textarea><p id="paste-error"></p><div><button value="cancel">Cancelar</button><button id="apply-paste" class="primary" value="default">Abrir contenido</button></div></form></dialog>
-  <footer class="site-footer"><span>ODÍN · JSON Editor</span><span>Procesamiento local · sin seguimiento</span></footer>
+  <footer class="site-footer"><span>ODÍN · Editor JSON, CSV y XML</span><span>Procesamiento local · sin seguimiento</span></footer>
   <script type="module" src="/preview-json-studio/json-studio.js?v=1"></script>
   <script type="module" src="/global-timer.js?v=calendar-merge-1"></script>
   <script type="module" src="/time-center.js?v=calendar-merge-1"></script>
