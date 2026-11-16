@@ -94,6 +94,31 @@ export function calculateGroup(group,mode=group.settlementMode||'family') {
   return {totalCents,expenseCount:details.length,details,accounts:[...accounts.values()],units,balanceSum};
 }
 
+export function applyAllocationToAllExpenses(group,allocation) {
+  if(!group||!Array.isArray(group.expenses)||!group.expenses.length)throw new Error('No hay facturas a las que aplicar el reparto.');
+  if(!allocation||!['equal','shares'].includes(allocation.splitMode)||!Array.isArray(allocation.participants)||!allocation.participants.length)throw new Error('El reparto global no es válido.');
+  const seen=new Set();
+  const participants=allocation.participants.map(item=>{
+    if(!item?.memberId||seen.has(item.memberId)||!memberById(group,item.memberId))throw new Error('El reparto contiene una persona repetida o inexistente.');
+    seen.add(item.memberId);
+    const participant={memberId:item.memberId};
+    if(allocation.splitMode==='shares'){
+      const share=Number(item.share);
+      if(!Number.isFinite(share)||share<=0)throw new Error('Todas las participaciones deben ser mayores que cero.');
+      participant.share=share;
+    }
+    return participant;
+  });
+  const next={
+    ...group,
+    expenses:group.expenses.map(expense=>({...expense,splitMode:allocation.splitMode,participants:participants.map(item=>({...item}))})),
+    allocationDefaults:{splitMode:allocation.splitMode,participants:participants.map(item=>({...item}))},
+    paidTransferKeys:[]
+  };
+  calculateGroup(next,next.settlementMode);
+  return next;
+}
+
 function greedySettlement(units) {
   const debtors=units.filter(item=>item.balanceCents<0).map(item=>({...item,remaining:-item.balanceCents})).sort((a,b)=>b.remaining-a.remaining||a.label.localeCompare(b.label,'es'));
   const creditors=units.filter(item=>item.balanceCents>0).map(item=>({...item,remaining:item.balanceCents})).sort((a,b)=>b.remaining-a.remaining||a.label.localeCompare(b.label,'es'));
@@ -197,12 +222,20 @@ export function sanitizePortableGroup(source) {
       splitMode:['equal','shares','exact'].includes(expense?.splitMode)?expense.splitMode:'equal',
       notes:String(expense?.notes??'').slice(0,500)
     })),
-    paidTransferKeys:(Array.isArray(source.paidTransferKeys)?source.paidTransferKeys:[]).slice(0,500).map(value=>String(value).slice(0,400))
+    paidTransferKeys:(Array.isArray(source.paidTransferKeys)?source.paidTransferKeys:[]).slice(0,500).map(value=>String(value).slice(0,400)),
+    allocationDefaults:null
   };
   ensureUnique(group.families,'identificadores de familia');
   ensureUnique(group.members,'identificadores de persona');
   ensureUnique(group.expenses,'identificadores de factura');
   if(group.members.some(member=>!Number.isFinite(member.weight)||member.weight<=0||member.weight>100))throw new Error('Hay un peso habitual no válido.');
+  if(source.allocationDefaults!=null){
+    const defaults=source.allocationDefaults;
+    if(!defaults||typeof defaults!=='object'||!['equal','shares'].includes(defaults.splitMode)||!Array.isArray(defaults.participants)||!defaults.participants.length)throw new Error('El reparto global guardado no es válido.');
+    const seen=new Set();
+    const normalized=defaults.participants.map((item,index)=>{const memberId=packageId(item?.memberId,`Participante global ${index+1}`);if(seen.has(memberId))throw new Error('Hay una persona repetida en el reparto global.');seen.add(memberId);if(!memberById(group,memberId))throw new Error('Una persona del reparto global ya no existe.');const participant={memberId};if(defaults.splitMode==='shares'){const share=Number(item?.share);if(!Number.isFinite(share)||share<=0)throw new Error('Todas las participaciones globales deben ser mayores que cero.');participant.share=share;}return participant;});
+    group.allocationDefaults={splitMode:defaults.splitMode,participants:normalized};
+  }
   if(!group.members.length&&group.expenses.length)throw new Error('Un reparto con facturas debe contener personas.');
   if(group.members.length)calculateGroup(group,group.settlementMode);
   return group;

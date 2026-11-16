@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
-import { allocateExpense, buildGroupPackage, calculateGroup, formatMoney, moneyToCents, parseGroupPackage, settlementRoutesForUnit, settleBalances, transferKey } from '../preview-shared-expenses/shared-expenses-core.js';
+import { allocateExpense, applyAllocationToAllExpenses, buildGroupPackage, calculateGroup, formatMoney, moneyToCents, parseGroupPackage, settlementRoutesForUnit, settleBalances, transferKey } from '../preview-shared-expenses/shared-expenses-core.js';
 
 assert.equal(moneyToCents('1.234,56 €'),123456);
 assert.equal(moneyToCents('12.50'),1250);
@@ -36,6 +36,20 @@ assert.equal(settleBalances(familyResult.units).transfers.length,1);
 const individualResult=calculateGroup(familyGroup,'individual');
 assert.equal(individualResult.units.some(item=>item.id==='f:f1'&&item.paidCents===30000),true);
 assert.equal(individualResult.units.reduce((sum,item)=>sum+item.balanceCents,0),0);
+
+const globallyRecalculated=applyAllocationToAllExpenses(familyGroup,{splitMode:'shares',participants:[{memberId:'p1',share:1},{memberId:'p3',share:2},{memberId:'p4',share:1}]});
+assert.equal(globallyRecalculated.expenses.every(expense=>expense.splitMode==='shares'),true);
+assert.equal(globallyRecalculated.expenses.every(expense=>expense.participants.length===3),true);
+assert.deepEqual(globallyRecalculated.allocationDefaults,{splitMode:'shares',participants:[{memberId:'p1',share:1},{memberId:'p3',share:2},{memberId:'p4',share:1}]});
+assert.equal(globallyRecalculated.paidTransferKeys.length,0);
+assert.equal(calculateGroup(globallyRecalculated).totalCents,46000);
+assert.equal(familyGroup.expenses[1].splitMode,'exact');
+assert.throws(()=>applyAllocationToAllExpenses(familyGroup,{splitMode:'shares',participants:[{memberId:'p1',share:0}]}),/mayores que cero/);
+
+const recalculatedPackage=buildGroupPackage(globallyRecalculated);
+const recalculatedRestored=parseGroupPackage(JSON.stringify(recalculatedPackage));
+assert.deepEqual(recalculatedRestored.group.allocationDefaults,globallyRecalculated.allocationDefaults);
+assert.equal(recalculatedRestored.group.expenses.every(expense=>expense.participants.length===3),true);
 
 assert.throws(()=>allocateExpense(group,{...group.expenses[0],payers:[{accountType:'member',accountId:'a',amountCents:9999}]}),/deben sumar/);
 assert.throws(()=>allocateExpense(group,{...group.expenses[0],splitMode:'exact',participants:[{memberId:'a',amountCents:1}]}),/exactamente/);

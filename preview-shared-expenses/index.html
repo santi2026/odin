@@ -33,6 +33,11 @@
       <button type="button" role="tab" aria-selected="false" data-tab="summary"><span>5</span>Resumen</button>
     </nav>
 
+    <section id="global-allocation-bar" class="global-allocation-bar" hidden aria-live="polite">
+      <div><span>CAMBIOS PENDIENTES</span><b>El reparto de participantes o partes todavía no se ha aplicado.</b><small>Balance, liquidación y resumen continúan mostrando el cálculo anterior.</small></div>
+      <div><button id="discard-global-allocation" type="button">Descartar</button><button id="save-global-allocation" type="button">Guardar y recalcular</button></div>
+    </section>
+
     <section class="expenses-panel" data-panel="group" role="tabpanel">
       <div class="panel-title"><div><span class="map-kicker">QUIÉNES PARTICIPAN</span><h2>Personas y familias</h2><p>Las facturas siempre se reparten entre personas. Al liquidar puedes agrupar sus saldos por familia.</p></div><label class="settlement-mode"><span>Liquidación final</span><select id="settlement-mode"><option value="family">Agrupada por familias</option><option value="individual">Individual por persona</option></select></label></div>
       <div class="group-columns">

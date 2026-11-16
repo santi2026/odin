@@ -1,4 +1,4 @@
-import { allocateExpense, buildGroupPackage, calculateGroup, formatMoney, moneyToCents, parseGroupPackage, settlementRoutesForUnit, settleBalances, summarizeExpense, transferKey } from './shared-expenses-core.js';
+import { allocateExpense, applyAllocationToAllExpenses, buildGroupPackage, calculateGroup, formatMoney, moneyToCents, parseGroupPackage, settlementRoutesForUnit, settleBalances, summarizeExpense, transferKey } from './shared-expenses-core.js';
 
 const $=selector=>document.querySelector(selector),$$=selector=>[...document.querySelectorAll(selector)];
 const STORAGE_KEY='odin-shared-expenses-v1';
@@ -8,10 +8,11 @@ const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;'
 const moneyInput=cents=>(cents/100).toFixed(2).replace('.',',');
 let editingExpenseId=null;
 let analyzedImport=null;
+let pendingGlobalAllocation=null;
 
-function newGroup(name='Mi reparto'){return{id:uid('group'),name,currency:'EUR',settlementMode:'family',families:[],members:[],expenses:[],paidTransferKeys:[]};}
+function newGroup(name='Mi reparto'){return{id:uid('group'),name,currency:'EUR',settlementMode:'family',families:[],members:[],expenses:[],paidTransferKeys:[],allocationDefaults:null};}
 function defaultState(){const group=newGroup();return{version:1,activeGroupId:group.id,groups:[group],preferences:{activeTab:'group'}};}
-function normalizeState(raw){const base=raw&&typeof raw==='object'?raw:defaultState();if(!Array.isArray(base.groups)||!base.groups.length)return defaultState();base.version=1;base.groups=base.groups.map(group=>({...group,currency:'EUR',settlementMode:group.settlementMode==='individual'?'individual':'family',families:Array.isArray(group.families)?group.families:[],members:Array.isArray(group.members)?group.members:[],expenses:Array.isArray(group.expenses)?group.expenses:[],paidTransferKeys:Array.isArray(group.paidTransferKeys)?group.paidTransferKeys:[]}));if(!base.groups.some(group=>group.id===base.activeGroupId))base.activeGroupId=base.groups[0].id;base.preferences={activeTab:'group',...(base.preferences||{})};return base;}
+function normalizeState(raw){const base=raw&&typeof raw==='object'?raw:defaultState();if(!Array.isArray(base.groups)||!base.groups.length)return defaultState();base.version=1;base.groups=base.groups.map(group=>({...group,currency:'EUR',settlementMode:group.settlementMode==='individual'?'individual':'family',families:Array.isArray(group.families)?group.families:[],members:Array.isArray(group.members)?group.members:[],expenses:Array.isArray(group.expenses)?group.expenses:[],paidTransferKeys:Array.isArray(group.paidTransferKeys)?group.paidTransferKeys:[],allocationDefaults:group.allocationDefaults&&typeof group.allocationDefaults==='object'?group.allocationDefaults:null}));if(!base.groups.some(group=>group.id===base.activeGroupId))base.activeGroupId=base.groups[0].id;base.preferences={activeTab:'group',...(base.preferences||{})};return base;}
 function loadState(){try{return normalizeState(JSON.parse(localStorage.getItem(STORAGE_KEY)||'null'));}catch{return defaultState();}}
 let state=loadState();
 const activeGroup=()=>state.groups.find(group=>group.id===state.activeGroupId)||state.groups[0];
@@ -29,6 +30,13 @@ function accountOptions(group,selected=''){
 function familyOptions(group,selected=''){return`<option value="">Sin familia</option>${group.families.map(item=>`<option value="${item.id}" ${item.id===selected?'selected':''}>${escapeHtml(item.name)}</option>`).join('')}`;}
 function familyName(group,id){return group.families.find(item=>item.id===id)?.name||'Sin familia';}
 function memberName(group,id){return group.members.find(item=>item.id===id)?.name||'Persona eliminada';}
+function queueAllocationAfterAddingMember(group,member){
+  if(!group.expenses.length)return;
+  const saved=group.allocationDefaults,splitMode=saved?.splitMode||'equal';
+  const participants=saved?.participants?.map(item=>({...item}))||group.members.filter(item=>item.id!==member.id).map(item=>splitMode==='shares'?{memberId:item.id,share:item.weight||1}:{memberId:item.id});
+  if(!participants.some(item=>item.memberId===member.id))participants.push(splitMode==='shares'?{memberId:member.id,share:member.weight||1}:{memberId:member.id});
+  pendingGlobalAllocation={groupId:group.id,splitMode,participants};
+}
 
 function renderToolbar(){const group=activeGroup();$('#group-select').innerHTML=state.groups.map(item=>`<option value="${item.id}" ${item.id===group.id?'selected':''}>${escapeHtml(item.name)}</option>`).join('');const total=group.expenses.reduce((sum,item)=>sum+item.amountCents,0);$('#group-toolbar-summary').textContent=`${group.members.length} personas · ${group.families.length} familias · ${group.expenses.length} facturas · ${formatMoney(total)}`;}
 function renderGroup(){const group=activeGroup();$('#settlement-mode').value=group.settlementMode;$('#family-count').textContent=group.families.length;$('#member-count').textContent=group.members.length;$('#member-family').innerHTML=familyOptions(group);
@@ -42,7 +50,7 @@ function bindEntityRows(){const group=activeGroup();$$('[data-save-family]').for
   $$('[data-delete-member]').forEach(button=>button.addEventListener('click',()=>{const id=button.dataset.deleteMember,member=group.members.find(item=>item.id===id),used=group.expenses.some(expense=>expense.participants.some(item=>item.memberId===id)||expense.payers.some(payer=>payer.accountType==='member'&&payer.accountId===id));if(used)return setStatus(`${member.name} aparece en una factura. Edita o elimina esa factura primero.`,'error');if(!confirm(`¿Eliminar a ${member.name}?`))return;group.members=group.members.filter(item=>item.id!==id);save();renderAll();resetExpenseForm();setStatus('Persona eliminada.','success');}));}
 
 $('#family-form').addEventListener('submit',event=>{event.preventDefault();const group=activeGroup(),name=$('#family-name').value.trim();if(!name)return;if(group.families.length>=20)return setStatus('El límite es de 20 familias por reparto.','error');group.families.push({id:uid('family'),name});$('#family-name').value='';save();renderAll();resetExpenseForm();setStatus('Familia añadida.','success');});
-$('#member-form').addEventListener('submit',event=>{event.preventDefault();const group=activeGroup(),name=$('#member-name').value.trim(),weight=Number($('#member-weight').value);if(!name)return;if(group.members.length>=50)return setStatus('El límite es de 50 personas por reparto.','error');if(!(weight>0))return setStatus('El peso habitual debe ser mayor que cero.','error');group.members.push({id:uid('member'),name,familyId:$('#member-family').value||null,weight});$('#member-name').value='';$('#member-weight').value='1';save();renderAll();resetExpenseForm();setStatus('Persona añadida.','success');});
+$('#member-form').addEventListener('submit',event=>{event.preventDefault();const group=activeGroup(),name=$('#member-name').value.trim(),weight=Number($('#member-weight').value);if(!name)return;if(group.members.length>=50)return setStatus('El límite es de 50 personas por reparto.','error');if(!(weight>0))return setStatus('El peso habitual debe ser mayor que cero.','error');const member={id:uid('member'),name,familyId:$('#member-family').value||null,weight};group.members.push(member);queueAllocationAfterAddingMember(group,member);$('#member-name').value='';$('#member-weight').value='1';save();renderAll();resetExpenseForm();setStatus(group.expenses.length?'Persona añadida. El nuevo reparto está pendiente de guardar y recalcular.':'Persona añadida.',group.expenses.length?'warning':'success');});
 $('#settlement-mode').addEventListener('change',()=>{activeGroup().settlementMode=$('#settlement-mode').value;activeGroup().paidTransferKeys=[];save();renderResults();renderToolbar();setStatus('Modo de liquidación actualizado.','success');});
 
 function addPayerRow(selected='',amount=''){const group=activeGroup(),row=document.createElement('div');row.className='payer-row';row.innerHTML=`<select aria-label="Pagador"><option value="">Selecciona pagador</option>${accountOptions(group,selected)}</select><input inputmode="decimal" aria-label="Importe pagado" placeholder="0,00" value="${escapeHtml(amount)}"/><button type="button" aria-label="Quitar pagador">×</button>`;row.querySelector('button').addEventListener('click',()=>{if($$('.payer-row').length===1){row.querySelector('select').value='';row.querySelector('input').value='';}else row.remove();updatePayerTotal();});row.querySelector('input').addEventListener('input',updatePayerTotal);row.querySelector('select').addEventListener('change',updatePayerTotal);$('#payer-rows').append(row);updatePayerTotal();}
@@ -50,11 +58,26 @@ function updatePayerTotal(){let sum=0,valid=true;for(const row of $$('.payer-row
 function selectedParticipantIds(){return $$('.participant-card>input:checked').map(input=>input.closest('.participant-card').dataset.memberId);}
 function renderParticipants(expense=null){const group=activeGroup(),selected=new Set(expense?.participants?.map(item=>item.memberId)||group.members.map(item=>item.id)),mode=$('#split-mode').value;let exactDefaults=new Map();if(mode==='exact'&&!expense){let total=0;try{total=moneyToCents($('#expense-total').value);}catch{}const ids=[...selected],base=ids.length?Math.floor(total/ids.length):0;ids.forEach((id,index)=>exactDefaults.set(id,base+(index<total-base*ids.length?1:0)));}
   $('#participants-grid').innerHTML=group.members.map(member=>{const item=expense?.participants?.find(entry=>entry.memberId===member.id),checked=selected.has(member.id),value=mode==='shares'?(item?.share??member.weight??1):mode==='exact'?moneyInput(item?.amountCents??exactDefaults.get(member.id)??0):'';return`<label class="participant-card ${checked?'is-selected':''}" data-member-id="${member.id}"><input type="checkbox" ${checked?'checked':''}/><span><b>${escapeHtml(member.name)}</b><small>${member.familyId?`Familia ${escapeHtml(familyName(group,member.familyId))}`:'Sin familia'}</small></span><span class="participant-value" ${mode==='equal'?'hidden':''}><input type="number" min="0" step="${mode==='shares'?'0.1':'0.01'}" value="${value}" ${checked?'':'disabled'} aria-label="${mode==='shares'?'Participaciones':'Importe'} de ${escapeHtml(member.name)}"/><i>${mode==='shares'?'partes':'€'}</i></span></label>`;}).join('');
-  $$('.participant-card>input').forEach(input=>input.addEventListener('change',()=>{const card=input.closest('.participant-card');card.classList.toggle('is-selected',input.checked);const value=card.querySelector('.participant-value input');if(value)value.disabled=!input.checked;updateAllocationHint();}));$$('.participant-value input').forEach(input=>input.addEventListener('input',updateAllocationHint));updateAllocationHint();}
+  $$('.participant-card>input').forEach(input=>input.addEventListener('change',()=>{const card=input.closest('.participant-card');card.classList.toggle('is-selected',input.checked);const value=card.querySelector('.participant-value input');if(value)value.disabled=!input.checked;updateAllocationHint();markGlobalAllocationDirty();}));$$('.participant-value input').forEach(input=>input.addEventListener('input',updateAllocationHint));updateAllocationHint();}
 function updateAllocationHint(){const mode=$('#split-mode').value,selected=$$('.participant-card>input:checked'),node=$('#allocation-total');if(!selected.length){node.textContent='Selecciona participantes.';node.className='calculation-hint is-error';return;}if(mode==='equal'){node.textContent=`${selected.length} personas · reparto a partes iguales`;node.className='calculation-hint is-balanced';return;}let sum=0,valid=true;for(const checkbox of selected){const value=checkbox.closest('.participant-card').querySelector('.participant-value input').value;if(mode==='shares')sum+=Number(value)||0;else try{sum+=moneyToCents(value);}catch{valid=false;}}if(mode==='shares'){node.textContent=`${selected.length} personas · ${sum.toLocaleString('es-ES')} participaciones`;node.className=`calculation-hint ${sum>0?'is-balanced':'is-error'}`;return;}let total=0;try{total=moneyToCents($('#expense-total').value);}catch{valid=false;}node.textContent=`Asignado: ${formatMoney(sum)} de ${formatMoney(total)}`;node.className=`calculation-hint ${valid&&sum===total?'is-balanced':'is-error'}`;}
 function rerenderParticipantMode(){const group=activeGroup(),ids=selectedParticipantIds(),mode=$('#split-mode').value;let total=0;try{total=moneyToCents($('#expense-total').value);}catch{}const base=ids.length?Math.floor(total/ids.length):0,participants=ids.map((memberId,index)=>mode==='shares'?{memberId,share:group.members.find(item=>item.id===memberId)?.weight||1}:mode==='exact'?{memberId,amountCents:base+(index<total-base*ids.length?1:0)}:{memberId});renderParticipants({participants});}
 
-function resetExpenseForm(){editingExpenseId=null;$('#expense-form').reset();$('#expense-date').value=today();$('#expense-category').value='Alojamiento';$('#split-mode').value='equal';$('#payer-rows').innerHTML='';addPayerRow();renderParticipants();$('#expense-form-kicker').textContent='NUEVA FACTURA';$('#expense-form-title').textContent='Datos del gasto';$('#expense-form-state').textContent='Sin guardar';$('#save-expense').textContent='Añadir factura';$('#cancel-expense-edit').hidden=true;}
+function resetExpenseForm(){
+  editingExpenseId=null;
+  $('#expense-form').reset();
+  $('#expense-date').value=today();
+  $('#expense-category').value='Alojamiento';
+  const group=activeGroup(),defaults=pendingGlobalAllocation?.groupId===group.id?pendingGlobalAllocation:group.allocationDefaults;
+  $('#split-mode').value=defaults?.splitMode||'equal';
+  $('#payer-rows').innerHTML='';
+  addPayerRow();
+  renderParticipants(defaults?{participants:defaults.participants}:null);
+  $('#expense-form-kicker').textContent='NUEVA FACTURA';
+  $('#expense-form-title').textContent='Datos del gasto';
+  $('#expense-form-state').textContent=pendingGlobalAllocation?'Cambios globales pendientes':'Sin guardar';
+  $('#save-expense').textContent='Añadir factura';
+  $('#cancel-expense-edit').hidden=true;
+}
 function loadExpenseForm(expense,{duplicate=false}={}){editingExpenseId=duplicate?null:expense.id;$('#expense-concept').value=duplicate?`Copia de ${expense.concept}`:expense.concept;$('#expense-date').value=expense.date;$('#expense-category').value=expense.category;$('#expense-total').value=moneyInput(expense.amountCents);$('#expense-notes').value=expense.notes||'';$('#split-mode').value=expense.splitMode;$('#payer-rows').innerHTML='';for(const payer of expense.payers)addPayerRow(`${payer.accountType==='family'?'f':'m'}:${payer.accountId}`,moneyInput(payer.amountCents));renderParticipants(expense);$('#expense-form-kicker').textContent=duplicate?'DUPLICAR FACTURA':'EDITAR FACTURA';$('#expense-form-title').textContent=duplicate?'Crear desde una existente':expense.concept;$('#expense-form-state').textContent=duplicate?'Nueva copia':'Cambios pendientes';$('#save-expense').textContent=duplicate?'Añadir copia':'Guardar cambios';$('#cancel-expense-edit').hidden=false;activateTab('expenses');$('#expense-concept').focus();}
 function readExpenseForm(){const group=activeGroup(),amountCents=moneyToCents($('#expense-total').value),payers=$$('.payer-row').map(row=>{const [prefix,accountId]=row.querySelector('select').value.split(':');return{accountType:prefix==='f'?'family':'member',accountId,amountCents:moneyToCents(row.querySelector('input').value)};}),splitMode=$('#split-mode').value,participants=$$('.participant-card>input:checked').map(input=>{const card=input.closest('.participant-card'),item={memberId:card.dataset.memberId},value=card.querySelector('.participant-value input');if(splitMode==='shares')item.share=Number(value.value);if(splitMode==='exact')item.amountCents=moneyToCents(value.value);return item;});return{id:editingExpenseId||uid('expense'),concept:$('#expense-concept').value.trim(),date:$('#expense-date').value,category:$('#expense-category').value,amountCents,payers,participants,splitMode,notes:$('#expense-notes').value.trim()};}
 $('#add-payer').addEventListener('click',()=>addPayerRow());$('#expense-total').addEventListener('input',()=>{updatePayerTotal();if($('#split-mode').value==='exact')rerenderParticipantMode();});$('#split-mode').addEventListener('change',rerenderParticipantMode);$('#select-all-participants').addEventListener('click',()=>{$$('.participant-card>input').forEach(input=>{input.checked=true;input.dispatchEvent(new Event('change'));});});$('#clear-participants').addEventListener('click',()=>{$$('.participant-card>input').forEach(input=>{input.checked=false;input.dispatchEvent(new Event('change'));});});$('#reset-expense-form').addEventListener('click',resetExpenseForm);$('#cancel-expense-edit').addEventListener('click',resetExpenseForm);
@@ -72,10 +95,69 @@ function renderSummary(data){const group=activeGroup();if(!data){$('#summary-con
 function enhanceBalanceRoutes(data){if(!data)return;const table=$('#balance-content .balance-table'),head=table?.querySelector('thead tr');if(!head)return;const title=document.createElement('th');title.textContent='Cómo se liquida';head.append(title);const rows=[...table.querySelectorAll('tbody tr')];data.result.units.forEach((unit,index)=>{const routes=settlementRoutesForUnit(unit.id,data.settlement.transfers),cell=document.createElement('td');cell.className='balance-route';const parts=[...routes.pays.map(item=>`<span class="route-pay">Paga <b>${formatMoney(item.amountCents)}</b> a ${escapeHtml(item.name)}</span>`),...routes.receives.map(item=>`<span class="route-receive">Cobra <b>${formatMoney(item.amountCents)}</b> de ${escapeHtml(item.name)}</span>`)];cell.innerHTML=parts.join('')||'<span class="route-none">Sin transferencias</span>';rows[index]?.append(cell);});}
 function renderResults(){try{const data=calculate();renderBalance(data);enhanceBalanceRoutes(data);renderSettlement(data);renderSummary(data);}catch(error){renderBalance(null);renderSettlement(null);renderSummary(null);setStatus(error.message,'error');}}
 
-function renderAll(){renderToolbar();renderGroup();renderExpenses();renderResults();}
-function activateTab(name,focus=false){const target=$(`[data-tab="${name}"]`)||$('[data-tab="group"]');$$('[role="tab"]').forEach(tab=>{const selected=tab===target;tab.setAttribute('aria-selected',String(selected));tab.tabIndex=selected?0:-1;});$$('[role="tabpanel"]').forEach(panel=>panel.hidden=panel.dataset.panel!==target.dataset.tab);state.preferences.activeTab=target.dataset.tab;save();if(focus)target.focus();if(['balance','settle','summary'].includes(target.dataset.tab))renderResults();}
+function readGlobalAllocationDraft(){
+  const splitMode=$('#split-mode').value;
+  if(!['equal','shares'].includes(splitMode))throw new Error('El reparto por importes exactos depende de cada factura y no puede aplicarse globalmente.');
+  const participants=$$('.participant-card>input:checked').map(input=>{
+    const card=input.closest('.participant-card'),participant={memberId:card.dataset.memberId};
+    if(splitMode==='shares'){
+      const share=Number(card.querySelector('.participant-value input').value);
+      if(!Number.isFinite(share)||share<=0)throw new Error('Todas las participaciones deben ser mayores que cero.');
+      participant.share=share;
+    }
+    return participant;
+  });
+  if(!participants.length)throw new Error('Selecciona al menos un comensal.');
+  return{splitMode,participants};
+}
+function renderGlobalAllocationBar(){
+  const bar=$('#global-allocation-bar');
+  if(!bar)return;
+  const current=pendingGlobalAllocation?.groupId===activeGroup().id?pendingGlobalAllocation:null;
+  bar.hidden=!current;
+  if(!current)return;
+  const shares=current.participants.reduce((sum,item)=>sum+(item.share||1),0);
+  bar.querySelector('small').textContent=`${current.participants.length} comensales · ${shares.toLocaleString('es-ES')} participaciones · se aplicará a ${activeGroup().expenses.length} facturas.`;
+}
+function markGlobalAllocationDirty(){
+  const group=activeGroup();
+  const invoiceDraftStarted=$('#expense-concept').value.trim()||$('#expense-total').value.trim()||$('#expense-notes').value.trim()||$$('.payer-row').some(row=>row.querySelector('select').value||row.querySelector('input').value.trim());
+  if(editingExpenseId!==null||!group.expenses.length||invoiceDraftStarted)return;
+  try{
+    const draft=readGlobalAllocationDraft();
+    pendingGlobalAllocation={groupId:group.id,...draft};
+    $('#expense-form-state').textContent='Cambios globales pendientes';
+    renderGlobalAllocationBar();
+    setStatus('Hay cambios pendientes. Guarda y recalcula antes de consultar el resultado definitivo.','warning');
+  }catch(error){setStatus(error.message,'error');}
+}
+function discardGlobalAllocation(){
+  if(!pendingGlobalAllocation||pendingGlobalAllocation.groupId!==activeGroup().id)return;
+  pendingGlobalAllocation=null;
+  resetExpenseForm();
+  renderGlobalAllocationBar();
+  setStatus('Cambios de reparto descartados. Se mantiene el cálculo anterior.','success');
+}
+function saveGlobalAllocation(){
+  const group=activeGroup(),draft=pendingGlobalAllocation;
+  if(!draft||draft.groupId!==group.id)return;
+  const message=`Se aplicará este reparto a las ${group.expenses.length} facturas existentes y se recalcularán todos los balances. Los pagadores, conceptos e importes no cambiarán. ¿Continuar?`;
+  if(!confirm(message))return;
+  try{
+    const updated=applyAllocationToAllExpenses(group,draft),index=state.groups.findIndex(item=>item.id===group.id);
+    state.groups[index]=updated;
+    pendingGlobalAllocation=null;
+    save();
+    renderAll();
+    resetExpenseForm();
+    setStatus(`Reparto guardado y ${updated.expenses.length} facturas recalculadas correctamente.`,'success');
+  }catch(error){setStatus(error.message,'error');}
+}
+
+function renderAll(){if(pendingGlobalAllocation&&pendingGlobalAllocation.groupId!==activeGroup().id)pendingGlobalAllocation=null;renderToolbar();renderGroup();renderExpenses();renderResults();renderGlobalAllocationBar();}
+function activateTab(name,focus=false){const target=$(`[data-tab="${name}"]`)||$('[data-tab="group"]');$$('[role="tab"]').forEach(tab=>{const selected=tab===target;tab.setAttribute('aria-selected',String(selected));tab.tabIndex=selected?0:-1;});$$('[role="tabpanel"]').forEach(panel=>panel.hidden=panel.dataset.panel!==target.dataset.tab);state.preferences.activeTab=target.dataset.tab;save();if(focus)target.focus();if(['balance','settle','summary'].includes(target.dataset.tab)){renderResults();if(pendingGlobalAllocation?.groupId===activeGroup().id)setStatus('Atención: este resultado todavía usa el reparto anterior. Pulsa «Guardar y recalcular».','warning');}}
 $$('[role="tab"]').forEach((tab,index)=>{tab.addEventListener('click',()=>activateTab(tab.dataset.tab));tab.addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();const tabs=$$('[role="tab"]'),next=event.key==='Home'?0:event.key==='End'?tabs.length-1:(index+(event.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;activateTab(tabs[next].dataset.tab,true);});});
-$('#group-select').addEventListener('change',()=>{state.activeGroupId=$('#group-select').value;editingExpenseId=null;save();renderAll();resetExpenseForm();setStatus('Reparto cambiado.','success');});
+$('#group-select').addEventListener('change',()=>{if(pendingGlobalAllocation?.groupId===activeGroup().id){$('#group-select').value=activeGroup().id;return setStatus('Guarda y recalcula el reparto pendiente, o descártalo, antes de cambiar de reparto.','warning');}state.activeGroupId=$('#group-select').value;editingExpenseId=null;save();renderAll();resetExpenseForm();setStatus('Reparto cambiado.','success');});
 $('#new-group').addEventListener('click',()=>{if(state.groups.length>=20)return setStatus('El límite es de 20 repartos guardados.','error');const name=prompt('Nombre del nuevo reparto:','Nuevo reparto')?.trim();if(!name)return;const group=newGroup(name);state.groups.push(group);state.activeGroupId=group.id;save();renderAll();resetExpenseForm();activateTab('group');setStatus('Nuevo reparto creado.','success');});
 $('#rename-group').addEventListener('click',()=>{const group=activeGroup(),name=prompt('Nuevo nombre del reparto:',group.name)?.trim();if(!name)return;group.name=name;save();renderToolbar();setStatus('Reparto renombrado.','success');});
 $('#delete-group').addEventListener('click',()=>{const group=activeGroup();if(!confirm(`¿Eliminar «${group.name}» y todas sus facturas?`))return;state.groups=state.groups.filter(item=>item.id!==group.id);if(!state.groups.length)state.groups.push(newGroup());state.activeGroupId=state.groups[0].id;save();renderAll();resetExpenseForm();setStatus('Reparto eliminado.','success');});
@@ -87,5 +169,12 @@ $('#analyze-group-import').addEventListener('click',()=>{try{analyzedImport=pars
 $('#group-import-mode').addEventListener('change',()=>{$('#replace-backup-option').hidden=$('#group-import-mode').value!=='replace';});
 $('#apply-group-import').addEventListener('click',()=>{if(!analyzedImport)return;const mode=$('#group-import-mode').value,current=activeGroup();if(mode==='new'&&state.groups.length>=20){$('#group-import-message').textContent='Ya hay 20 repartos guardados. Elimina uno o reemplaza el reparto activo.';$('#group-import-message').className='import-message error';return;}try{const imported=JSON.parse(JSON.stringify(analyzedImport.group));if(mode==='replace'){if($('#backup-before-replace').checked)downloadGroup(current,{backup:true});imported.id=current.id;state.groups[state.groups.findIndex(group=>group.id===current.id)]=imported;}else{imported.id=uid('group');if(state.groups.some(group=>group.name===imported.name))imported.name=`${imported.name} (importado)`;state.groups.push(imported);state.activeGroupId=imported.id;}save();editingExpenseId=null;renderAll();resetExpenseForm();activateTab('group');$('#group-import-dialog').close();setStatus(mode==='replace'?'Reparto reemplazado después de recalcular todos sus datos.':'Reparto importado como una copia independiente.','success');}catch(error){$('#group-import-message').textContent=error.message;$('#group-import-message').className='import-message error';}});
 $('#copy-summary').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(summaryText(calculate()));setStatus('Resumen copiado al portapapeles.','success');}catch{setStatus('No se ha podido copiar el resumen.','error');}});$('#download-summary').addEventListener('click',()=>{const text=summaryText(calculate()),blob=new Blob([text],{type:'text/plain;charset=utf-8'}),anchor=document.createElement('a');anchor.href=URL.createObjectURL(blob);anchor.download=`odin-gastos-${activeGroup().name.toLocaleLowerCase('es').replace(/[^a-z0-9]+/gi,'-')}.txt`;document.body.append(anchor);anchor.click();anchor.remove();setTimeout(()=>URL.revokeObjectURL(anchor.href),1000);setStatus('Resumen TXT preparado.','success');});$('#print-summary').addEventListener('click',()=>window.print());
+
+$('#participants-grid').addEventListener('input',markGlobalAllocationDirty);
+$('#split-mode').addEventListener('change',()=>queueMicrotask(markGlobalAllocationDirty));
+$('#save-global-allocation').addEventListener('click',saveGlobalAllocation);
+$('#discard-global-allocation').addEventListener('click',discardGlobalAllocation);
+$('#expense-form').addEventListener('submit',event=>{if(pendingGlobalAllocation?.groupId===activeGroup().id){event.preventDefault();event.stopImmediatePropagation();setStatus('Primero guarda y recalcula el reparto pendiente, o descártalo.','warning');}},true);
+window.addEventListener('beforeunload',event=>{if(pendingGlobalAllocation){event.preventDefault();event.returnValue='';}});
 
 renderAll();resetExpenseForm();activateTab(state.preferences.activeTab);if(activeGroup().members.length)setStatus('Añade facturas o revisa el reparto existente.');

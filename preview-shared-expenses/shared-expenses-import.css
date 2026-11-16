@@ -64,3 +64,18 @@
 .route-pay { color: #f0a4ab; }
 .route-receive { color: #71dfb5; }
 .route-none { color: #8296b5; }
+
+.global-allocation-bar { position: sticky; top: .5rem; z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin: 0 0 .8rem; padding: .85rem 1rem; color: #e9eef7; background: #261f12f2; border: 1px solid #8a6a2d; border-left: 4px solid var(--gold); border-radius: .75rem; box-shadow: 0 12px 30px #0008; backdrop-filter: blur(8px); }
+.global-allocation-bar[hidden] { display: none; }
+.global-allocation-bar span, .global-allocation-bar b, .global-allocation-bar small { display: block; }
+.global-allocation-bar span { color: var(--gold); font-size: .56rem; font-weight: 900; letter-spacing: .1em; }
+.global-allocation-bar b { margin-top: .2rem; font-size: .75rem; }
+.global-allocation-bar small { margin-top: .2rem; color: #c4b488; font-size: .62rem; }
+.global-allocation-bar > div:last-child { display: flex; flex: 0 0 auto; gap: .4rem; }
+.global-allocation-bar button { padding: .65rem .78rem; color: #dce5f2; background: #172238; border: 1px solid #3b4e6c; border-radius: .48rem; cursor: pointer; font-weight: 850; }
+.global-allocation-bar #save-global-allocation { color: #151108; background: var(--gold); border-color: var(--gold); }
+
+@media (max-width: 700px) {
+  .global-allocation-bar { position: static; align-items: stretch; flex-direction: column; }
+  .global-allocation-bar > div:last-child button { flex: 1; }
+}
