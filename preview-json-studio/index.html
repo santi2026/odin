@@ -41,13 +41,13 @@
     <div class="json-layout">
       <section class="json-workspace">
         <div class="json-view" data-panel="json"><div class="view-heading"><div><span>CÓDIGO</span><h2>Documento JSON</h2></div><button id="format-json" type="button">Formatear</button></div><textarea id="json-editor" spellcheck="false" aria-label="Editor JSON"></textarea><p class="json-validation success" id="json-validation">JSON válido</p></div>
-        <div class="json-view" data-panel="table" hidden><div class="view-heading"><div><span>REGISTROS</span><h2>Vista tabular</h2></div><button id="add-record" type="button">+ Añadir registro</button></div><div class="table-scroll"><table><thead id="table-head"></thead><tbody id="table-body"></tbody></table></div><p class="empty-view" id="table-empty" hidden>La vista Tabla necesita un array de objetos en la raíz.</p></div>
+        <div class="json-view" data-panel="table" hidden><div class="view-heading"><div><span>REGISTROS</span><h2>Vista tabular</h2></div><button id="add-record" type="button">+ Añadir registro</button></div><label class="table-source" id="table-source-wrap"><span>Tabla del documento</span><select id="table-source" aria-label="Tabla del documento"></select></label><div class="table-scroll"><table><thead id="table-head"></thead><tbody id="table-body"></tbody></table></div><p class="empty-view" id="table-empty" hidden>No se han encontrado colecciones de objetos que puedan mostrarse como tabla.</p></div>
         <div class="json-view" data-panel="tree" hidden><div class="view-heading"><div><span>ESTRUCTURA</span><h2>Árbol del documento</h2></div><button id="expand-tree" type="button">Expandir todo</button></div><div id="tree-root" class="tree-root"></div></div>
       </section>
 
       <aside class="json-inspector" aria-labelledby="inspector-title">
-        <div class="inspector-heading"><span>INSPECTOR</span><h2 id="inspector-title">Selecciona un elemento</h2><p id="inspector-path">Ruta: —</p></div>
-        <div id="inspector-empty" class="inspector-empty">Selecciona una celda, un campo del árbol o un registro para consultar y modificar su contenido.</div>
+        <div class="inspector-heading"><span>EDITOR</span><h2 id="inspector-title">Selecciona un elemento</h2><p id="inspector-path">Ruta: —</p></div>
+        <div id="inspector-empty" class="inspector-empty">Sitúa el cursor sobre una clave o valor del JSON, o selecciona una celda de la tabla o un campo del árbol para modificarlo.</div>
         <form id="inspector-form" hidden>
           <label><span>Tipo de dato</span><select id="inspector-type"><option value="string">Texto</option><option value="number">Número</option><option value="boolean">Booleano</option><option value="null">Null</option><option value="array">Array</option><option value="object">Objeto</option></select></label>
           <label><span>Valor actual</span><textarea id="inspector-value" spellcheck="false"></textarea></label>

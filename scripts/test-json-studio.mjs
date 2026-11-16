@@ -1,11 +1,14 @@
 import assert from'node:assert/strict';
-import{EXAMPLE_DATA,addAtPath,formatJson,getAtPath,parseJson,pathLabel,removeAtPath,searchDocument,setAtPath,tableModel,toCsv,toXml}from'../preview-json-studio/json-studio-core.js';
+import{EXAMPLE_DATA,addAtPath,findTables,formatJson,getAtPath,parseJson,pathAtOffset,pathLabel,removeAtPath,searchDocument,setAtPath,tableModel,toCsv,toXml}from'../preview-json-studio/json-studio-core.js';
 const parsed=parseJson(formatJson(EXAMPLE_DATA));assert.equal(parsed.ok,true);assert.deepEqual(parsed.value,EXAMPLE_DATA);assert.equal(parseJson('{mal').ok,false);
 assert.equal(pathLabel([0,'contactos','emails',1]),'$[0].contactos.emails[1]');assert.equal(getAtPath(EXAMPLE_DATA,[0,'nombre']),'Ana Torres');
 const changed=setAtPath(EXAMPLE_DATA,[1,'estado'],'Inactivo');assert.equal(changed[1].estado,'Inactivo');assert.equal(EXAMPLE_DATA[1].estado,'Activo');
 const added=addAtPath(EXAMPLE_DATA,[2,'etiquetas'],'lanzamiento');assert.equal(added[2].etiquetas.at(-1),'lanzamiento');assert.equal(removeAtPath(added,[2,'etiquetas',0])[2].etiquetas[0],'beta');
 assert.equal(searchDocument(EXAMPLE_DATA,'emails').some(item=>item.kind==='clave'),true);assert.equal(searchDocument(EXAMPLE_DATA,'Lucía').some(item=>item.kind==='valor'),true);
 assert.deepEqual(tableModel(EXAMPLE_DATA).columns,['id','nombre','estado','etiquetas','contactos']);
-const csv=toCsv(EXAMPLE_DATA);assert.match(csv,/"\[""ventas""/);assert.match(csv,/ana@empresa\.com/);assert.throws(()=>toCsv({a:1}),/array de objetos/);
+const nested={grupo:{families:[{id:'f1',nombre:'Ana'}],members:[{id:'m1',familyId:'f1'}]},meta:{version:1}};assert.deepEqual(findTables(nested).map(table=>table.path),[['grupo','families'],['grupo','members']]);assert.equal(tableModel(nested,['grupo','members']).rows[0].id,'m1');
+const source=formatJson(nested),memberOffset=source.indexOf('familyId');assert.deepEqual(pathAtOffset(source,memberOffset),['grupo','members',0,'familyId']);
+const csv=toCsv(EXAMPLE_DATA);assert.match(csv,/"\[""ventas""/);assert.match(csv,/ana@empresa\.com/);assert.throws(()=>toCsv({a:1}),/tabla de objetos/);
+assert.match(toCsv(nested,['grupo','families']),/f1,Ana/);
 const xml=toXml(EXAMPLE_DATA);assert.match(xml,/<raiz tipo="array">/);assert.match(xml,/<etiquetas tipo="array">/);assert.match(xml,/<elemento tipo="texto">ventas<\/elemento>/);assert.match(xml,/<telefonos tipo="array"\/>/);
 console.log('JSON_STUDIO_TESTS=PASS');
