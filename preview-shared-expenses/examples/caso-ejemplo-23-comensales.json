@@ -1137,7 +1137,81 @@
         "notes": "Combustible del desplazamiento común."
       }
     ],
-    "paidTransferKeys": []
+    "paidTransferKeys": [],
+    "allocationDefaults": {
+      "splitMode": "equal",
+      "participants": [
+        {
+          "memberId": "robles-1"
+        },
+        {
+          "memberId": "robles-2"
+        },
+        {
+          "memberId": "robles-3"
+        },
+        {
+          "memberId": "robles-4"
+        },
+        {
+          "memberId": "vega-1"
+        },
+        {
+          "memberId": "vega-2"
+        },
+        {
+          "memberId": "vega-3"
+        },
+        {
+          "memberId": "vega-4"
+        },
+        {
+          "memberId": "soler-1"
+        },
+        {
+          "memberId": "soler-2"
+        },
+        {
+          "memberId": "soler-3"
+        },
+        {
+          "memberId": "campos-1"
+        },
+        {
+          "memberId": "campos-2"
+        },
+        {
+          "memberId": "campos-3"
+        },
+        {
+          "memberId": "rios-1"
+        },
+        {
+          "memberId": "rios-2"
+        },
+        {
+          "memberId": "rios-3"
+        },
+        {
+          "memberId": "luna-1"
+        },
+        {
+          "memberId": "luna-2"
+        },
+        {
+          "memberId": "luna-3"
+        },
+        {
+          "memberId": "mar-1"
+        },
+        {
+          "memberId": "mar-2"
+        },
+        {
+          "memberId": "mar-3"
+        }
+      ]
+    }
   },
   "comprobacion": {
     "estado": "comprobado",
@@ -1165,8 +1239,8 @@
         "id": "f:mar",
         "nombre": "Familia Mar",
         "pagadoCentimos": 0,
-        "correspondiaCentimos": 8678,
-        "balanceCentimos": -8678
+        "correspondiaCentimos": 8676,
+        "balanceCentimos": -8676
       },
       {
         "id": "f:rios",
@@ -1179,8 +1253,8 @@
         "id": "f:robles",
         "nombre": "Familia Robles",
         "pagadoCentimos": 8120,
-        "correspondiaCentimos": 11571,
-        "balanceCentimos": -3451
+        "correspondiaCentimos": 11572,
+        "balanceCentimos": -3452
       },
       {
         "id": "f:soler",
@@ -1193,8 +1267,8 @@
         "id": "f:vega",
         "nombre": "Familia Vega",
         "pagadoCentimos": 13095,
-        "correspondiaCentimos": 11571,
-        "balanceCentimos": 1524
+        "correspondiaCentimos": 11572,
+        "balanceCentimos": 1523
       }
     ],
     "transferencias": [
@@ -1211,12 +1285,12 @@
       {
         "de": "Familia Mar",
         "a": "Familia Vega",
-        "importeCentimos": 31
+        "importeCentimos": 29
       },
       {
         "de": "Familia Robles",
         "a": "Familia Vega",
-        "importeCentimos": 1493
+        "importeCentimos": 1494
       },
       {
         "de": "Familia Robles",

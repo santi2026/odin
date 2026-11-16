@@ -44,7 +44,7 @@ function distributeWeighted(total,participants,weightOf) {
   return allocations.map(entry=>({memberId:entry.item.memberId,amountCents:entry.amount,weight:entry.weight/1000}));
 }
 
-export function allocateExpense(group,expense) {
+export function validateExpensePayment(group,expense) {
   const total=Number(expense.amountCents);
   if(!Number.isInteger(total)||total<=0)throw new Error(`La factura «${expense.concept||'sin nombre'}» necesita un importe positivo.`);
   if(!String(expense.concept||'').trim())throw new Error('Cada factura necesita un concepto.');
@@ -53,6 +53,11 @@ export function allocateExpense(group,expense) {
   let paid=0;const payerKeys=new Set();
   for(const payer of payers){const key=idKey(payer.accountType,payer.accountId);if(payerKeys.has(key))throw new Error(`Un pagador está repetido en «${expense.concept}».`);payerKeys.add(key);if(payer.accountType==='family'){if(!familyById(group,payer.accountId))throw new Error('La familia pagadora no existe.');}else if(!memberById(group,payer.accountId))throw new Error('La persona pagadora no existe.');if(!Number.isInteger(payer.amountCents)||payer.amountCents<=0)throw new Error('Cada aportación debe ser positiva.');paid+=payer.amountCents;}
   if(paid!==total)throw new Error(`Los pagos de «${expense.concept}» suman ${formatMoney(paid,group.currency)} y deben sumar ${formatMoney(total,group.currency)}.`);
+  return{...expense,payers:payers.map(item=>({...item}))};
+}
+
+export function allocateExpense(group,expense) {
+  const validated=validateExpensePayment(group,expense),total=validated.amountCents;
   const participants=Array.isArray(expense.participants)?expense.participants:[];
   if(!participants.length)throw new Error(`Selecciona quién participa en «${expense.concept}».`);
   const participantIds=new Set();for(const item of participants){if(participantIds.has(item.memberId))throw new Error('Hay una persona repetida en el reparto.');participantIds.add(item.memberId);if(!memberById(group,item.memberId))throw new Error('Una persona del reparto ya no existe.');}
@@ -62,7 +67,26 @@ export function allocateExpense(group,expense) {
     const allocated=allocations.reduce((sum,item)=>sum+item.amountCents,0);if(allocations.some(item=>!Number.isInteger(item.amountCents)||item.amountCents<0)||allocated!==total)throw new Error(`Los importes asignados en «${expense.concept}» deben sumar exactamente ${formatMoney(total,group.currency)}.`);
   }else if(expense.splitMode==='shares')allocations=distributeWeighted(total,participants,item=>item.share);
   else allocations=distributeWeighted(total,participants,()=>1);
-  return { ...expense, payers:payers.map(item=>({...item})), allocations };
+  return { ...validated, allocations };
+}
+
+function allocateTotal(group,total,allocation=group.allocationDefaults) {
+  if(!allocation||!['equal','shares','exact'].includes(allocation.splitMode)||!Array.isArray(allocation.participants)||!allocation.participants.length)throw new Error('Define y guarda primero el reparto global del gasto total.');
+  const participants=allocation.participants,ids=new Set();
+  for(const item of participants){if(!item?.memberId||ids.has(item.memberId)||!memberById(group,item.memberId))throw new Error('El reparto global contiene una persona repetida o inexistente.');ids.add(item.memberId);}
+  if(allocation.splitMode==='exact'){
+    const result=participants.map(item=>({memberId:item.memberId,amountCents:Number(item.amountCents)||0,weight:null})),sum=result.reduce((value,item)=>value+item.amountCents,0);
+    if(result.some(item=>!Number.isInteger(item.amountCents)||item.amountCents<0)||sum!==total)throw new Error(`Los importes del reparto global deben sumar exactamente ${formatMoney(total,group.currency)}.`);
+    return result;
+  }
+  return distributeWeighted(total,participants,allocation.splitMode==='shares'?item=>item.share:()=>1);
+}
+
+function resolvedGlobalAllocation(group){
+  if(group.allocationDefaults)return group.allocationDefaults;
+  const first=group.expenses[0],same=first&&['equal','shares'].includes(first.splitMode)&&group.expenses.every(expense=>expense.splitMode===first.splitMode&&JSON.stringify(expense.participants)===JSON.stringify(first.participants));
+  if(same)return{splitMode:first.splitMode,participants:first.participants.map(item=>({...item}))};
+  throw new Error('Las facturas antiguas tenían repartos diferentes. Define y guarda un único reparto global.');
 }
 
 function atomicAccounts(group) {
@@ -87,16 +111,18 @@ function aggregateUnits(group,accounts,mode) {
 export function calculateGroup(group,mode=group.settlementMode||'family') {
   validateGroup(group);
   const accounts=atomicAccounts(group),details=[];
-  for(const expense of group.expenses){const detail=allocateExpense(group,expense);details.push(detail);for(const payer of detail.payers){const account=accounts.get(idKey(payer.accountType,payer.accountId));account.paidCents+=payer.amountCents;account.balanceCents+=payer.amountCents;}for(const allocation of detail.allocations){const account=accounts.get(idKey('member',allocation.memberId));account.owedCents+=allocation.amountCents;account.balanceCents-=allocation.amountCents;}}
-  const totalCents=details.reduce((sum,item)=>sum+item.amountCents,0),units=aggregateUnits(group,accounts,mode).sort((a,b)=>a.label.localeCompare(b.label,'es'));
+  for(const expense of group.expenses){const detail=validateExpensePayment(group,expense);details.push(detail);for(const payer of detail.payers){const account=accounts.get(idKey(payer.accountType,payer.accountId));account.paidCents+=payer.amountCents;account.balanceCents+=payer.amountCents;}}
+  const totalCents=details.reduce((sum,item)=>sum+item.amountCents,0),globalAllocations=totalCents?allocateTotal(group,totalCents,resolvedGlobalAllocation(group)):[];
+  for(const allocation of globalAllocations){const account=accounts.get(idKey('member',allocation.memberId));account.owedCents+=allocation.amountCents;account.balanceCents-=allocation.amountCents;}
+  const units=aggregateUnits(group,accounts,mode).sort((a,b)=>a.label.localeCompare(b.label,'es'));
   const balanceSum=units.reduce((sum,item)=>sum+item.balanceCents,0),paidSum=units.reduce((sum,item)=>sum+item.paidCents,0),owedSum=units.reduce((sum,item)=>sum+item.owedCents,0);
   if(balanceSum!==0||paidSum!==totalCents||owedSum!==totalCents)throw new Error('El balance interno no cuadra. No se mostrará una liquidación incorrecta.');
-  return {totalCents,expenseCount:details.length,details,accounts:[...accounts.values()],units,balanceSum};
+  return {totalCents,expenseCount:details.length,details,globalAllocations,accounts:[...accounts.values()],units,balanceSum};
 }
 
 export function applyAllocationToAllExpenses(group,allocation) {
-  if(!group||!Array.isArray(group.expenses)||!group.expenses.length)throw new Error('No hay facturas a las que aplicar el reparto.');
-  if(!allocation||!['equal','shares'].includes(allocation.splitMode)||!Array.isArray(allocation.participants)||!allocation.participants.length)throw new Error('El reparto global no es válido.');
+  if(!group||!Array.isArray(group.expenses))throw new Error('El grupo no es válido.');
+  if(!allocation||!['equal','shares','exact'].includes(allocation.splitMode)||!Array.isArray(allocation.participants)||!allocation.participants.length)throw new Error('El reparto global no es válido.');
   const seen=new Set();
   const participants=allocation.participants.map(item=>{
     if(!item?.memberId||seen.has(item.memberId)||!memberById(group,item.memberId))throw new Error('El reparto contiene una persona repetida o inexistente.');
@@ -107,11 +133,15 @@ export function applyAllocationToAllExpenses(group,allocation) {
       if(!Number.isFinite(share)||share<=0)throw new Error('Todas las participaciones deben ser mayores que cero.');
       participant.share=share;
     }
+    if(allocation.splitMode==='exact'){
+      const amountCents=Number(item.amountCents);
+      if(!Number.isInteger(amountCents)||amountCents<0)throw new Error('Todos los importes exactos deben ser válidos.');
+      participant.amountCents=amountCents;
+    }
     return participant;
   });
   const next={
     ...group,
-    expenses:group.expenses.map(expense=>({...expense,splitMode:allocation.splitMode,participants:participants.map(item=>({...item}))})),
     allocationDefaults:{splitMode:allocation.splitMode,participants:participants.map(item=>({...item}))},
     paidTransferKeys:[]
   };
@@ -158,7 +188,7 @@ export function settlementRoutesForUnit(unitId,transfers) {
 
 export function summarizeExpense(group,detail) {
   const payerText=detail.payers.map(item=>`${item.accountType==='family'?'Familia ':''}${item.accountType==='family'?familyById(group,item.accountId)?.name:memberById(group,item.accountId)?.name}: ${formatMoney(item.amountCents,group.currency)}`).join(' · ');
-  const allocationText=detail.allocations.map(item=>`${memberById(group,item.memberId)?.name}: ${formatMoney(item.amountCents,group.currency)}`).join(' · ');
+  const allocationText=(detail.allocations||[]).map(item=>`${memberById(group,item.memberId)?.name}: ${formatMoney(item.amountCents,group.currency)}`).join(' · ');
   return{payerText,allocationText};
 }
 
@@ -231,18 +261,25 @@ export function sanitizePortableGroup(source) {
   if(group.members.some(member=>!Number.isFinite(member.weight)||member.weight<=0||member.weight>100))throw new Error('Hay un peso habitual no válido.');
   if(source.allocationDefaults!=null){
     const defaults=source.allocationDefaults;
-    if(!defaults||typeof defaults!=='object'||!['equal','shares'].includes(defaults.splitMode)||!Array.isArray(defaults.participants)||!defaults.participants.length)throw new Error('El reparto global guardado no es válido.');
+    if(!defaults||typeof defaults!=='object'||!['equal','shares','exact'].includes(defaults.splitMode)||!Array.isArray(defaults.participants)||!defaults.participants.length)throw new Error('El reparto global guardado no es válido.');
     const seen=new Set();
-    const normalized=defaults.participants.map((item,index)=>{const memberId=packageId(item?.memberId,`Participante global ${index+1}`);if(seen.has(memberId))throw new Error('Hay una persona repetida en el reparto global.');seen.add(memberId);if(!memberById(group,memberId))throw new Error('Una persona del reparto global ya no existe.');const participant={memberId};if(defaults.splitMode==='shares'){const share=Number(item?.share);if(!Number.isFinite(share)||share<=0)throw new Error('Todas las participaciones globales deben ser mayores que cero.');participant.share=share;}return participant;});
+    const normalized=defaults.participants.map((item,index)=>{const memberId=packageId(item?.memberId,`Participante global ${index+1}`);if(seen.has(memberId))throw new Error('Hay una persona repetida en el reparto global.');seen.add(memberId);if(!memberById(group,memberId))throw new Error('Una persona del reparto global ya no existe.');const participant={memberId};if(defaults.splitMode==='shares'){const share=Number(item?.share);if(!Number.isFinite(share)||share<=0)throw new Error('Todas las participaciones globales deben ser mayores que cero.');participant.share=share;}if(defaults.splitMode==='exact')participant.amountCents=packageInteger(item?.amountCents,`Importe global ${index+1}`,{max:99999999999});return participant;});
     group.allocationDefaults={splitMode:defaults.splitMode,participants:normalized};
   }
+  if(!group.allocationDefaults&&group.members.length){
+    const first=group.expenses[0],same=first&&['equal','shares'].includes(first.splitMode)&&group.expenses.every(expense=>expense.splitMode===first.splitMode&&JSON.stringify(expense.participants)===JSON.stringify(first.participants));
+    if(same)group.allocationDefaults={splitMode:first.splitMode,participants:first.participants.map(item=>first.splitMode==='shares'?{memberId:item.memberId,share:Number(item.share)}:{memberId:item.memberId})};
+    else if(!group.expenses.length)group.allocationDefaults={splitMode:'equal',participants:group.members.map(member=>({memberId:member.id}))};
+  }
   if(!group.members.length&&group.expenses.length)throw new Error('Un reparto con facturas debe contener personas.');
-  if(group.members.length)calculateGroup(group,group.settlementMode);
+  if(group.members.length&&(!group.expenses.length||group.allocationDefaults))calculateGroup(group,group.settlementMode);
+  else for(const expense of group.expenses)validateExpensePayment(group,expense);
   return group;
 }
 
 function packageCheck(group) {
   if(!group.members.length)return{estado:'incompleto',motivo:'El reparto todavía no contiene personas.',facturas:0,totalCentimos:0,totalFormateado:formatMoney(0),balanceGlobalCentimos:0,unidades:[],transferencias:[]};
+  if(group.expenses.length&&!group.allocationDefaults){const total=group.expenses.reduce((sum,item)=>sum+item.amountCents,0);return{estado:'incompleto',motivo:'Las facturas se han conservado, pero debes definir un único reparto global.',facturas:group.expenses.length,totalCentimos:total,totalFormateado:formatMoney(total),balanceGlobalCentimos:0,unidades:[],transferencias:[]};}
   const result=calculateGroup(group,group.settlementMode),settlement=settleBalances(result.units);
   return{
     estado:'comprobado',

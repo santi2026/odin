@@ -12,11 +12,11 @@ Generados el 2026-11-16. Los casos 1–14 deben importarse correctamente; el cas
 | 4 | Una factura · varios pagadores | `04-una-factura-varios-pagadores.json` | 120,00 €; 3 transferencias |
 | 5 | Familias de 1, 2 y 4 personas | `05-familias-tamanos-diferentes.json` | 210,00 €; 2 transferencias |
 | 6 | Adultos y niños · reparto por participaciones | `06-adultos-ninos-por-peso.json` | 90,00 €; 1 transferencias |
-| 7 | Participantes diferentes según la factura | `07-participantes-distintos-por-factura.json` | 550,00 €; 3 transferencias |
+| 7 | Cambio global sin editar facturas | `07-participantes-distintos-por-factura.json` | 550,00 €; 2 transferencias |
 | 8 | Importes exactos personalizados | `08-reparto-importes-exactos.json` | 100,00 €; 2 transferencias |
 | 9 | Liquidación individual con cuentas familiares | `09-liquidacion-individual-con-familias.json` | 120,00 €; 4 transferencias |
 | 10 | Todos pagaron exactamente su parte | `10-todos-pagaron-su-parte.json` | 100,00 €; 0 transferencias |
-| 11 | Compensación circular | `11-compensacion-circular.json` | 60,00 €; 2 transferencias |
+| 11 | Compensación circular | `11-compensacion-circular.json` | 60,00 €; 1 transferencias |
 | 12 | Redondeo · 10 € entre tres | `12-redondeo-diez-entre-tres.json` | 10,00 €; 2 transferencias |
 | 13 | Doce saldos · plan simplificado | `13-grupo-grande-plan-simplificado.json` | 6,00 €; 8 transferencias |
 | 14 | Exportación e importación idénticas | `14-exportacion-importacion-identica.json` | 123,45 €; 2 transferencias |
@@ -41,18 +41,18 @@ Validar once compras, seis familias pagadoras, nombres individuales, comercios, 
 |---|---:|---:|---|
 | Familia Campos | 111,45 € | 86,79 € | Cobra 24,66 € |
 | Familia Luna | 101,00 € | 86,78 € | Cobra 14,22 € |
-| Familia Mar | 0,00 € | 86,78 € | Paga 86,78 € |
+| Familia Mar | 0,00 € | 86,76 € | Paga 86,76 € |
 | Familia Ríos | 92,15 € | 86,79 € | Cobra 5,36 € |
-| Familia Robles | 81,20 € | 115,71 € | Paga 34,51 € |
+| Familia Robles | 81,20 € | 115,72 € | Paga 34,52 € |
 | Familia Soler | 148,60 € | 86,79 € | Cobra 61,81 € |
-| Familia Vega | 130,95 € | 115,71 € | Cobra 15,24 € |
+| Familia Vega | 130,95 € | 115,72 € | Cobra 15,23 € |
 
 ### Transferencias esperadas
 
 1. **Familia Mar** paga **61,81 €** a **Familia Soler**.
 2. **Familia Mar** paga **24,66 €** a **Familia Campos**.
-3. **Familia Mar** paga **0,31 €** a **Familia Vega**.
-4. **Familia Robles** paga **14,93 €** a **Familia Vega**.
+3. **Familia Mar** paga **0,29 €** a **Familia Vega**.
+4. **Familia Robles** paga **14,94 €** a **Familia Vega**.
 5. **Familia Robles** paga **14,22 €** a **Familia Luna**.
 6. **Familia Robles** paga **5,36 €** a **Familia Ríos**.
 
@@ -187,11 +187,11 @@ Validar pesos 1 y 0,5 y su agrupación familiar.
 
 1. **Familia Sur** paga **45,00 €** a **Familia Norte**.
 
-## 7. Participantes diferentes según la factura
+## 7. Cambio global sin editar facturas
 
-Comprobar que solo paga quien participa en cada consumo.
+Comprobar que se puede excluir un comensal del total conservando intactas todas las facturas.
 
-**Evaluación IA:** Ana debe recuperar 270,00 €. Beto, Carla y David pagan únicamente las partes en las que participaron.
+**Evaluación IA:** David queda excluido del reparto global. Ana, Beto y Carla asumen 550,00 € entre tres sin modificar ninguna factura.
 
 - Familias: 0.
 - Personas: 4.
@@ -204,20 +204,19 @@ Comprobar que solo paga quien participa en cada consumo.
 
 | Persona o familia | Pagó | Le correspondía | Resultado |
 |---|---:|---:|---|
-| Ana | 400,00 € | 130,00 € | Cobra 270,00 € |
-| Beto | 60,00 € | 130,00 € | Paga 70,00 € |
-| Carla | 90,00 € | 145,00 € | Paga 55,00 € |
-| David | 0,00 € | 145,00 € | Paga 145,00 € |
+| Ana | 400,00 € | 183,34 € | Cobra 216,66 € |
+| Beto | 60,00 € | 183,33 € | Paga 123,33 € |
+| Carla | 90,00 € | 183,33 € | Paga 93,33 € |
+| David | 0,00 € | 0,00 € | Saldo cero |
 
 ### Transferencias esperadas
 
-1. **David** paga **145,00 €** a **Ana**.
-2. **Beto** paga **70,00 €** a **Ana**.
-3. **Carla** paga **55,00 €** a **Ana**.
+1. **Beto** paga **123,33 €** a **Ana**.
+2. **Carla** paga **93,33 €** a **Ana**.
 
 ## 8. Importes exactos personalizados
 
-Validar una asignación no proporcional definida manualmente.
+Validar una asignación global no proporcional definida manualmente.
 
 **Evaluación IA:** Ana asume 10,00 € pero adelantó 100,00 €; cobra 30,00 € de Beto y 60,00 € de Carla.
 
@@ -314,14 +313,13 @@ Demostrar que ODÍN compensa deudas cruzadas sin devolver cada compra por separa
 
 | Persona o familia | Pagó | Le correspondía | Resultado |
 |---|---:|---:|---|
-| Ana | 30,00 € | 10,00 € | Cobra 20,00 € |
-| Beto | 20,00 € | 30,00 € | Paga 10,00 € |
+| Ana | 30,00 € | 20,00 € | Cobra 10,00 € |
+| Beto | 20,00 € | 20,00 € | Saldo cero |
 | Carla | 10,00 € | 20,00 € | Paga 10,00 € |
 
 ### Transferencias esperadas
 
-1. **Beto** paga **10,00 €** a **Ana**.
-2. **Carla** paga **10,00 €** a **Ana**.
+1. **Carla** paga **10,00 €** a **Ana**.
 
 ## 12. Redondeo · 10 € entre tres
 

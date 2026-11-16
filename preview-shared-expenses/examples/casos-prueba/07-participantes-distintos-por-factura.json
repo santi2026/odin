@@ -85,6 +85,12 @@
           },
           {
             "memberId": "p2"
+          },
+          {
+            "memberId": "p3"
+          },
+          {
+            "memberId": "p4"
           }
         ],
         "splitMode": "equal",
@@ -105,6 +111,12 @@
         ],
         "participants": [
           {
+            "memberId": "p1"
+          },
+          {
+            "memberId": "p2"
+          },
+          {
             "memberId": "p3"
           },
           {
@@ -115,7 +127,21 @@
         "notes": ""
       }
     ],
-    "paidTransferKeys": []
+    "paidTransferKeys": [],
+    "allocationDefaults": {
+      "splitMode": "equal",
+      "participants": [
+        {
+          "memberId": "p1"
+        },
+        {
+          "memberId": "p2"
+        },
+        {
+          "memberId": "p3"
+        }
+      ]
+    }
   },
   "comprobacion": {
     "estado": "comprobado",
@@ -129,54 +155,49 @@
         "id": "m:p1",
         "nombre": "Ana",
         "pagadoCentimos": 40000,
-        "correspondiaCentimos": 13000,
-        "balanceCentimos": 27000
+        "correspondiaCentimos": 18334,
+        "balanceCentimos": 21666
       },
       {
         "id": "m:p2",
         "nombre": "Beto",
         "pagadoCentimos": 6000,
-        "correspondiaCentimos": 13000,
-        "balanceCentimos": -7000
+        "correspondiaCentimos": 18333,
+        "balanceCentimos": -12333
       },
       {
         "id": "m:p3",
         "nombre": "Carla",
         "pagadoCentimos": 9000,
-        "correspondiaCentimos": 14500,
-        "balanceCentimos": -5500
+        "correspondiaCentimos": 18333,
+        "balanceCentimos": -9333
       },
       {
         "id": "m:p4",
         "nombre": "David",
         "pagadoCentimos": 0,
-        "correspondiaCentimos": 14500,
-        "balanceCentimos": -14500
+        "correspondiaCentimos": 0,
+        "balanceCentimos": 0
       }
     ],
     "transferencias": [
       {
-        "de": "David",
-        "a": "Ana",
-        "importeCentimos": 14500
-      },
-      {
         "de": "Beto",
         "a": "Ana",
-        "importeCentimos": 7000
+        "importeCentimos": 12333
       },
       {
         "de": "Carla",
         "a": "Ana",
-        "importeCentimos": 5500
+        "importeCentimos": 9333
       }
     ],
     "optimizacion": "minimo_verificado"
   },
   "caso_prueba": {
     "numero": 7,
-    "titulo": "Participantes diferentes según la factura",
-    "objetivo": "Comprobar que solo paga quien participa en cada consumo.",
-    "resultado_ia": "Ana debe recuperar 270,00 €. Beto, Carla y David pagan únicamente las partes en las que participaron."
+    "titulo": "Cambio global sin editar facturas",
+    "objetivo": "Comprobar que se puede excluir un comensal del total conservando intactas todas las facturas.",
+    "resultado_ia": "David queda excluido del reparto global. Ana, Beto y Carla asumen 550,00 € entre tres sin modificar ninguna factura."
   }
 }

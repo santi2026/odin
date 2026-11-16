@@ -109,7 +109,27 @@
         "notes": ""
       }
     ],
-    "paidTransferKeys": []
+    "paidTransferKeys": [],
+    "allocationDefaults": {
+      "splitMode": "equal",
+      "participants": [
+        {
+          "memberId": "p1"
+        },
+        {
+          "memberId": "p2"
+        },
+        {
+          "memberId": "p3"
+        },
+        {
+          "memberId": "p4"
+        },
+        {
+          "memberId": "p5"
+        }
+      ]
+    }
   },
   "comprobacion": {
     "estado": "comprobado",

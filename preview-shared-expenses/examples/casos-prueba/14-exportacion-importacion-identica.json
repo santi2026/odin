@@ -60,7 +60,21 @@
     ],
     "paidTransferKeys": [
       "m:ines>m:alvaro:4115"
-    ]
+    ],
+    "allocationDefaults": {
+      "splitMode": "equal",
+      "participants": [
+        {
+          "memberId": "alvaro"
+        },
+        {
+          "memberId": "ines"
+        },
+        {
+          "memberId": "noa"
+        }
+      ]
+    }
   },
   "comprobacion": {
     "estado": "comprobado",

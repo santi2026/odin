@@ -7,8 +7,8 @@
   <title>Gastos compartidos · ODÍN</title>
   <link rel="icon" href="/logo.ico" type="image/x-icon" />
   <link rel="stylesheet" href="/src/styles/global.css?v=shared-expenses-1" />
-  <link rel="stylesheet" href="/preview-shared-expenses/shared-expenses.css?v=1" />
-  <link rel="stylesheet" href="/preview-shared-expenses/shared-expenses-import.css?v=1" />
+  <link rel="stylesheet" href="/preview-shared-expenses/shared-expenses.css?v=2" />
+  <link rel="stylesheet" href="/preview-shared-expenses/shared-expenses-import.css?v=2" />
 </head>
 <body class="tool-page expenses-body">
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -28,13 +28,14 @@
     <nav class="expenses-tabs" role="tablist" aria-label="Secciones del reparto">
       <button type="button" role="tab" aria-selected="true" data-tab="group"><span>1</span>Grupo</button>
       <button type="button" role="tab" aria-selected="false" data-tab="expenses"><span>2</span>Facturas</button>
-      <button type="button" role="tab" aria-selected="false" data-tab="balance"><span>3</span>Balance</button>
-      <button type="button" role="tab" aria-selected="false" data-tab="settle"><span>4</span>Liquidar</button>
-      <button type="button" role="tab" aria-selected="false" data-tab="summary"><span>5</span>Resumen</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="allocation"><span>3</span>Reparto</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="balance"><span>4</span>Balance</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="settle"><span>5</span>Liquidar</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="summary"><span>6</span>Resumen</button>
     </nav>
 
     <section id="global-allocation-bar" class="global-allocation-bar" hidden aria-live="polite">
-      <div><span>CAMBIOS PENDIENTES</span><b>El reparto de participantes o partes todavía no se ha aplicado.</b><small>Balance, liquidación y resumen continúan mostrando el cálculo anterior.</small></div>
+      <div><span>CAMBIOS PENDIENTES</span><b>El reparto del gasto total todavía no se ha aplicado.</b><small>Balance, liquidación y resumen continúan mostrando el cálculo anterior.</small></div>
       <div><button id="discard-global-allocation" type="button">Descartar</button><button id="save-global-allocation" type="button">Guardar y recalcular</button></div>
     </section>
 
@@ -44,7 +45,7 @@
         <article class="entity-box"><div class="entity-head"><div><span class="map-kicker">FAMILIAS</span><h3>Agrupaciones</h3></div><b id="family-count">0</b></div><form id="family-form" class="quick-add"><input id="family-name" maxlength="60" placeholder="Nombre de la familia" required /><button type="submit">Añadir</button></form><div id="families-list" class="entity-list"></div></article>
         <article class="entity-box"><div class="entity-head"><div><span class="map-kicker">PERSONAS</span><h3>Participantes</h3></div><b id="member-count">0</b></div><form id="member-form" class="person-add"><input id="member-name" maxlength="60" placeholder="Nombre" required /><select id="member-family"><option value="">Sin familia</option></select><label><span>Peso habitual</span><input id="member-weight" type="number" min="0.1" max="100" step="0.1" value="1" /></label><button type="submit">Añadir persona</button></form><div id="members-list" class="entity-list"></div></article>
       </div>
-      <aside class="weight-help"><b>¿Qué es el peso habitual?</b><p>Solo sirve como valor inicial en repartos por participaciones. Por ejemplo, adulto 1 y niño 0,5. Puedes cambiarlo en cada factura; ODÍN nunca presupone que un niño deba pagar menos.</p></aside>
+      <aside class="weight-help"><b>¿Qué es el peso habitual?</b><p>Sirve como valor inicial en el reparto global por participaciones. Por ejemplo, adulto 1 y niño 0,5. Podrás revisarlo antes de guardar y recalcular.</p></aside>
     </section>
 
     <section class="expenses-panel" data-panel="expenses" role="tabpanel" hidden>
@@ -54,11 +55,18 @@
           <div class="expense-form-title"><div><span class="map-kicker" id="expense-form-kicker">NUEVA FACTURA</span><h3 id="expense-form-title">Datos del gasto</h3></div><span id="expense-form-state">Sin guardar</span></div>
           <div class="expense-basics"><label class="wide"><span>Concepto</span><input id="expense-concept" maxlength="100" placeholder="Ej.: Casa rural" required /></label><label><span>Fecha</span><input id="expense-date" type="date" required /></label><label><span>Categoría</span><select id="expense-category"><option>Alojamiento</option><option>Comida</option><option>Bebidas</option><option>Transporte</option><option>Actividades</option><option>Compras</option><option>Otros</option></select></label><label><span>Importe total</span><div class="money-field"><input id="expense-total" inputmode="decimal" placeholder="0,00" required /><i>€</i></div></label></div>
           <section class="expense-subsection"><div class="subsection-head"><div><b>Quién pagó</b><span>Puede haber uno o varios pagadores.</span></div><button id="add-payer" type="button">+ Otro pagador</button></div><div id="payer-rows" class="payer-rows"></div><p id="payer-total" class="calculation-hint">Pagos indicados: 0,00 €</p></section>
-          <section class="expense-subsection"><div class="subsection-head"><div><b>Cómo se reparte</b><span>Selecciona las personas que disfrutaron de este gasto.</span></div><select id="split-mode"><option value="equal">A partes iguales</option><option value="shares">Por participaciones</option><option value="exact">Importes exactos</option></select></div><div class="participant-actions"><button id="select-all-participants" type="button">Seleccionar todos</button><button id="clear-participants" type="button">Quitar todos</button></div><div id="participants-grid" class="participants-grid"></div><p id="allocation-total" class="calculation-hint">Selecciona participantes.</p></section>
           <label class="expense-notes"><span>Notas opcionales</span><textarea id="expense-notes" maxlength="500" placeholder="Detalles que ayuden a recordar el gasto."></textarea></label>
           <div class="expense-save-row"><button class="primary" id="save-expense" type="submit">Añadir factura</button><button id="cancel-expense-edit" type="button" hidden>Cancelar edición</button></div>
         </form>
         <aside class="expenses-ledger"><div class="ledger-head"><div><span class="map-kicker">HISTORIAL</span><h3>Facturas registradas</h3></div><b id="expense-count">0</b></div><div id="expenses-list" class="expenses-list"></div></aside>
+      </div>
+    </section>
+
+    <section class="expenses-panel" data-panel="allocation" role="tabpanel" hidden>
+      <div class="panel-title"><div><span class="map-kicker">REPARTO DEL TOTAL</span><h2>Quién asume el gasto</h2><p>Este reparto se aplica una sola vez a la suma de todas las facturas. Puedes cambiarlo sin editar ninguna compra.</p></div><span class="mode-badge" id="allocation-total-badge">0,00 €</span></div>
+      <div class="allocation-workspace">
+        <section class="expense-subsection allocation-editor"><div class="subsection-head"><div><b>Comensales y participaciones</b><span>Selecciona quién participa y cuánto peso tiene en el total.</span></div><select id="split-mode"><option value="equal">A partes iguales</option><option value="shares">Por participaciones</option><option value="exact">Importes exactos del total</option></select></div><div class="participant-actions"><button id="select-all-participants" type="button">Seleccionar todos</button><button id="clear-participants" type="button">Quitar todos</button></div><div id="participants-grid" class="participants-grid"></div><p id="allocation-total" class="calculation-hint">Selecciona participantes.</p></section>
+        <aside class="allocation-explanation"><span>UN SOLO REPARTO</span><h3>Las facturas no cambian</h3><p>ODÍN conserva quién pagó cada factura y compara esos adelantos con la parte del total que corresponde a cada persona o familia.</p><p>Cuando modifiques comensales, participaciones o importes, pulsa <b>Guardar y recalcular</b>.</p></aside>
       </div>
     </section>
 
@@ -101,7 +109,7 @@
     </form>
   </dialog>
   <footer class="site-footer"><span>ODÍN · Gastos compartidos</span><span>Datos locales · sin sincronización bancaria</span></footer>
-  <script type="module" src="/preview-shared-expenses/shared-expenses.js?v=1"></script>
+  <script type="module" src="/preview-shared-expenses/shared-expenses.js?v=2"></script>
   <script type="module" src="/global-timer.js?v=calendar-merge-1"></script>
   <script type="module" src="/time-center.js?v=calendar-merge-1"></script>
 </body>

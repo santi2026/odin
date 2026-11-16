@@ -49,7 +49,18 @@
         "notes": ""
       }
     ],
-    "paidTransferKeys": []
+    "paidTransferKeys": [],
+    "allocationDefaults": {
+      "splitMode": "equal",
+      "participants": [
+        {
+          "memberId": "ana"
+        },
+        {
+          "memberId": "beto"
+        }
+      ]
+    }
   },
   "comprobacion": {
     "estado": "comprobado",

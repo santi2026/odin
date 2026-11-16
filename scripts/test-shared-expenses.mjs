@@ -23,7 +23,7 @@ assert.equal(new Set(settlement.transfers.map(transferKey)).size,2);
 
 const familyGroup={id:'g2',name:'Familias',currency:'EUR',settlementMode:'family',families:[{id:'f1',name:'García'},{id:'f2',name:'López'}],members:[
   {id:'p1',name:'Ana',familyId:'f1',weight:1},{id:'p2',name:'Luis',familyId:'f1',weight:.5},{id:'p3',name:'Marta',familyId:'f2',weight:1},{id:'p4',name:'Pablo',familyId:'f2',weight:1}
-],expenses:[
+],allocationDefaults:{splitMode:'equal',participants:[{memberId:'p1'},{memberId:'p2'},{memberId:'p3'},{memberId:'p4'}]},expenses:[
   {id:'e1',concept:'Casa',date:'2026-11-15',category:'Alojamiento',amountCents:40000,payers:[{accountType:'family',accountId:'f1',amountCents:30000},{accountType:'member',accountId:'p3',amountCents:10000}],participants:[{memberId:'p1',share:1},{memberId:'p2',share:.5},{memberId:'p3',share:1},{memberId:'p4',share:1}],splitMode:'shares'},
   {id:'e2',concept:'Bebidas',date:'2026-11-16',category:'Bebidas',amountCents:6000,payers:[{accountType:'member',accountId:'p4',amountCents:6000}],participants:[{memberId:'p1',amountCents:2000},{memberId:'p3',amountCents:2000},{memberId:'p4',amountCents:2000}],splitMode:'exact'}
 ]};
@@ -38,18 +38,30 @@ assert.equal(individualResult.units.some(item=>item.id==='f:f1'&&item.paidCents=
 assert.equal(individualResult.units.reduce((sum,item)=>sum+item.balanceCents,0),0);
 
 const globallyRecalculated=applyAllocationToAllExpenses(familyGroup,{splitMode:'shares',participants:[{memberId:'p1',share:1},{memberId:'p3',share:2},{memberId:'p4',share:1}]});
-assert.equal(globallyRecalculated.expenses.every(expense=>expense.splitMode==='shares'),true);
-assert.equal(globallyRecalculated.expenses.every(expense=>expense.participants.length===3),true);
+assert.deepEqual(globallyRecalculated.expenses,familyGroup.expenses);
 assert.deepEqual(globallyRecalculated.allocationDefaults,{splitMode:'shares',participants:[{memberId:'p1',share:1},{memberId:'p3',share:2},{memberId:'p4',share:1}]});
 assert.equal(globallyRecalculated.paidTransferKeys.length,0);
 assert.equal(calculateGroup(globallyRecalculated).totalCents,46000);
+assert.deepEqual(calculateGroup(globallyRecalculated).globalAllocations.map(item=>item.amountCents),[11500,23000,11500]);
 assert.equal(familyGroup.expenses[1].splitMode,'exact');
 assert.throws(()=>applyAllocationToAllExpenses(familyGroup,{splitMode:'shares',participants:[{memberId:'p1',share:0}]}),/mayores que cero/);
 
 const recalculatedPackage=buildGroupPackage(globallyRecalculated);
 const recalculatedRestored=parseGroupPackage(JSON.stringify(recalculatedPackage));
 assert.deepEqual(recalculatedRestored.group.allocationDefaults,globallyRecalculated.allocationDefaults);
-assert.equal(recalculatedRestored.group.expenses.every(expense=>expense.participants.length===3),true);
+assert.deepEqual(recalculatedRestored.group.expenses.map(expense=>[expense.id,expense.amountCents,expense.payers]),familyGroup.expenses.map(expense=>[expense.id,expense.amountCents,expense.payers]));
+const legacyMixedPackage=buildGroupPackage({...familyGroup,allocationDefaults:null});
+assert.equal(legacyMixedPackage.comprobacion.estado,'incompleto');
+assert.match(legacyMixedPackage.comprobacion.motivo,/reparto global/);
+assert.equal(parseGroupPackage(JSON.stringify(legacyMixedPackage)).group.expenses.length,2);
+
+const totalOnceGroup={id:'total-once',name:'Reparto del total',currency:'EUR',settlementMode:'individual',families:[],members:[{id:'x',name:'X',familyId:null,weight:1},{id:'y',name:'Y',familyId:null,weight:1}],allocationDefaults:{splitMode:'equal',participants:[{memberId:'x'},{memberId:'y'}]},paidTransferKeys:[],expenses:[
+  {id:'c1',concept:'Céntimo uno',date:'2026-11-16',category:'Otros',amountCents:1,payers:[{accountType:'member',accountId:'x',amountCents:1}],participants:[{memberId:'x'}],splitMode:'equal',notes:''},
+  {id:'c2',concept:'Céntimo dos',date:'2026-11-16',category:'Otros',amountCents:1,payers:[{accountType:'member',accountId:'x',amountCents:1}],participants:[{memberId:'y'}],splitMode:'equal',notes:''}
+]};
+const totalOnce=calculateGroup(totalOnceGroup);
+assert.deepEqual(totalOnce.globalAllocations.map(item=>item.amountCents),[1,1]);
+assert.deepEqual(totalOnce.units.map(item=>[item.id,item.owedCents]),[['m:x',1],['m:y',1]]);
 
 assert.throws(()=>allocateExpense(group,{...group.expenses[0],payers:[{accountType:'member',accountId:'a',amountCents:9999}]}),/deben sumar/);
 assert.throws(()=>allocateExpense(group,{...group.expenses[0],splitMode:'exact',participants:[{memberId:'a',amountCents:1}]}),/exactamente/);
@@ -73,7 +85,7 @@ for(let scenario=0;scenario<100;scenario+=1){
     const participantIds=members.filter(()=>random()>.35).map(item=>item.id);if(!participantIds.length)participantIds.push(members[Math.floor(random()*memberCount)].id);
     expenses.push({id:`s${scenario}e${expenseIndex}`,concept:`Gasto ${expenseIndex}`,date:'2027-01-01',category:'Otros',amountCents,payers:[{accountType:'member',accountId:members[first].id,amountCents:firstAmount},...(useTwo?[{accountType:'member',accountId:members[second].id,amountCents:amountCents-firstAmount}]:[])],participants:participantIds.map(memberId=>({memberId})),splitMode:'equal'});
   }
-  const randomGroup={id:`scenario-${scenario}`,name:`Escenario ${scenario}`,currency:'EUR',settlementMode:'individual',families:[],members,expenses},result=calculateGroup(randomGroup,'individual'),plan=settleBalances(result.units,{exactLimit:0}),outgoing=new Map(),incoming=new Map();
+  const randomGroup={id:`scenario-${scenario}`,name:`Escenario ${scenario}`,currency:'EUR',settlementMode:'individual',families:[],members,expenses,allocationDefaults:{splitMode:'equal',participants:members.map(member=>({memberId:member.id}))}},result=calculateGroup(randomGroup,'individual'),plan=settleBalances(result.units,{exactLimit:0}),outgoing=new Map(),incoming=new Map();
   for(const transfer of plan.transfers){assert.equal(transfer.amountCents>0,true);outgoing.set(transfer.fromId,(outgoing.get(transfer.fromId)||0)+transfer.amountCents);incoming.set(transfer.toId,(incoming.get(transfer.toId)||0)+transfer.amountCents);}
   for(const unit of result.units){assert.equal(outgoing.get(unit.id)||0,Math.max(0,-unit.balanceCents));assert.equal(incoming.get(unit.id)||0,Math.max(0,unit.balanceCents));}
   assert.equal(result.balanceSum,0);
@@ -121,23 +133,23 @@ assert.equal(exampleResult.balanceSum,0);
 assert.deepEqual(Object.fromEntries(exampleResult.units.map(unit=>[unit.label,{paid:unit.paidCents,owed:unit.owedCents,balance:unit.balanceCents}])),{
   'Familia Campos':{paid:11145,owed:8679,balance:2466},
   'Familia Luna':{paid:10100,owed:8678,balance:1422},
-  'Familia Mar':{paid:0,owed:8678,balance:-8678},
+  'Familia Mar':{paid:0,owed:8676,balance:-8676},
   'Familia Ríos':{paid:9215,owed:8679,balance:536},
-  'Familia Robles':{paid:8120,owed:11571,balance:-3451},
+  'Familia Robles':{paid:8120,owed:11572,balance:-3452},
   'Familia Soler':{paid:14860,owed:8679,balance:6181},
-  'Familia Vega':{paid:13095,owed:11571,balance:1524}
+  'Familia Vega':{paid:13095,owed:11572,balance:1523}
 });
 assert.equal(exampleSettlement.exact,true);
 assert.deepEqual(exampleSettlement.transfers.map(item=>[item.fromLabel,item.toLabel,item.amountCents]),[
   ['Familia Mar','Familia Soler',6181],
   ['Familia Mar','Familia Campos',2466],
-  ['Familia Mar','Familia Vega',31],
-  ['Familia Robles','Familia Vega',1493],
+  ['Familia Mar','Familia Vega',29],
+  ['Familia Robles','Familia Vega',1494],
   ['Familia Robles','Familia Luna',1422],
   ['Familia Robles','Familia Ríos',536]
 ]);
-assert.equal(exampleSettlement.transfers.reduce((sum,item)=>sum+item.amountCents,0),12129);
-assert.deepEqual(settlementRoutesForUnit('f:robles',exampleSettlement.transfers),{pays:[{name:'Familia Vega',amountCents:1493},{name:'Familia Luna',amountCents:1422},{name:'Familia Ríos',amountCents:536}],receives:[]});
+assert.equal(exampleSettlement.transfers.reduce((sum,item)=>sum+item.amountCents,0),12128);
+assert.deepEqual(settlementRoutesForUnit('f:robles',exampleSettlement.transfers),{pays:[{name:'Familia Vega',amountCents:1494},{name:'Familia Luna',amountCents:1422},{name:'Familia Ríos',amountCents:536}],receives:[]});
 assert.deepEqual(settlementRoutesForUnit('f:soler',exampleSettlement.transfers),{pays:[],receives:[{name:'Familia Mar',amountCents:6181}]});
 
 const casesDirectory=new URL('../preview-shared-expenses/examples/casos-prueba/',import.meta.url);

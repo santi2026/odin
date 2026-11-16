@@ -97,7 +97,21 @@
         "notes": ""
       }
     ],
-    "paidTransferKeys": []
+    "paidTransferKeys": [],
+    "allocationDefaults": {
+      "splitMode": "equal",
+      "participants": [
+        {
+          "memberId": "a"
+        },
+        {
+          "memberId": "b"
+        },
+        {
+          "memberId": "c"
+        }
+      ]
+    }
   },
   "comprobacion": {
     "estado": "comprobado",
@@ -111,15 +125,15 @@
         "id": "m:a",
         "nombre": "Ana",
         "pagadoCentimos": 3000,
-        "correspondiaCentimos": 1000,
-        "balanceCentimos": 2000
+        "correspondiaCentimos": 2000,
+        "balanceCentimos": 1000
       },
       {
         "id": "m:b",
         "nombre": "Beto",
         "pagadoCentimos": 2000,
-        "correspondiaCentimos": 3000,
-        "balanceCentimos": -1000
+        "correspondiaCentimos": 2000,
+        "balanceCentimos": 0
       },
       {
         "id": "m:c",
@@ -130,11 +144,6 @@
       }
     ],
     "transferencias": [
-      {
-        "de": "Beto",
-        "a": "Ana",
-        "importeCentimos": 1000
-      },
       {
         "de": "Carla",
         "a": "Ana",

@@ -13,7 +13,7 @@ const member=(id,name,familyId=null,weight=1)=>({id,name,familyId,weight});
 const family=(id,name)=>({id,name});
 const participants=members=>members.map(item=>({memberId:item.id}));
 const payer=(accountId,amountCents,accountType='member')=>({accountType,accountId,amountCents});
-const baseGroup=(id,name,members,{families=[],settlementMode='individual',expenses=[]}={})=>({id,name,currency:'EUR',settlementMode,families,members,expenses,paidTransferKeys:[]});
+const baseGroup=(id,name,members,{families=[],settlementMode='individual',expenses=[],allocationDefaults=null}={})=>({id,name,currency:'EUR',settlementMode,families,members,expenses,paidTransferKeys:[],allocationDefaults});
 const expense=(id,concept,amountCents,payers,people,{splitMode='equal',category='Otros',notes=''}={})=>({id,concept,date:fixedDate,category,amountCents,payers,participants:people,splitMode,notes});
 
 const cases=[];
@@ -94,13 +94,13 @@ function add(number,slug,title,objective,group,conclusion){
 }
 {
   const members=['Ana','Beto','Carla','David'].map((name,index)=>member(`p${index+1}`,name));
-  const byIds=ids=>ids.map(id=>({memberId:id}));
-  add(7,'participantes-distintos-por-factura','Participantes diferentes según la factura','Comprobar que solo paga quien participa en cada consumo.',baseGroup('caso-07','Casa, bebidas y actividad',members,{expenses:[expense('e1','Casa',40000,[payer('p1',40000)],participants(members),{category:'Alojamiento'}),expense('e2','Bebidas',6000,[payer('p2',6000)],byIds(['p1','p2']),{category:'Bebidas'}),expense('e3','Actividad',9000,[payer('p3',9000)],byIds(['p3','p4']),{category:'Actividades'})]}),'Ana debe recuperar 270,00 €. Beto, Carla y David pagan únicamente las partes en las que participaron.');
+  const global=members.slice(0,3).map(item=>({memberId:item.id}));
+  add(7,'participantes-distintos-por-factura','Cambio global sin editar facturas','Comprobar que se puede excluir un comensal del total conservando intactas todas las facturas.',baseGroup('caso-07','Casa, bebidas y actividad',members,{expenses:[expense('e1','Casa',40000,[payer('p1',40000)],participants(members),{category:'Alojamiento'}),expense('e2','Bebidas',6000,[payer('p2',6000)],participants(members),{category:'Bebidas'}),expense('e3','Actividad',9000,[payer('p3',9000)],participants(members),{category:'Actividades'})],allocationDefaults:{splitMode:'equal',participants:global}}),'David queda excluido del reparto global. Ana, Beto y Carla asumen 550,00 € entre tres sin modificar ninguna factura.');
 }
 {
   const members=['Ana','Beto','Carla'].map((name,index)=>member(`p${index+1}`,name));
   const exact=[{memberId:'p1',amountCents:1000},{memberId:'p2',amountCents:3000},{memberId:'p3',amountCents:6000}];
-  add(8,'reparto-importes-exactos','Importes exactos personalizados','Validar una asignación no proporcional definida manualmente.',baseGroup('caso-08','Reparto exacto 10-30-60',members,{expenses:[expense('e1','Compra personalizada',10000,[payer('p1',10000)],exact,{splitMode:'exact',category:'Compras'})]}),'Ana asume 10,00 € pero adelantó 100,00 €; cobra 30,00 € de Beto y 60,00 € de Carla.');
+  add(8,'reparto-importes-exactos','Importes exactos personalizados','Validar una asignación global no proporcional definida manualmente.',baseGroup('caso-08','Reparto exacto 10-30-60',members,{expenses:[expense('e1','Compra personalizada',10000,[payer('p1',10000)],participants(members),{category:'Compras'})],allocationDefaults:{splitMode:'exact',participants:exact}}),'Ana asume 10,00 € pero adelantó 100,00 €; cobra 30,00 € de Beto y 60,00 € de Carla.');
 }
 {
   const families=[family('fa','Alfa'),family('fb','Beta')];
@@ -124,7 +124,7 @@ function add(number,slug,title,objective,group,conclusion){
   const members=Array.from({length:12},(_,i)=>member(`p${i+1}`,`Persona ${i+1}`));
   const payers=[payer('p7',150),payer('p8',150),payer('p9',100),payer('p10',100),payer('p11',50),payer('p12',50)];
   const exact=members.slice(0,6).map(item=>({memberId:item.id,amountCents:100}));
-  add(13,'grupo-grande-plan-simplificado','Doce saldos · plan simplificado','Validar la ruta segura cuando hay más de diez unidades con saldo.',baseGroup('caso-13','Doce personas con saldos',members,{expenses:[expense('e1','Ajuste colectivo',600,payers,exact,{splitMode:'exact'})]}),'Se liquidan 6,00 € sin descuadre. Al haber doce saldos, ODÍN muestra un plan determinista simplificado en vez de bloquear el navegador.');
+  add(13,'grupo-grande-plan-simplificado','Doce saldos · plan simplificado','Validar la ruta segura cuando hay más de diez unidades con saldo.',baseGroup('caso-13','Doce personas con saldos',members,{expenses:[expense('e1','Ajuste colectivo',600,payers,exact,{splitMode:'exact'})],allocationDefaults:{splitMode:'exact',participants:exact}}),'Se liquidan 6,00 € sin descuadre. Al haber doce saldos, ODÍN muestra un plan determinista simplificado en vez de bloquear el navegador.');
 }
 {
   const members=[member('alvaro','Álvaro'),member('ines','Inés'),member('noa','Noa')];
