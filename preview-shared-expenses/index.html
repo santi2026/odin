@@ -8,6 +8,7 @@
   <link rel="icon" href="/logo.ico" type="image/x-icon" />
   <link rel="stylesheet" href="/src/styles/global.css?v=shared-expenses-1" />
   <link rel="stylesheet" href="/preview-shared-expenses/shared-expenses.css?v=1" />
+  <link rel="stylesheet" href="/preview-shared-expenses/shared-expenses-import.css?v=1" />
 </head>
 <body class="tool-page expenses-body">
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -20,7 +21,7 @@
 
     <section class="group-toolbar">
       <label><span>Reparto activo</span><select id="group-select"></select></label>
-      <div><button id="new-group" type="button">+ Nuevo reparto</button><button id="rename-group" type="button">Renombrar</button><button id="delete-group" class="danger-ghost" type="button">Eliminar</button></div>
+      <div><button id="new-group" type="button">+ Nuevo reparto</button><button id="rename-group" type="button">Renombrar</button><button id="export-group" type="button">Exportar</button><button id="import-group" type="button">Importar</button><button id="delete-group" class="danger-ghost" type="button">Eliminar</button></div>
       <p id="group-toolbar-summary">Prepara el grupo para comenzar.</p>
     </section>
 
@@ -74,6 +75,26 @@
     <p class="expenses-status" id="expenses-status" role="status">Añade las personas que participarán en el reparto.</p>
     <section class="expenses-note"><span>✓</span><div><b>El balance debe ser exactamente cero</b><p>ODÍN trabaja en céntimos y comprueba que cada factura, reparto y liquidación cuadre antes de mostrar resultados. Si detecta una inconsistencia, bloquea el cálculo y explica qué debes corregir.</p></div></section>
   </main>
+  <dialog id="group-import-dialog" class="import-dialog">
+    <form method="dialog" class="import-dialog-shell">
+      <header><div><span class="map-kicker">ARCHIVO PORTÁTIL DE ODÍN</span><h2>Importar un reparto</h2><p>Analiza primero el archivo. Los importes y saldos se recalculan antes de guardar nada.</p></div><button class="dialog-close" value="cancel" aria-label="Cerrar">×</button></header>
+      <section class="import-source">
+        <label><span>Seleccionar archivo JSON</span><input id="group-import-file" type="file" accept="application/json,.json" /></label>
+        <div class="import-separator"><span>o</span></div>
+        <label><span>Pegar el contenido del archivo</span><textarea id="group-import-text" rows="7" spellcheck="false" placeholder="{ &quot;formato&quot;: &quot;odin-gastos-compartidos-v1&quot;, ... }"></textarea></label>
+        <button id="analyze-group-import" type="button">Analizar sin guardar</button>
+      </section>
+      <p id="group-import-message" class="import-message">Todavía no se ha analizado ningún archivo.</p>
+      <section id="group-import-preview" class="import-preview" hidden>
+        <div class="import-preview-head"><div><span>REPARTO COMPROBADO</span><h3 id="import-preview-name"></h3></div><b id="import-preview-total"></b></div>
+        <dl><div><dt>Familias</dt><dd id="import-preview-families">0</dd></div><div><dt>Personas</dt><dd id="import-preview-members">0</dd></div><div><dt>Facturas</dt><dd id="import-preview-expenses">0</dd></div><div><dt>Transferencias</dt><dd id="import-preview-transfers">0</dd></div></dl>
+        <p id="import-preview-check"></p>
+        <label><span>Cómo incorporarlo</span><select id="group-import-mode"><option value="new">Crear un reparto nuevo (recomendado)</option><option value="replace">Reemplazar el reparto activo</option></select></label>
+        <label id="replace-backup-option" class="backup-option" hidden><input id="backup-before-replace" type="checkbox" checked /> Descargar antes una copia del reparto que se reemplazará</label>
+      </section>
+      <footer><button value="cancel">Cancelar</button><button id="apply-group-import" class="primary" type="button" disabled>Importar reparto</button></footer>
+    </form>
+  </dialog>
   <footer class="site-footer"><span>ODÍN · Gastos compartidos</span><span>Datos locales · sin sincronización bancaria</span></footer>
   <script type="module" src="/preview-shared-expenses/shared-expenses.js?v=1"></script>
   <script type="module" src="/global-timer.js?v=calendar-merge-1"></script>

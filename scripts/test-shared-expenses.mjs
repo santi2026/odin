@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { allocateExpense, calculateGroup, formatMoney, moneyToCents, settleBalances, transferKey } from '../preview-shared-expenses/shared-expenses-core.js';
+import { allocateExpense, buildGroupPackage, calculateGroup, formatMoney, moneyToCents, parseGroupPackage, settleBalances, transferKey } from '../preview-shared-expenses/shared-expenses-core.js';
 
 assert.equal(moneyToCents('1.234,56 €'),123456);
 assert.equal(moneyToCents('12.50'),1250);
@@ -63,5 +63,37 @@ for(let scenario=0;scenario<100;scenario+=1){
   for(const unit of result.units){assert.equal(outgoing.get(unit.id)||0,Math.max(0,-unit.balanceCents));assert.equal(incoming.get(unit.id)||0,Math.max(0,unit.balanceCents));}
   assert.equal(result.balanceSum,0);
 }
+
+const portable=buildGroupPackage(familyGroup,new Date('2027-02-03T10:20:30Z'));
+assert.equal(portable.formato,'odin-gastos-compartidos-v1');
+assert.equal(portable.exportado,'2027-02-03T10:20:30.000Z');
+assert.equal(portable.comprobacion.estado,'comprobado');
+assert.equal(portable.comprobacion.totalCentimos,46000);
+assert.equal(portable.comprobacion.balanceGlobalCentimos,0);
+assert.equal(portable.comprobacion.facturas,2);
+const restored=parseGroupPackage(JSON.stringify(portable));
+assert.equal(restored.group.name,familyGroup.name);
+assert.deepEqual(restored.group.families,familyGroup.families);
+assert.deepEqual(restored.group.members,familyGroup.members);
+assert.equal(restored.group.expenses.length,familyGroup.expenses.length);
+assert.deepEqual(restored.group.expenses.map(item=>item.amountCents),familyGroup.expenses.map(item=>item.amountCents));
+assert.equal(restored.check.totalCentimos,46000);
+assert.equal(restored.check.transferencias.length,1);
+
+const manipulated=structuredClone(portable);
+manipulated.grupo.expenses[0].payers[0].amountCents=29999;
+assert.throws(()=>parseGroupPackage(JSON.stringify(manipulated)),/deben sumar/);
+const impossibleDate=structuredClone(portable);
+impossibleDate.grupo.expenses[0].date='2027-02-30';
+assert.throws(()=>parseGroupPackage(JSON.stringify(impossibleDate)),/fecha/);
+const falseCheck=structuredClone(portable);
+falseCheck.comprobacion.totalCentimos=1;
+assert.equal(parseGroupPackage(JSON.stringify(falseCheck)).check.totalCentimos,46000);
+assert.throws(()=>parseGroupPackage('{"formato":"otro"}'),/compatible/);
+assert.throws(()=>parseGroupPackage('{mal json'),/JSON válido/);
+
+const emptyPackage=buildGroupPackage({id:'draft',name:'Borrador',currency:'EUR',settlementMode:'family',families:[],members:[],expenses:[],paidTransferKeys:[]});
+assert.equal(emptyPackage.comprobacion.estado,'incompleto');
+assert.equal(parseGroupPackage(JSON.stringify(emptyPackage)).group.name,'Borrador');
 
 console.log('SHARED_EXPENSES_TESTS=PASS');

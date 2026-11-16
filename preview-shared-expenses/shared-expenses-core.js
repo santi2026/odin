@@ -128,3 +128,106 @@ export function summarizeExpense(group,detail) {
   const allocationText=detail.allocations.map(item=>`${memberById(group,item.memberId)?.name}: ${formatMoney(item.amountCents,group.currency)}`).join(' · ');
   return{payerText,allocationText};
 }
+
+export const GROUP_PACKAGE_FORMAT='odin-gastos-compartidos-v1';
+
+const packageText=(value,label,max=100)=>{
+  const text=String(value??'').trim();
+  if(!text)throw new Error(`${label} no puede estar vacío.`);
+  if(text.length>max)throw new Error(`${label} supera el límite de ${max} caracteres.`);
+  return text;
+};
+const packageId=(value,label)=>packageText(value,label,160);
+const packageDate=(value,label)=>{
+  const text=String(value??''),date=new Date(`${text}T00:00:00Z`);
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(text)||Number.isNaN(date.getTime())||date.toISOString().slice(0,10)!==text)throw new Error(`${label} no es válida.`);
+  return text;
+};
+const packageInteger=(value,label,{min=0,max=Number.MAX_SAFE_INTEGER}={})=>{
+  const number=Number(value);
+  if(!Number.isSafeInteger(number)||number<min||number>max)throw new Error(`${label} no es válido.`);
+  return number;
+};
+
+export function sanitizePortableGroup(source) {
+  if(!source||typeof source!=='object'||Array.isArray(source))throw new Error('El archivo no contiene un reparto válido.');
+  const families=Array.isArray(source.families)?source.families:[];
+  const members=Array.isArray(source.members)?source.members:[];
+  const expenses=Array.isArray(source.expenses)?source.expenses:[];
+  if(families.length>20)throw new Error('El reparto supera el límite de 20 familias.');
+  if(members.length>50)throw new Error('El reparto supera el límite de 50 personas.');
+  if(expenses.length>500)throw new Error('El reparto supera el límite de 500 facturas.');
+  const group={
+    id:packageId(source.id||'grupo-importado','El identificador del reparto'),
+    name:packageText(source.name,'El nombre del reparto',80),
+    currency:source.currency==='EUR'?'EUR':(()=>{throw new Error('Por ahora solo se admiten repartos en euros.');})(),
+    settlementMode:['family','individual'].includes(source.settlementMode)?source.settlementMode:(()=>{throw new Error('El modo de liquidación no es válido.');})(),
+    families:families.map((family,index)=>({id:packageId(family?.id,`Familia ${index+1}`),name:packageText(family?.name,`Nombre de la familia ${index+1}`,60)})),
+    members:members.map((member,index)=>({
+      id:packageId(member?.id,`Persona ${index+1}`),
+      name:packageText(member?.name,`Nombre de la persona ${index+1}`,60),
+      familyId:member?.familyId==null||member.familyId===''?null:packageId(member.familyId,`Familia de la persona ${index+1}`),
+      weight:Number(member?.weight)
+    })),
+    expenses:expenses.map((expense,index)=>({
+      id:packageId(expense?.id,`Factura ${index+1}`),
+      concept:packageText(expense?.concept,`Concepto de la factura ${index+1}`,100),
+      date:packageDate(expense?.date,`La fecha de la factura ${index+1}`),
+      category:packageText(expense?.category||'Otros',`Categoría de la factura ${index+1}`,40),
+      amountCents:packageInteger(expense?.amountCents,`Importe de la factura ${index+1}`,{min:1,max:99999999999}),
+      payers:(Array.isArray(expense?.payers)?expense.payers:[]).map((payer,payerIndex)=>({
+        accountType:payer?.accountType==='family'?'family':payer?.accountType==='member'?'member':(()=>{throw new Error(`El pagador ${payerIndex+1} de la factura ${index+1} no es válido.`);})(),
+        accountId:packageId(payer?.accountId,`Pagador ${payerIndex+1} de la factura ${index+1}`),
+        amountCents:packageInteger(payer?.amountCents,`Aportación ${payerIndex+1} de la factura ${index+1}`,{min:1,max:99999999999})
+      })),
+      participants:(Array.isArray(expense?.participants)?expense.participants:[]).map((participant,participantIndex)=>{
+        const item={memberId:packageId(participant?.memberId,`Participante ${participantIndex+1} de la factura ${index+1}`)};
+        if(expense?.splitMode==='shares')item.share=Number(participant?.share);
+        if(expense?.splitMode==='exact')item.amountCents=packageInteger(participant?.amountCents,`Importe del participante ${participantIndex+1}`,{max:99999999999});
+        return item;
+      }),
+      splitMode:['equal','shares','exact'].includes(expense?.splitMode)?expense.splitMode:'equal',
+      notes:String(expense?.notes??'').slice(0,500)
+    })),
+    paidTransferKeys:(Array.isArray(source.paidTransferKeys)?source.paidTransferKeys:[]).slice(0,500).map(value=>String(value).slice(0,400))
+  };
+  ensureUnique(group.families,'identificadores de familia');
+  ensureUnique(group.members,'identificadores de persona');
+  ensureUnique(group.expenses,'identificadores de factura');
+  if(group.members.some(member=>!Number.isFinite(member.weight)||member.weight<=0||member.weight>100))throw new Error('Hay un peso habitual no válido.');
+  if(!group.members.length&&group.expenses.length)throw new Error('Un reparto con facturas debe contener personas.');
+  if(group.members.length)calculateGroup(group,group.settlementMode);
+  return group;
+}
+
+function packageCheck(group) {
+  if(!group.members.length)return{estado:'incompleto',motivo:'El reparto todavía no contiene personas.',facturas:0,totalCentimos:0,totalFormateado:formatMoney(0),balanceGlobalCentimos:0,unidades:[],transferencias:[]};
+  const result=calculateGroup(group,group.settlementMode),settlement=settleBalances(result.units);
+  return{
+    estado:'comprobado',
+    facturas:result.expenseCount,
+    totalCentimos:result.totalCents,
+    totalFormateado:formatMoney(result.totalCents,group.currency),
+    modoLiquidacion:group.settlementMode,
+    balanceGlobalCentimos:result.balanceSum,
+    unidades:result.units.map(unit=>({id:unit.id,nombre:unit.label,pagadoCentimos:unit.paidCents,correspondiaCentimos:unit.owedCents,balanceCentimos:unit.balanceCents})),
+    transferencias:settlement.transfers.map(transfer=>({de:transfer.fromLabel,a:transfer.toLabel,importeCentimos:transfer.amountCents})),
+    optimizacion:settlement.exact?'minimo_verificado':'plan_simplificado'
+  };
+}
+
+export function buildGroupPackage(source,now=new Date()) {
+  const group=sanitizePortableGroup(source),instant=now instanceof Date?now:new Date(now);
+  if(Number.isNaN(instant.getTime()))throw new Error('La fecha de exportación no es válida.');
+  return{formato:GROUP_PACKAGE_FORMAT,version:1,exportado:instant.toISOString(),origen:'ODÍN',grupo:group,comprobacion:packageCheck(group)};
+}
+
+export function parseGroupPackage(text) {
+  const source=String(text??'');
+  if(!source.trim())throw new Error('Selecciona un archivo JSON o pega su contenido.');
+  if(new Blob([source]).size>2*1024*1024)throw new Error('El archivo supera el límite de 2 MB.');
+  let parsed;try{parsed=JSON.parse(source);}catch{throw new Error('El contenido no es un JSON válido.');}
+  if(parsed?.formato!==GROUP_PACKAGE_FORMAT||parsed?.version!==1)throw new Error('El archivo no es una exportación compatible de Gastos compartidos.');
+  const group=sanitizePortableGroup(parsed.grupo),check=packageCheck(group);
+  return{group,check,exportedAt:typeof parsed.exportado==='string'?parsed.exportado:null};
+}

@@ -1,0 +1,55 @@
+.import-dialog {
+  width: min(720px, calc(100% - 1rem));
+  max-height: calc(100vh - 2rem);
+  padding: 0;
+  color: #eaf0f8;
+  background: #0b1321;
+  border: 1px solid #344969;
+  border-radius: 1rem;
+  box-shadow: 0 24px 80px #000b;
+}
+
+.import-dialog::backdrop {
+  background: #030710d9;
+  backdrop-filter: blur(5px);
+}
+
+.import-dialog-shell { display: grid; gap: 1rem; padding: 1.25rem; }
+.import-dialog-shell > header { display: flex; align-items: start; justify-content: space-between; gap: 1rem; }
+.import-dialog-shell h2 { margin: .25rem 0 0; font-family: Georgia, serif; font-size: 2rem; font-weight: 400; }
+.import-dialog-shell header p { margin: .35rem 0 0; color: #879ab8; font-size: .72rem; line-height: 1.5; }
+.dialog-close { display: grid; place-items: center; flex: 0 0 38px; width: 38px; height: 38px; color: #dce6f3; background: #142137; border: 1px solid #304563; border-radius: .55rem; cursor: pointer; font-size: 1.35rem; }
+.import-source { display: grid; gap: .65rem; padding: 1rem; background: #0f1929; border: 1px solid #263a58; border-radius: .75rem; }
+.import-source label, .import-preview > label { display: grid; gap: .4rem; color: #8fa3c1; font-size: .68rem; }
+.import-source input[type="file"], .import-source textarea, .import-preview select { width: 100%; padding: .7rem; color: #e9eff8; background: #08111e; border: 1px solid #304564; border-radius: .5rem; }
+.import-source textarea { resize: vertical; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .68rem; }
+.import-source > button, .import-dialog-shell > footer button { padding: .7rem .85rem; color: #c4d2e4; background: #13223a; border: 1px solid #344b6e; border-radius: .5rem; cursor: pointer; font-weight: 800; }
+.import-source > button { justify-self: start; }
+.import-separator { display: flex; align-items: center; gap: .6rem; color: #667d9e; font-size: .62rem; }
+.import-separator::before, .import-separator::after { content: ""; height: 1px; flex: 1; background: #263a58; }
+.import-message { margin: 0; padding: .7rem .8rem; color: #91a5c3; background: #101b2c; border-left: 3px solid #4d709d; border-radius: .25rem .55rem .55rem .25rem; font-size: .7rem; }
+.import-message.success { color: #76dfb8; border-color: #70dfb6; }
+.import-message.error { color: #ffafb6; border-color: #e65e6b; }
+.import-preview { display: grid; gap: .8rem; padding: 1rem; background: #0d1828; border: 1px solid #345071; border-radius: .75rem; }
+.import-preview[hidden], .backup-option[hidden] { display: none; }
+.import-preview-head { display: flex; align-items: end; justify-content: space-between; gap: 1rem; }
+.import-preview-head span { color: #70dfb6; font-size: .58rem; letter-spacing: .08em; }
+.import-preview-head h3 { margin: .2rem 0 0; font-family: Georgia, serif; font-size: 1.5rem; font-weight: 400; }
+.import-preview-head > b { color: var(--gold); font-size: 1.25rem; }
+.import-preview dl { display: grid; grid-template-columns: repeat(4, 1fr); gap: .4rem; margin: 0; }
+.import-preview dl div { padding: .65rem; background: #091321; border-radius: .5rem; }
+.import-preview dt { color: #7f94b3; font-size: .58rem; }
+.import-preview dd { margin: .2rem 0 0; color: #eef3fa; font-size: 1rem; font-weight: 800; }
+.import-preview > p { margin: 0; color: #8fa4c2; font-size: .68rem; line-height: 1.5; }
+.backup-option { display: flex !important; align-items: center; gap: .45rem; padding: .65rem; color: #c2cee0 !important; background: #171a22; border: 1px solid #51452d; border-radius: .5rem; }
+.backup-option[hidden] { display: none !important; }
+.backup-option input { accent-color: var(--gold); }
+.import-dialog-shell > footer { display: flex; justify-content: flex-end; gap: .45rem; }
+.import-dialog-shell > footer .primary { color: #11141b; background: var(--gold); border-color: var(--gold); }
+.import-dialog-shell > footer .primary:disabled { opacity: .4; cursor: not-allowed; }
+
+@media (max-width: 540px) {
+  .import-dialog-shell { padding: .85rem; }
+  .import-preview dl { grid-template-columns: 1fr 1fr; }
+  .import-dialog-shell > footer button { flex: 1; }
+}
