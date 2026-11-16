@@ -23,8 +23,9 @@
 .import-source label, .import-preview > label { display: grid; gap: .4rem; color: #8fa3c1; font-size: .68rem; }
 .import-source input[type="file"], .import-source textarea, .import-preview select { width: 100%; padding: .7rem; color: #e9eff8; background: #08111e; border: 1px solid #304564; border-radius: .5rem; }
 .import-source textarea { resize: vertical; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .68rem; }
-.import-source > button, .import-dialog-shell > footer button { padding: .7rem .85rem; color: #c4d2e4; background: #13223a; border: 1px solid #344b6e; border-radius: .5rem; cursor: pointer; font-weight: 800; }
-.import-source > button { justify-self: start; }
+.import-source button, .import-dialog-shell > footer button { padding: .7rem .85rem; color: #c4d2e4; background: #13223a; border: 1px solid #344b6e; border-radius: .5rem; cursor: pointer; font-weight: 800; }
+.import-source-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .65rem; }
+.import-source-actions a { color: var(--gold); font-size: .68rem; text-underline-offset: .2rem; }
 .import-separator { display: flex; align-items: center; gap: .6rem; color: #667d9e; font-size: .62rem; }
 .import-separator::before, .import-separator::after { content: ""; height: 1px; flex: 1; background: #263a58; }
 .import-message { margin: 0; padding: .7rem .8rem; color: #91a5c3; background: #101b2c; border-left: 3px solid #4d709d; border-radius: .25rem .55rem .55rem .25rem; font-size: .7rem; }

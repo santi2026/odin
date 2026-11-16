@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { allocateExpense, buildGroupPackage, calculateGroup, formatMoney, moneyToCents, parseGroupPackage, settleBalances, transferKey } from '../preview-shared-expenses/shared-expenses-core.js';
 
 assert.equal(moneyToCents('1.234,56 €'),123456);
@@ -95,5 +96,32 @@ assert.throws(()=>parseGroupPackage('{mal json'),/JSON válido/);
 const emptyPackage=buildGroupPackage({id:'draft',name:'Borrador',currency:'EUR',settlementMode:'family',families:[],members:[],expenses:[],paidTransferKeys:[]});
 assert.equal(emptyPackage.comprobacion.estado,'incompleto');
 assert.equal(parseGroupPackage(JSON.stringify(emptyPackage)).group.name,'Borrador');
+
+const realCaseText=readFileSync(new URL('../preview-shared-expenses/examples/caso-real-comida-23.json',import.meta.url),'utf8');
+const realCase=parseGroupPackage(realCaseText),realResult=calculateGroup(realCase.group),realSettlement=settleBalances(realResult.units);
+assert.equal(realCase.group.families.length,7);
+assert.equal(realCase.group.members.length,23);
+assert.equal(realCase.group.expenses.length,5);
+assert.equal(realResult.totalCents,32550);
+assert.equal(realResult.balanceSum,0);
+assert.deepEqual(Object.fromEntries(realResult.units.map(unit=>[unit.label,{paid:unit.paidCents,owed:unit.owedCents,balance:unit.balanceCents}])),{
+  'Familia Con&Ton':{paid:0,owed:5661,balance:-5661},
+  'Familia Fer&Raq':{paid:5000,owed:5661,balance:-661},
+  'Familia Gustavo':{paid:14000,owed:4246,balance:9754},
+  'Familia Isa&Sol':{paid:0,owed:4245,balance:-4245},
+  'Familia Jau&Xes':{paid:9000,owed:4246,balance:4754},
+  'Familia Jaume':{paid:0,owed:4245,balance:-4245},
+  'Familia Sil&San':{paid:4550,owed:4246,balance:304}
+});
+assert.equal(realSettlement.exact,true);
+assert.deepEqual(realSettlement.transfers.map(item=>[item.fromLabel,item.toLabel,item.amountCents]),[
+  ['Familia Con&Ton','Familia Gustavo',5661],
+  ['Familia Isa&Sol','Familia Gustavo',4093],
+  ['Familia Isa&Sol','Familia Jau&Xes',152],
+  ['Familia Jaume','Familia Jau&Xes',4245],
+  ['Familia Fer&Raq','Familia Jau&Xes',357],
+  ['Familia Fer&Raq','Familia Sil&San',304]
+]);
+assert.equal(realSettlement.transfers.reduce((sum,item)=>sum+item.amountCents,0),14812);
 
 console.log('SHARED_EXPENSES_TESTS=PASS');
