@@ -1,0 +1,721 @@
+{
+  "formato": "odin-gastos-compartidos-v1",
+  "version": 1,
+  "exportado": "2026-11-16T06:00:00.000Z",
+  "origen": "ODÍN",
+  "grupo": {
+    "id": "caso-real-comida-23",
+    "name": "Comida compartida · 23 comensales",
+    "currency": "EUR",
+    "settlementMode": "family",
+    "families": [
+      {
+        "id": "f-fer",
+        "name": "Fer&Raq"
+      },
+      {
+        "id": "f-con",
+        "name": "Con&Ton"
+      },
+      {
+        "id": "f-gus",
+        "name": "Gustavo"
+      },
+      {
+        "id": "f-jau",
+        "name": "Jau&Xes"
+      },
+      {
+        "id": "f-sil",
+        "name": "Sil&San"
+      },
+      {
+        "id": "f-jau2",
+        "name": "Jaume"
+      },
+      {
+        "id": "f-isa",
+        "name": "Isa&Sol"
+      }
+    ],
+    "members": [
+      {
+        "id": "m-fer-1",
+        "name": "Fer&Raq 1",
+        "familyId": "f-fer",
+        "weight": 1
+      },
+      {
+        "id": "m-fer-2",
+        "name": "Fer&Raq 2",
+        "familyId": "f-fer",
+        "weight": 1
+      },
+      {
+        "id": "m-fer-3",
+        "name": "Fer&Raq 3",
+        "familyId": "f-fer",
+        "weight": 1
+      },
+      {
+        "id": "m-fer-4",
+        "name": "Fer&Raq 4",
+        "familyId": "f-fer",
+        "weight": 1
+      },
+      {
+        "id": "m-con-1",
+        "name": "Con&Ton 1",
+        "familyId": "f-con",
+        "weight": 1
+      },
+      {
+        "id": "m-con-2",
+        "name": "Con&Ton 2",
+        "familyId": "f-con",
+        "weight": 1
+      },
+      {
+        "id": "m-con-3",
+        "name": "Con&Ton 3",
+        "familyId": "f-con",
+        "weight": 1
+      },
+      {
+        "id": "m-con-4",
+        "name": "Con&Ton 4",
+        "familyId": "f-con",
+        "weight": 1
+      },
+      {
+        "id": "m-gus-1",
+        "name": "Gustavo 1",
+        "familyId": "f-gus",
+        "weight": 1
+      },
+      {
+        "id": "m-gus-2",
+        "name": "Gustavo 2",
+        "familyId": "f-gus",
+        "weight": 1
+      },
+      {
+        "id": "m-gus-3",
+        "name": "Gustavo 3",
+        "familyId": "f-gus",
+        "weight": 1
+      },
+      {
+        "id": "m-jau-1",
+        "name": "Jau&Xes 1",
+        "familyId": "f-jau",
+        "weight": 1
+      },
+      {
+        "id": "m-jau-2",
+        "name": "Jau&Xes 2",
+        "familyId": "f-jau",
+        "weight": 1
+      },
+      {
+        "id": "m-jau-3",
+        "name": "Jau&Xes 3",
+        "familyId": "f-jau",
+        "weight": 1
+      },
+      {
+        "id": "m-sil-1",
+        "name": "Sil&San 1",
+        "familyId": "f-sil",
+        "weight": 1
+      },
+      {
+        "id": "m-sil-2",
+        "name": "Sil&San 2",
+        "familyId": "f-sil",
+        "weight": 1
+      },
+      {
+        "id": "m-sil-3",
+        "name": "Sil&San 3",
+        "familyId": "f-sil",
+        "weight": 1
+      },
+      {
+        "id": "m-jau2-1",
+        "name": "Jaume 1",
+        "familyId": "f-jau2",
+        "weight": 1
+      },
+      {
+        "id": "m-jau2-2",
+        "name": "Jaume 2",
+        "familyId": "f-jau2",
+        "weight": 1
+      },
+      {
+        "id": "m-jau2-3",
+        "name": "Jaume 3",
+        "familyId": "f-jau2",
+        "weight": 1
+      },
+      {
+        "id": "m-isa-1",
+        "name": "Isa&Sol 1",
+        "familyId": "f-isa",
+        "weight": 1
+      },
+      {
+        "id": "m-isa-2",
+        "name": "Isa&Sol 2",
+        "familyId": "f-isa",
+        "weight": 1
+      },
+      {
+        "id": "m-isa-3",
+        "name": "Isa&Sol 3",
+        "familyId": "f-isa",
+        "weight": 1
+      }
+    ],
+    "expenses": [
+      {
+        "id": "e1",
+        "concept": "MERCADONA · Sil&San",
+        "date": "2026-11-16",
+        "category": "Comida",
+        "amountCents": 4550,
+        "payers": [
+          {
+            "accountType": "family",
+            "accountId": "f-sil",
+            "amountCents": 4550
+          }
+        ],
+        "participants": [
+          {
+            "memberId": "m-fer-1"
+          },
+          {
+            "memberId": "m-con-1"
+          },
+          {
+            "memberId": "m-gus-1"
+          },
+          {
+            "memberId": "m-jau-1"
+          },
+          {
+            "memberId": "m-sil-1"
+          },
+          {
+            "memberId": "m-fer-2"
+          },
+          {
+            "memberId": "m-fer-3"
+          },
+          {
+            "memberId": "m-fer-4"
+          },
+          {
+            "memberId": "m-con-2"
+          },
+          {
+            "memberId": "m-con-3"
+          },
+          {
+            "memberId": "m-con-4"
+          },
+          {
+            "memberId": "m-gus-2"
+          },
+          {
+            "memberId": "m-gus-3"
+          },
+          {
+            "memberId": "m-jau-2"
+          },
+          {
+            "memberId": "m-jau-3"
+          },
+          {
+            "memberId": "m-sil-2"
+          },
+          {
+            "memberId": "m-sil-3"
+          },
+          {
+            "memberId": "m-jau2-1"
+          },
+          {
+            "memberId": "m-jau2-2"
+          },
+          {
+            "memberId": "m-jau2-3"
+          },
+          {
+            "memberId": "m-isa-1"
+          },
+          {
+            "memberId": "m-isa-2"
+          },
+          {
+            "memberId": "m-isa-3"
+          }
+        ],
+        "splitMode": "equal",
+        "notes": "Mercadona pagado por Sil&San"
+      },
+      {
+        "id": "e2",
+        "concept": "ESPUCARN",
+        "date": "2026-11-16",
+        "category": "Comida",
+        "amountCents": 14000,
+        "payers": [
+          {
+            "accountType": "family",
+            "accountId": "f-gus",
+            "amountCents": 14000
+          }
+        ],
+        "participants": [
+          {
+            "memberId": "m-jau2-3"
+          },
+          {
+            "memberId": "m-isa-1"
+          },
+          {
+            "memberId": "m-isa-2"
+          },
+          {
+            "memberId": "m-isa-3"
+          },
+          {
+            "memberId": "m-fer-1"
+          },
+          {
+            "memberId": "m-con-1"
+          },
+          {
+            "memberId": "m-gus-1"
+          },
+          {
+            "memberId": "m-jau-1"
+          },
+          {
+            "memberId": "m-sil-1"
+          },
+          {
+            "memberId": "m-fer-2"
+          },
+          {
+            "memberId": "m-fer-3"
+          },
+          {
+            "memberId": "m-fer-4"
+          },
+          {
+            "memberId": "m-con-2"
+          },
+          {
+            "memberId": "m-con-3"
+          },
+          {
+            "memberId": "m-con-4"
+          },
+          {
+            "memberId": "m-gus-2"
+          },
+          {
+            "memberId": "m-gus-3"
+          },
+          {
+            "memberId": "m-jau-2"
+          },
+          {
+            "memberId": "m-jau-3"
+          },
+          {
+            "memberId": "m-sil-2"
+          },
+          {
+            "memberId": "m-sil-3"
+          },
+          {
+            "memberId": "m-jau2-1"
+          },
+          {
+            "memberId": "m-jau2-2"
+          }
+        ],
+        "splitMode": "equal",
+        "notes": "Espucarn pagado por Gustavo"
+      },
+      {
+        "id": "e3",
+        "concept": "FRUTERÍA",
+        "date": "2026-11-16",
+        "category": "Comida",
+        "amountCents": 5000,
+        "payers": [
+          {
+            "accountType": "family",
+            "accountId": "f-fer",
+            "amountCents": 5000
+          }
+        ],
+        "participants": [
+          {
+            "memberId": "m-jau-2"
+          },
+          {
+            "memberId": "m-jau-3"
+          },
+          {
+            "memberId": "m-sil-1"
+          },
+          {
+            "memberId": "m-sil-2"
+          },
+          {
+            "memberId": "m-sil-3"
+          },
+          {
+            "memberId": "m-jau2-1"
+          },
+          {
+            "memberId": "m-jau2-2"
+          },
+          {
+            "memberId": "m-jau2-3"
+          },
+          {
+            "memberId": "m-isa-1"
+          },
+          {
+            "memberId": "m-fer-1"
+          },
+          {
+            "memberId": "m-fer-2"
+          },
+          {
+            "memberId": "m-fer-3"
+          },
+          {
+            "memberId": "m-fer-4"
+          },
+          {
+            "memberId": "m-con-1"
+          },
+          {
+            "memberId": "m-con-2"
+          },
+          {
+            "memberId": "m-con-3"
+          },
+          {
+            "memberId": "m-con-4"
+          },
+          {
+            "memberId": "m-gus-1"
+          },
+          {
+            "memberId": "m-gus-2"
+          },
+          {
+            "memberId": "m-gus-3"
+          },
+          {
+            "memberId": "m-jau-1"
+          },
+          {
+            "memberId": "m-isa-2"
+          },
+          {
+            "memberId": "m-isa-3"
+          }
+        ],
+        "splitMode": "equal",
+        "notes": "Frutería pagada por Fer&Raq"
+      },
+      {
+        "id": "e4",
+        "concept": "MERCADONA · Jau&Xes",
+        "date": "2026-11-16",
+        "category": "Comida",
+        "amountCents": 8000,
+        "payers": [
+          {
+            "accountType": "family",
+            "accountId": "f-jau",
+            "amountCents": 8000
+          }
+        ],
+        "participants": [
+          {
+            "memberId": "m-isa-2"
+          },
+          {
+            "memberId": "m-isa-3"
+          },
+          {
+            "memberId": "m-fer-1"
+          },
+          {
+            "memberId": "m-con-1"
+          },
+          {
+            "memberId": "m-gus-1"
+          },
+          {
+            "memberId": "m-gus-3"
+          },
+          {
+            "memberId": "m-jau-1"
+          },
+          {
+            "memberId": "m-fer-2"
+          },
+          {
+            "memberId": "m-fer-3"
+          },
+          {
+            "memberId": "m-fer-4"
+          },
+          {
+            "memberId": "m-con-2"
+          },
+          {
+            "memberId": "m-con-3"
+          },
+          {
+            "memberId": "m-con-4"
+          },
+          {
+            "memberId": "m-gus-2"
+          },
+          {
+            "memberId": "m-jau-2"
+          },
+          {
+            "memberId": "m-jau-3"
+          },
+          {
+            "memberId": "m-sil-1"
+          },
+          {
+            "memberId": "m-sil-2"
+          },
+          {
+            "memberId": "m-sil-3"
+          },
+          {
+            "memberId": "m-jau2-1"
+          },
+          {
+            "memberId": "m-jau2-2"
+          },
+          {
+            "memberId": "m-jau2-3"
+          },
+          {
+            "memberId": "m-isa-1"
+          }
+        ],
+        "splitMode": "equal",
+        "notes": "Mercadona pagado por Jau&Xes"
+      },
+      {
+        "id": "e5",
+        "concept": "HIELO",
+        "date": "2026-11-16",
+        "category": "Comida",
+        "amountCents": 1000,
+        "payers": [
+          {
+            "accountType": "family",
+            "accountId": "f-jau",
+            "amountCents": 1000
+          }
+        ],
+        "participants": [
+          {
+            "memberId": "m-jau2-1"
+          },
+          {
+            "memberId": "m-jau2-2"
+          },
+          {
+            "memberId": "m-jau2-3"
+          },
+          {
+            "memberId": "m-isa-1"
+          },
+          {
+            "memberId": "m-isa-2"
+          },
+          {
+            "memberId": "m-isa-3"
+          },
+          {
+            "memberId": "m-fer-1"
+          },
+          {
+            "memberId": "m-con-1"
+          },
+          {
+            "memberId": "m-gus-1"
+          },
+          {
+            "memberId": "m-gus-3"
+          },
+          {
+            "memberId": "m-jau-1"
+          },
+          {
+            "memberId": "m-fer-2"
+          },
+          {
+            "memberId": "m-fer-3"
+          },
+          {
+            "memberId": "m-fer-4"
+          },
+          {
+            "memberId": "m-con-2"
+          },
+          {
+            "memberId": "m-con-3"
+          },
+          {
+            "memberId": "m-con-4"
+          },
+          {
+            "memberId": "m-gus-2"
+          },
+          {
+            "memberId": "m-jau-2"
+          },
+          {
+            "memberId": "m-jau-3"
+          },
+          {
+            "memberId": "m-sil-1"
+          },
+          {
+            "memberId": "m-sil-2"
+          },
+          {
+            "memberId": "m-sil-3"
+          }
+        ],
+        "splitMode": "equal",
+        "notes": "Hielo pagado por Jau&Xes"
+      }
+    ],
+    "paidTransferKeys": []
+  },
+  "comprobacion": {
+    "estado": "comprobado",
+    "facturas": 5,
+    "totalCentimos": 32550,
+    "totalFormateado": "325,50 €",
+    "modoLiquidacion": "family",
+    "balanceGlobalCentimos": 0,
+    "unidades": [
+      {
+        "id": "f:f-con",
+        "nombre": "Familia Con&Ton",
+        "pagadoCentimos": 0,
+        "correspondiaCentimos": 5661,
+        "balanceCentimos": -5661
+      },
+      {
+        "id": "f:f-fer",
+        "nombre": "Familia Fer&Raq",
+        "pagadoCentimos": 5000,
+        "correspondiaCentimos": 5661,
+        "balanceCentimos": -661
+      },
+      {
+        "id": "f:f-gus",
+        "nombre": "Familia Gustavo",
+        "pagadoCentimos": 14000,
+        "correspondiaCentimos": 4246,
+        "balanceCentimos": 9754
+      },
+      {
+        "id": "f:f-isa",
+        "nombre": "Familia Isa&Sol",
+        "pagadoCentimos": 0,
+        "correspondiaCentimos": 4245,
+        "balanceCentimos": -4245
+      },
+      {
+        "id": "f:f-jau",
+        "nombre": "Familia Jau&Xes",
+        "pagadoCentimos": 9000,
+        "correspondiaCentimos": 4246,
+        "balanceCentimos": 4754
+      },
+      {
+        "id": "f:f-jau2",
+        "nombre": "Familia Jaume",
+        "pagadoCentimos": 0,
+        "correspondiaCentimos": 4245,
+        "balanceCentimos": -4245
+      },
+      {
+        "id": "f:f-sil",
+        "nombre": "Familia Sil&San",
+        "pagadoCentimos": 4550,
+        "correspondiaCentimos": 4246,
+        "balanceCentimos": 304
+      }
+    ],
+    "transferencias": [
+      {
+        "de": "Familia Con&Ton",
+        "a": "Familia Gustavo",
+        "importeCentimos": 5661
+      },
+      {
+        "de": "Familia Isa&Sol",
+        "a": "Familia Gustavo",
+        "importeCentimos": 4093
+      },
+      {
+        "de": "Familia Isa&Sol",
+        "a": "Familia Jau&Xes",
+        "importeCentimos": 152
+      },
+      {
+        "de": "Familia Jaume",
+        "a": "Familia Jau&Xes",
+        "importeCentimos": 4245
+      },
+      {
+        "de": "Familia Fer&Raq",
+        "a": "Familia Jau&Xes",
+        "importeCentimos": 357
+      },
+      {
+        "de": "Familia Fer&Raq",
+        "a": "Familia Sil&San",
+        "importeCentimos": 304
+      }
+    ],
+    "optimizacion": "minimo_verificado"
+  },
+  "caso_prueba": {
+    "nombre": "Comida compartida entre 7 familias y 23 comensales",
+    "objetivo": "Verificar el reparto por persona, la agrupación familiar, cinco facturas, cuatro familias pagadoras y la liquidación exacta.",
+    "origen": "Caso real facilitado por el usuario. La fecha de las facturas es técnica porque la fecha original no se indicó.",
+    "criterio_redondeo": "Los 74 céntimos indivisibles de las cinco facturas se distribuyen de forma rotatoria. Cinco personas asumen 14,16 € y dieciocho asumen 14,15 €.",
+    "numero": 1,
+    "titulo": "Caso real · 23 comensales y 7 familias",
+    "resultado_ia": "Debe cerrar 325,50 € con seis transferencias. Corrige el descuadre histórico de 0,02 € y deja todos los saldos a cero."
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "formato": "odin-gastos-compartidos-v1",
+  "version": 1,
+  "exportado": "2026-11-16T12:00:00.000Z",
+  "origen": "ODÍN",
+  "grupo": {
+    "id": "caso-08",
+    "name": "Reparto exacto 10-30-60",
+    "currency": "EUR",
+    "settlementMode": "individual",
+    "families": [],
+    "members": [
+      {
+        "id": "p1",
+        "name": "Ana",
+        "familyId": null,
+        "weight": 1
+      },
+      {
+        "id": "p2",
+        "name": "Beto",
+        "familyId": null,
+        "weight": 1
+      },
+      {
+        "id": "p3",
+        "name": "Carla",
+        "familyId": null,
+        "weight": 1
+      }
+    ],
+    "expenses": [
+      {
+        "id": "e1",
+        "concept": "Compra personalizada",
+        "date": "2026-11-16",
+        "category": "Compras",
+        "amountCents": 10000,
+        "payers": [
+          {
+            "accountType": "member",
+            "accountId": "p1",
+            "amountCents": 10000
+          }
+        ],
+        "participants": [
+          {
+            "memberId": "p1",
+            "amountCents": 1000
+          },
+          {
+            "memberId": "p2",
+            "amountCents": 3000
+          },
+          {
+            "memberId": "p3",
+            "amountCents": 6000
+          }
+        ],
+        "splitMode": "exact",
+        "notes": ""
+      }
+    ],
+    "paidTransferKeys": []
+  },
+  "comprobacion": {
+    "estado": "comprobado",
+    "facturas": 1,
+    "totalCentimos": 10000,
+    "totalFormateado": "100,00 €",
+    "modoLiquidacion": "individual",
+    "balanceGlobalCentimos": 0,
+    "unidades": [
+      {
+        "id": "m:p1",
+        "nombre": "Ana",
+        "pagadoCentimos": 10000,
+        "correspondiaCentimos": 1000,
+        "balanceCentimos": 9000
+      },
+      {
+        "id": "m:p2",
+        "nombre": "Beto",
+        "pagadoCentimos": 0,
+        "correspondiaCentimos": 3000,
+        "balanceCentimos": -3000
+      },
+      {
+        "id": "m:p3",
+        "nombre": "Carla",
+        "pagadoCentimos": 0,
+        "correspondiaCentimos": 6000,
+        "balanceCentimos": -6000
+      }
+    ],
+    "transferencias": [
+      {
+        "de": "Carla",
+        "a": "Ana",
+        "importeCentimos": 6000
+      },
+      {
+        "de": "Beto",
+        "a": "Ana",
+        "importeCentimos": 3000
+      }
+    ],
+    "optimizacion": "minimo_verificado"
+  },
+  "caso_prueba": {
+    "numero": 8,
+    "titulo": "Importes exactos personalizados",
+    "objetivo": "Validar una asignación no proporcional definida manualmente.",
+    "resultado_ia": "Ana asume 10,00 € pero adelantó 100,00 €; cobra 30,00 € de Beto y 60,00 € de Carla."
+  }
+}

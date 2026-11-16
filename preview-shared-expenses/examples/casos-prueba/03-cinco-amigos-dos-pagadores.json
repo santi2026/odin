@@ -1,0 +1,183 @@
+{
+  "formato": "odin-gastos-compartidos-v1",
+  "version": 1,
+  "exportado": "2026-11-16T12:00:00.000Z",
+  "origen": "ODÍN",
+  "grupo": {
+    "id": "caso-03",
+    "name": "Fin de semana de cinco amigos",
+    "currency": "EUR",
+    "settlementMode": "individual",
+    "families": [],
+    "members": [
+      {
+        "id": "p1",
+        "name": "Ana",
+        "familyId": null,
+        "weight": 1
+      },
+      {
+        "id": "p2",
+        "name": "Beto",
+        "familyId": null,
+        "weight": 1
+      },
+      {
+        "id": "p3",
+        "name": "Carla",
+        "familyId": null,
+        "weight": 1
+      },
+      {
+        "id": "p4",
+        "name": "David",
+        "familyId": null,
+        "weight": 1
+      },
+      {
+        "id": "p5",
+        "name": "Eva",
+        "familyId": null,
+        "weight": 1
+      }
+    ],
+    "expenses": [
+      {
+        "id": "e1",
+        "concept": "Cena",
+        "date": "2026-11-16",
+        "category": "Comida",
+        "amountCents": 10000,
+        "payers": [
+          {
+            "accountType": "member",
+            "accountId": "p1",
+            "amountCents": 10000
+          }
+        ],
+        "participants": [
+          {
+            "memberId": "p1"
+          },
+          {
+            "memberId": "p2"
+          },
+          {
+            "memberId": "p3"
+          },
+          {
+            "memberId": "p4"
+          },
+          {
+            "memberId": "p5"
+          }
+        ],
+        "splitMode": "equal",
+        "notes": ""
+      },
+      {
+        "id": "e2",
+        "concept": "Alojamiento",
+        "date": "2026-11-16",
+        "category": "Alojamiento",
+        "amountCents": 15000,
+        "payers": [
+          {
+            "accountType": "member",
+            "accountId": "p2",
+            "amountCents": 15000
+          }
+        ],
+        "participants": [
+          {
+            "memberId": "p1"
+          },
+          {
+            "memberId": "p2"
+          },
+          {
+            "memberId": "p3"
+          },
+          {
+            "memberId": "p4"
+          },
+          {
+            "memberId": "p5"
+          }
+        ],
+        "splitMode": "equal",
+        "notes": ""
+      }
+    ],
+    "paidTransferKeys": []
+  },
+  "comprobacion": {
+    "estado": "comprobado",
+    "facturas": 2,
+    "totalCentimos": 25000,
+    "totalFormateado": "250,00 €",
+    "modoLiquidacion": "individual",
+    "balanceGlobalCentimos": 0,
+    "unidades": [
+      {
+        "id": "m:p1",
+        "nombre": "Ana",
+        "pagadoCentimos": 10000,
+        "correspondiaCentimos": 5000,
+        "balanceCentimos": 5000
+      },
+      {
+        "id": "m:p2",
+        "nombre": "Beto",
+        "pagadoCentimos": 15000,
+        "correspondiaCentimos": 5000,
+        "balanceCentimos": 10000
+      },
+      {
+        "id": "m:p3",
+        "nombre": "Carla",
+        "pagadoCentimos": 0,
+        "correspondiaCentimos": 5000,
+        "balanceCentimos": -5000
+      },
+      {
+        "id": "m:p4",
+        "nombre": "David",
+        "pagadoCentimos": 0,
+        "correspondiaCentimos": 5000,
+        "balanceCentimos": -5000
+      },
+      {
+        "id": "m:p5",
+        "nombre": "Eva",
+        "pagadoCentimos": 0,
+        "correspondiaCentimos": 5000,
+        "balanceCentimos": -5000
+      }
+    ],
+    "transferencias": [
+      {
+        "de": "Carla",
+        "a": "Beto",
+        "importeCentimos": 5000
+      },
+      {
+        "de": "David",
+        "a": "Beto",
+        "importeCentimos": 5000
+      },
+      {
+        "de": "Eva",
+        "a": "Ana",
+        "importeCentimos": 5000
+      }
+    ],
+    "optimizacion": "minimo_verificado"
+  },
+  "caso_prueba": {
+    "numero": 3,
+    "titulo": "Cinco amigos · dos facturas y dos pagadores",
+    "objetivo": "Comprobar la compensación de varios adelantos.",
+    "resultado_ia": "Cada persona asume 50,00 €. Ana y Beto recuperan sus adelantos mediante un plan compensado."
+  }
+}

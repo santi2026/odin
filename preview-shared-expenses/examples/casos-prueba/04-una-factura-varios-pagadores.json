@@ -1,0 +1,139 @@
+{
+  "formato": "odin-gastos-compartidos-v1",
+  "version": 1,
+  "exportado": "2026-11-16T12:00:00.000Z",
+  "origen": "ODÍN",
+  "grupo": {
+    "id": "caso-04",
+    "name": "Factura con dos pagadores",
+    "currency": "EUR",
+    "settlementMode": "individual",
+    "families": [],
+    "members": [
+      {
+        "id": "p1",
+        "name": "Ana",
+        "familyId": null,
+        "weight": 1
+      },
+      {
+        "id": "p2",
+        "name": "Beto",
+        "familyId": null,
+        "weight": 1
+      },
+      {
+        "id": "p3",
+        "name": "Carla",
+        "familyId": null,
+        "weight": 1
+      },
+      {
+        "id": "p4",
+        "name": "David",
+        "familyId": null,
+        "weight": 1
+      }
+    ],
+    "expenses": [
+      {
+        "id": "e1",
+        "concept": "Compra conjunta",
+        "date": "2026-11-16",
+        "category": "Compras",
+        "amountCents": 12000,
+        "payers": [
+          {
+            "accountType": "member",
+            "accountId": "p1",
+            "amountCents": 7000
+          },
+          {
+            "accountType": "member",
+            "accountId": "p2",
+            "amountCents": 5000
+          }
+        ],
+        "participants": [
+          {
+            "memberId": "p1"
+          },
+          {
+            "memberId": "p2"
+          },
+          {
+            "memberId": "p3"
+          },
+          {
+            "memberId": "p4"
+          }
+        ],
+        "splitMode": "equal",
+        "notes": ""
+      }
+    ],
+    "paidTransferKeys": []
+  },
+  "comprobacion": {
+    "estado": "comprobado",
+    "facturas": 1,
+    "totalCentimos": 12000,
+    "totalFormateado": "120,00 €",
+    "modoLiquidacion": "individual",
+    "balanceGlobalCentimos": 0,
+    "unidades": [
+      {
+        "id": "m:p1",
+        "nombre": "Ana",
+        "pagadoCentimos": 7000,
+        "correspondiaCentimos": 3000,
+        "balanceCentimos": 4000
+      },
+      {
+        "id": "m:p2",
+        "nombre": "Beto",
+        "pagadoCentimos": 5000,
+        "correspondiaCentimos": 3000,
+        "balanceCentimos": 2000
+      },
+      {
+        "id": "m:p3",
+        "nombre": "Carla",
+        "pagadoCentimos": 0,
+        "correspondiaCentimos": 3000,
+        "balanceCentimos": -3000
+      },
+      {
+        "id": "m:p4",
+        "nombre": "David",
+        "pagadoCentimos": 0,
+        "correspondiaCentimos": 3000,
+        "balanceCentimos": -3000
+      }
+    ],
+    "transferencias": [
+      {
+        "de": "Carla",
+        "a": "Ana",
+        "importeCentimos": 3000
+      },
+      {
+        "de": "David",
+        "a": "Ana",
+        "importeCentimos": 1000
+      },
+      {
+        "de": "David",
+        "a": "Beto",
+        "importeCentimos": 2000
+      }
+    ],
+    "optimizacion": "minimo_verificado"
+  },
+  "caso_prueba": {
+    "numero": 4,
+    "titulo": "Una factura · varios pagadores",
+    "objetivo": "Validar que varias aportaciones sumen la misma factura.",
+    "resultado_ia": "Cada persona asume 30,00 €. Carla y David compensan a Ana y Beto sin crear dinero ni perder céntimos."
+  }
+}

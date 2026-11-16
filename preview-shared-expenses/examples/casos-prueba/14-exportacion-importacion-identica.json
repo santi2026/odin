@@ -1,0 +1,115 @@
+{
+  "formato": "odin-gastos-compartidos-v1",
+  "version": 1,
+  "exportado": "2026-11-16T12:00:00.000Z",
+  "origen": "ODÍN",
+  "grupo": {
+    "id": "caso-14",
+    "name": "Peña Águila · continuidad",
+    "currency": "EUR",
+    "settlementMode": "individual",
+    "families": [],
+    "members": [
+      {
+        "id": "alvaro",
+        "name": "Álvaro",
+        "familyId": null,
+        "weight": 1
+      },
+      {
+        "id": "ines",
+        "name": "Inés",
+        "familyId": null,
+        "weight": 1
+      },
+      {
+        "id": "noa",
+        "name": "Noa",
+        "familyId": null,
+        "weight": 1
+      }
+    ],
+    "expenses": [
+      {
+        "id": "e1",
+        "concept": "Reserva & menú",
+        "date": "2026-11-16",
+        "category": "Comida",
+        "amountCents": 12345,
+        "payers": [
+          {
+            "accountType": "member",
+            "accountId": "alvaro",
+            "amountCents": 12345
+          }
+        ],
+        "participants": [
+          {
+            "memberId": "alvaro"
+          },
+          {
+            "memberId": "ines"
+          },
+          {
+            "memberId": "noa"
+          }
+        ],
+        "splitMode": "equal",
+        "notes": "Conserva acentos, símbolos y el estado de las transferencias."
+      }
+    ],
+    "paidTransferKeys": [
+      "m:ines>m:alvaro:4115"
+    ]
+  },
+  "comprobacion": {
+    "estado": "comprobado",
+    "facturas": 1,
+    "totalCentimos": 12345,
+    "totalFormateado": "123,45 €",
+    "modoLiquidacion": "individual",
+    "balanceGlobalCentimos": 0,
+    "unidades": [
+      {
+        "id": "m:alvaro",
+        "nombre": "Álvaro",
+        "pagadoCentimos": 12345,
+        "correspondiaCentimos": 4115,
+        "balanceCentimos": 8230
+      },
+      {
+        "id": "m:ines",
+        "nombre": "Inés",
+        "pagadoCentimos": 0,
+        "correspondiaCentimos": 4115,
+        "balanceCentimos": -4115
+      },
+      {
+        "id": "m:noa",
+        "nombre": "Noa",
+        "pagadoCentimos": 0,
+        "correspondiaCentimos": 4115,
+        "balanceCentimos": -4115
+      }
+    ],
+    "transferencias": [
+      {
+        "de": "Inés",
+        "a": "Álvaro",
+        "importeCentimos": 4115
+      },
+      {
+        "de": "Noa",
+        "a": "Álvaro",
+        "importeCentimos": 4115
+      }
+    ],
+    "optimizacion": "minimo_verificado"
+  },
+  "caso_prueba": {
+    "numero": 14,
+    "titulo": "Exportación e importación idénticas",
+    "objetivo": "Comprobar nombres, notas, símbolos y progreso de pagos tras restaurar.",
+    "resultado_ia": "El total es 123,45 €. Tras exportar e importar deben conservarse todos los datos y una transferencia marcada como pagada."
+  }
+}

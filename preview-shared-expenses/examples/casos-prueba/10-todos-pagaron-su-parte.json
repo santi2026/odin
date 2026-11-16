@@ -1,0 +1,133 @@
+{
+  "formato": "odin-gastos-compartidos-v1",
+  "version": 1,
+  "exportado": "2026-11-16T12:00:00.000Z",
+  "origen": "ODÍN",
+  "grupo": {
+    "id": "caso-10",
+    "name": "Sin deudas",
+    "currency": "EUR",
+    "settlementMode": "individual",
+    "families": [],
+    "members": [
+      {
+        "id": "p1",
+        "name": "Ana",
+        "familyId": null,
+        "weight": 1
+      },
+      {
+        "id": "p2",
+        "name": "Beto",
+        "familyId": null,
+        "weight": 1
+      },
+      {
+        "id": "p3",
+        "name": "Carla",
+        "familyId": null,
+        "weight": 1
+      },
+      {
+        "id": "p4",
+        "name": "David",
+        "familyId": null,
+        "weight": 1
+      }
+    ],
+    "expenses": [
+      {
+        "id": "e1",
+        "concept": "Comida",
+        "date": "2026-11-16",
+        "category": "Comida",
+        "amountCents": 10000,
+        "payers": [
+          {
+            "accountType": "member",
+            "accountId": "p1",
+            "amountCents": 2500
+          },
+          {
+            "accountType": "member",
+            "accountId": "p2",
+            "amountCents": 2500
+          },
+          {
+            "accountType": "member",
+            "accountId": "p3",
+            "amountCents": 2500
+          },
+          {
+            "accountType": "member",
+            "accountId": "p4",
+            "amountCents": 2500
+          }
+        ],
+        "participants": [
+          {
+            "memberId": "p1"
+          },
+          {
+            "memberId": "p2"
+          },
+          {
+            "memberId": "p3"
+          },
+          {
+            "memberId": "p4"
+          }
+        ],
+        "splitMode": "equal",
+        "notes": ""
+      }
+    ],
+    "paidTransferKeys": []
+  },
+  "comprobacion": {
+    "estado": "comprobado",
+    "facturas": 1,
+    "totalCentimos": 10000,
+    "totalFormateado": "100,00 €",
+    "modoLiquidacion": "individual",
+    "balanceGlobalCentimos": 0,
+    "unidades": [
+      {
+        "id": "m:p1",
+        "nombre": "Ana",
+        "pagadoCentimos": 2500,
+        "correspondiaCentimos": 2500,
+        "balanceCentimos": 0
+      },
+      {
+        "id": "m:p2",
+        "nombre": "Beto",
+        "pagadoCentimos": 2500,
+        "correspondiaCentimos": 2500,
+        "balanceCentimos": 0
+      },
+      {
+        "id": "m:p3",
+        "nombre": "Carla",
+        "pagadoCentimos": 2500,
+        "correspondiaCentimos": 2500,
+        "balanceCentimos": 0
+      },
+      {
+        "id": "m:p4",
+        "nombre": "David",
+        "pagadoCentimos": 2500,
+        "correspondiaCentimos": 2500,
+        "balanceCentimos": 0
+      }
+    ],
+    "transferencias": [],
+    "optimizacion": "minimo_verificado"
+  },
+  "caso_prueba": {
+    "numero": 10,
+    "titulo": "Todos pagaron exactamente su parte",
+    "objetivo": "Validar el caso final sin transferencias.",
+    "resultado_ia": "Los cuatro pagaron y asumieron 25,00 €. No debe aparecer ninguna transferencia."
+  }
+}

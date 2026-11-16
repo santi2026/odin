@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { allocateExpense, buildGroupPackage, calculateGroup, formatMoney, moneyToCents, parseGroupPackage, settlementRoutesForUnit, settleBalances, transferKey } from '../preview-shared-expenses/shared-expenses-core.js';
 
 assert.equal(moneyToCents('1.234,56 €'),123456);
@@ -125,5 +125,21 @@ assert.deepEqual(realSettlement.transfers.map(item=>[item.fromLabel,item.toLabel
 assert.equal(realSettlement.transfers.reduce((sum,item)=>sum+item.amountCents,0),14812);
 assert.deepEqual(settlementRoutesForUnit('f:f-fer',realSettlement.transfers),{pays:[{name:'Familia Jau&Xes',amountCents:357},{name:'Familia Sil&San',amountCents:304}],receives:[]});
 assert.deepEqual(settlementRoutesForUnit('f:f-gus',realSettlement.transfers),{pays:[],receives:[{name:'Familia Con&Ton',amountCents:5661},{name:'Familia Isa&Sol',amountCents:4093}]});
+
+const casesDirectory=new URL('../preview-shared-expenses/examples/casos-prueba/',import.meta.url);
+const caseFiles=readdirSync(casesDirectory).filter(name=>name.endsWith('.json')).sort();
+assert.equal(caseFiles.length,15);
+for(const [index,filename] of caseFiles.entries()){
+  const source=readFileSync(new URL(filename,casesDirectory),'utf8');
+  if(index===14){assert.throws(()=>parseGroupPackage(source),/deben sumar/);continue;}
+  const original=JSON.parse(source),parsed=parseGroupPackage(source);
+  assert.equal(parsed.check.balanceGlobalCentimos,0,filename);
+  assert.equal(parsed.check.totalCentimos,original.comprobacion.totalCentimos,filename);
+  assert.equal(parsed.check.transferencias.length,original.comprobacion.transferencias.length,filename);
+}
+const largeCase=parseGroupPackage(readFileSync(new URL('13-grupo-grande-plan-simplificado.json',casesDirectory),'utf8'));
+assert.equal(largeCase.check.optimizacion,'plan_simplificado');
+const continuityCase=parseGroupPackage(readFileSync(new URL('14-exportacion-importacion-identica.json',casesDirectory),'utf8'));
+assert.equal(continuityCase.group.paidTransferKeys.length,1);
 
 console.log('SHARED_EXPENSES_TESTS=PASS');

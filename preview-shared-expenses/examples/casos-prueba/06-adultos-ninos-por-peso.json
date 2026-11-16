@@ -1,0 +1,123 @@
+{
+  "formato": "odin-gastos-compartidos-v1",
+  "version": 1,
+  "exportado": "2026-11-16T12:00:00.000Z",
+  "origen": "ODÍN",
+  "grupo": {
+    "id": "caso-06",
+    "name": "Dos familias con adultos y niños",
+    "currency": "EUR",
+    "settlementMode": "family",
+    "families": [
+      {
+        "id": "f1",
+        "name": "Norte"
+      },
+      {
+        "id": "f2",
+        "name": "Sur"
+      }
+    ],
+    "members": [
+      {
+        "id": "a1",
+        "name": "Adulto Norte",
+        "familyId": "f1",
+        "weight": 1
+      },
+      {
+        "id": "n1",
+        "name": "Niño Norte",
+        "familyId": "f1",
+        "weight": 0.5
+      },
+      {
+        "id": "a2",
+        "name": "Adulto Sur",
+        "familyId": "f2",
+        "weight": 1
+      },
+      {
+        "id": "n2",
+        "name": "Niño Sur",
+        "familyId": "f2",
+        "weight": 0.5
+      }
+    ],
+    "expenses": [
+      {
+        "id": "e1",
+        "concept": "Actividad familiar",
+        "date": "2026-11-16",
+        "category": "Actividades",
+        "amountCents": 9000,
+        "payers": [
+          {
+            "accountType": "family",
+            "accountId": "f1",
+            "amountCents": 9000
+          }
+        ],
+        "participants": [
+          {
+            "memberId": "a1",
+            "share": 1
+          },
+          {
+            "memberId": "n1",
+            "share": 0.5
+          },
+          {
+            "memberId": "a2",
+            "share": 1
+          },
+          {
+            "memberId": "n2",
+            "share": 0.5
+          }
+        ],
+        "splitMode": "shares",
+        "notes": ""
+      }
+    ],
+    "paidTransferKeys": []
+  },
+  "comprobacion": {
+    "estado": "comprobado",
+    "facturas": 1,
+    "totalCentimos": 9000,
+    "totalFormateado": "90,00 €",
+    "modoLiquidacion": "family",
+    "balanceGlobalCentimos": 0,
+    "unidades": [
+      {
+        "id": "f:f1",
+        "nombre": "Familia Norte",
+        "pagadoCentimos": 9000,
+        "correspondiaCentimos": 4500,
+        "balanceCentimos": 4500
+      },
+      {
+        "id": "f:f2",
+        "nombre": "Familia Sur",
+        "pagadoCentimos": 0,
+        "correspondiaCentimos": 4500,
+        "balanceCentimos": -4500
+      }
+    ],
+    "transferencias": [
+      {
+        "de": "Familia Sur",
+        "a": "Familia Norte",
+        "importeCentimos": 4500
+      }
+    ],
+    "optimizacion": "minimo_verificado"
+  },
+  "caso_prueba": {
+    "numero": 6,
+    "titulo": "Adultos y niños · reparto por participaciones",
+    "objetivo": "Validar pesos 1 y 0,5 y su agrupación familiar.",
+    "resultado_ia": "Cada familia asume 45,00 €. Familia Sur paga 45,00 € a Familia Norte."
+  }
+}

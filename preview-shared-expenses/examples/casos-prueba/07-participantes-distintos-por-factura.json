@@ -1,0 +1,182 @@
+{
+  "formato": "odin-gastos-compartidos-v1",
+  "version": 1,
+  "exportado": "2026-11-16T12:00:00.000Z",
+  "origen": "ODÍN",
+  "grupo": {
+    "id": "caso-07",
+    "name": "Casa, bebidas y actividad",
+    "currency": "EUR",
+    "settlementMode": "individual",
+    "families": [],
+    "members": [
+      {
+        "id": "p1",
+        "name": "Ana",
+        "familyId": null,
+        "weight": 1
+      },
+      {
+        "id": "p2",
+        "name": "Beto",
+        "familyId": null,
+        "weight": 1
+      },
+      {
+        "id": "p3",
+        "name": "Carla",
+        "familyId": null,
+        "weight": 1
+      },
+      {
+        "id": "p4",
+        "name": "David",
+        "familyId": null,
+        "weight": 1
+      }
+    ],
+    "expenses": [
+      {
+        "id": "e1",
+        "concept": "Casa",
+        "date": "2026-11-16",
+        "category": "Alojamiento",
+        "amountCents": 40000,
+        "payers": [
+          {
+            "accountType": "member",
+            "accountId": "p1",
+            "amountCents": 40000
+          }
+        ],
+        "participants": [
+          {
+            "memberId": "p1"
+          },
+          {
+            "memberId": "p2"
+          },
+          {
+            "memberId": "p3"
+          },
+          {
+            "memberId": "p4"
+          }
+        ],
+        "splitMode": "equal",
+        "notes": ""
+      },
+      {
+        "id": "e2",
+        "concept": "Bebidas",
+        "date": "2026-11-16",
+        "category": "Bebidas",
+        "amountCents": 6000,
+        "payers": [
+          {
+            "accountType": "member",
+            "accountId": "p2",
+            "amountCents": 6000
+          }
+        ],
+        "participants": [
+          {
+            "memberId": "p1"
+          },
+          {
+            "memberId": "p2"
+          }
+        ],
+        "splitMode": "equal",
+        "notes": ""
+      },
+      {
+        "id": "e3",
+        "concept": "Actividad",
+        "date": "2026-11-16",
+        "category": "Actividades",
+        "amountCents": 9000,
+        "payers": [
+          {
+            "accountType": "member",
+            "accountId": "p3",
+            "amountCents": 9000
+          }
+        ],
+        "participants": [
+          {
+            "memberId": "p3"
+          },
+          {
+            "memberId": "p4"
+          }
+        ],
+        "splitMode": "equal",
+        "notes": ""
+      }
+    ],
+    "paidTransferKeys": []
+  },
+  "comprobacion": {
+    "estado": "comprobado",
+    "facturas": 3,
+    "totalCentimos": 55000,
+    "totalFormateado": "550,00 €",
+    "modoLiquidacion": "individual",
+    "balanceGlobalCentimos": 0,
+    "unidades": [
+      {
+        "id": "m:p1",
+        "nombre": "Ana",
+        "pagadoCentimos": 40000,
+        "correspondiaCentimos": 13000,
+        "balanceCentimos": 27000
+      },
+      {
+        "id": "m:p2",
+        "nombre": "Beto",
+        "pagadoCentimos": 6000,
+        "correspondiaCentimos": 13000,
+        "balanceCentimos": -7000
+      },
+      {
+        "id": "m:p3",
+        "nombre": "Carla",
+        "pagadoCentimos": 9000,
+        "correspondiaCentimos": 14500,
+        "balanceCentimos": -5500
+      },
+      {
+        "id": "m:p4",
+        "nombre": "David",
+        "pagadoCentimos": 0,
+        "correspondiaCentimos": 14500,
+        "balanceCentimos": -14500
+      }
+    ],
+    "transferencias": [
+      {
+        "de": "David",
+        "a": "Ana",
+        "importeCentimos": 14500
+      },
+      {
+        "de": "Beto",
+        "a": "Ana",
+        "importeCentimos": 7000
+      },
+      {
+        "de": "Carla",
+        "a": "Ana",
+        "importeCentimos": 5500
+      }
+    ],
+    "optimizacion": "minimo_verificado"
+  },
+  "caso_prueba": {
+    "numero": 7,
+    "titulo": "Participantes diferentes según la factura",
+    "objetivo": "Comprobar que solo paga quien participa en cada consumo.",
+    "resultado_ia": "Ana debe recuperar 270,00 €. Beto, Carla y David pagan únicamente las partes en las que participaron."
+  }
+}

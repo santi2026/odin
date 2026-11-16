@@ -1,0 +1,162 @@
+{
+  "formato": "odin-gastos-compartidos-v1",
+  "version": 1,
+  "exportado": "2026-11-16T12:00:00.000Z",
+  "origen": "ODÍN",
+  "grupo": {
+    "id": "caso-05",
+    "name": "Tres familias de distinto tamaño",
+    "currency": "EUR",
+    "settlementMode": "family",
+    "families": [
+      {
+        "id": "f1",
+        "name": "Solo"
+      },
+      {
+        "id": "f2",
+        "name": "Dúo"
+      },
+      {
+        "id": "f3",
+        "name": "Grande"
+      }
+    ],
+    "members": [
+      {
+        "id": "s1",
+        "name": "Sara",
+        "familyId": "f1",
+        "weight": 1
+      },
+      {
+        "id": "d1",
+        "name": "Dani",
+        "familyId": "f2",
+        "weight": 1
+      },
+      {
+        "id": "d2",
+        "name": "Lola",
+        "familyId": "f2",
+        "weight": 1
+      },
+      {
+        "id": "g1",
+        "name": "Grande 1",
+        "familyId": "f3",
+        "weight": 1
+      },
+      {
+        "id": "g2",
+        "name": "Grande 2",
+        "familyId": "f3",
+        "weight": 1
+      },
+      {
+        "id": "g3",
+        "name": "Grande 3",
+        "familyId": "f3",
+        "weight": 1
+      },
+      {
+        "id": "g4",
+        "name": "Grande 4",
+        "familyId": "f3",
+        "weight": 1
+      }
+    ],
+    "expenses": [
+      {
+        "id": "e1",
+        "concept": "Casa rural",
+        "date": "2026-11-16",
+        "category": "Alojamiento",
+        "amountCents": 21000,
+        "payers": [
+          {
+            "accountType": "family",
+            "accountId": "f1",
+            "amountCents": 21000
+          }
+        ],
+        "participants": [
+          {
+            "memberId": "s1"
+          },
+          {
+            "memberId": "d1"
+          },
+          {
+            "memberId": "d2"
+          },
+          {
+            "memberId": "g1"
+          },
+          {
+            "memberId": "g2"
+          },
+          {
+            "memberId": "g3"
+          },
+          {
+            "memberId": "g4"
+          }
+        ],
+        "splitMode": "equal",
+        "notes": ""
+      }
+    ],
+    "paidTransferKeys": []
+  },
+  "comprobacion": {
+    "estado": "comprobado",
+    "facturas": 1,
+    "totalCentimos": 21000,
+    "totalFormateado": "210,00 €",
+    "modoLiquidacion": "family",
+    "balanceGlobalCentimos": 0,
+    "unidades": [
+      {
+        "id": "f:f2",
+        "nombre": "Familia Dúo",
+        "pagadoCentimos": 0,
+        "correspondiaCentimos": 6000,
+        "balanceCentimos": -6000
+      },
+      {
+        "id": "f:f3",
+        "nombre": "Familia Grande",
+        "pagadoCentimos": 0,
+        "correspondiaCentimos": 12000,
+        "balanceCentimos": -12000
+      },
+      {
+        "id": "f:f1",
+        "nombre": "Familia Solo",
+        "pagadoCentimos": 21000,
+        "correspondiaCentimos": 3000,
+        "balanceCentimos": 18000
+      }
+    ],
+    "transferencias": [
+      {
+        "de": "Familia Grande",
+        "a": "Familia Solo",
+        "importeCentimos": 12000
+      },
+      {
+        "de": "Familia Dúo",
+        "a": "Familia Solo",
+        "importeCentimos": 6000
+      }
+    ],
+    "optimizacion": "minimo_verificado"
+  },
+  "caso_prueba": {
+    "numero": 5,
+    "titulo": "Familias de 1, 2 y 4 personas",
+    "objetivo": "Comprobar que la cuota familiar depende del número real de miembros.",
+    "resultado_ia": "El coste es 30,00 € por persona. Dúo paga 60,00 € y Familia grande 120,00 € a Solo."
+  }
+}

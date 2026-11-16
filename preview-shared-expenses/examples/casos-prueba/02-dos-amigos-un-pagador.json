@@ -1,0 +1,92 @@
+{
+  "formato": "odin-gastos-compartidos-v1",
+  "version": 1,
+  "exportado": "2026-11-16T12:00:00.000Z",
+  "origen": "ODÍN",
+  "grupo": {
+    "id": "caso-02",
+    "name": "Dos amigos",
+    "currency": "EUR",
+    "settlementMode": "individual",
+    "families": [],
+    "members": [
+      {
+        "id": "ana",
+        "name": "Ana",
+        "familyId": null,
+        "weight": 1
+      },
+      {
+        "id": "beto",
+        "name": "Beto",
+        "familyId": null,
+        "weight": 1
+      }
+    ],
+    "expenses": [
+      {
+        "id": "e1",
+        "concept": "Cena",
+        "date": "2026-11-16",
+        "category": "Comida",
+        "amountCents": 10000,
+        "payers": [
+          {
+            "accountType": "member",
+            "accountId": "ana",
+            "amountCents": 10000
+          }
+        ],
+        "participants": [
+          {
+            "memberId": "ana"
+          },
+          {
+            "memberId": "beto"
+          }
+        ],
+        "splitMode": "equal",
+        "notes": ""
+      }
+    ],
+    "paidTransferKeys": []
+  },
+  "comprobacion": {
+    "estado": "comprobado",
+    "facturas": 1,
+    "totalCentimos": 10000,
+    "totalFormateado": "100,00 €",
+    "modoLiquidacion": "individual",
+    "balanceGlobalCentimos": 0,
+    "unidades": [
+      {
+        "id": "m:ana",
+        "nombre": "Ana",
+        "pagadoCentimos": 10000,
+        "correspondiaCentimos": 5000,
+        "balanceCentimos": 5000
+      },
+      {
+        "id": "m:beto",
+        "nombre": "Beto",
+        "pagadoCentimos": 0,
+        "correspondiaCentimos": 5000,
+        "balanceCentimos": -5000
+      }
+    ],
+    "transferencias": [
+      {
+        "de": "Beto",
+        "a": "Ana",
+        "importeCentimos": 5000
+      }
+    ],
+    "optimizacion": "minimo_verificado"
+  },
+  "caso_prueba": {
+    "numero": 2,
+    "titulo": "Dos amigos · uno paga todo",
+    "objetivo": "Validar la división elemental y una única transferencia.",
+    "resultado_ia": "Cada persona asume 50,00 €. Beto paga 50,00 € a Ana."
+  }
+}

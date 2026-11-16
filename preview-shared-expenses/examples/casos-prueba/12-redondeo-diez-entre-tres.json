@@ -1,0 +1,113 @@
+{
+  "formato": "odin-gastos-compartidos-v1",
+  "version": 1,
+  "exportado": "2026-11-16T12:00:00.000Z",
+  "origen": "ODÍN",
+  "grupo": {
+    "id": "caso-12",
+    "name": "Diez euros entre tres",
+    "currency": "EUR",
+    "settlementMode": "individual",
+    "families": [],
+    "members": [
+      {
+        "id": "a",
+        "name": "Ana",
+        "familyId": null,
+        "weight": 1
+      },
+      {
+        "id": "b",
+        "name": "Beto",
+        "familyId": null,
+        "weight": 1
+      },
+      {
+        "id": "c",
+        "name": "Carla",
+        "familyId": null,
+        "weight": 1
+      }
+    ],
+    "expenses": [
+      {
+        "id": "e1",
+        "concept": "Tentempié",
+        "date": "2026-11-16",
+        "category": "Comida",
+        "amountCents": 1000,
+        "payers": [
+          {
+            "accountType": "member",
+            "accountId": "a",
+            "amountCents": 1000
+          }
+        ],
+        "participants": [
+          {
+            "memberId": "a"
+          },
+          {
+            "memberId": "b"
+          },
+          {
+            "memberId": "c"
+          }
+        ],
+        "splitMode": "equal",
+        "notes": ""
+      }
+    ],
+    "paidTransferKeys": []
+  },
+  "comprobacion": {
+    "estado": "comprobado",
+    "facturas": 1,
+    "totalCentimos": 1000,
+    "totalFormateado": "10,00 €",
+    "modoLiquidacion": "individual",
+    "balanceGlobalCentimos": 0,
+    "unidades": [
+      {
+        "id": "m:a",
+        "nombre": "Ana",
+        "pagadoCentimos": 1000,
+        "correspondiaCentimos": 334,
+        "balanceCentimos": 666
+      },
+      {
+        "id": "m:b",
+        "nombre": "Beto",
+        "pagadoCentimos": 0,
+        "correspondiaCentimos": 333,
+        "balanceCentimos": -333
+      },
+      {
+        "id": "m:c",
+        "nombre": "Carla",
+        "pagadoCentimos": 0,
+        "correspondiaCentimos": 333,
+        "balanceCentimos": -333
+      }
+    ],
+    "transferencias": [
+      {
+        "de": "Beto",
+        "a": "Ana",
+        "importeCentimos": 333
+      },
+      {
+        "de": "Carla",
+        "a": "Ana",
+        "importeCentimos": 333
+      }
+    ],
+    "optimizacion": "minimo_verificado"
+  },
+  "caso_prueba": {
+    "numero": 12,
+    "titulo": "Redondeo · 10 € entre tres",
+    "objetivo": "Comprobar la asignación determinista del céntimo indivisible.",
+    "resultado_ia": "Ana asume 3,34 €; Beto y Carla 3,33 €. Ambos pagan 3,33 € a Ana y el balance termina en cero."
+  }
+}
