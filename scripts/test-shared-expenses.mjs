@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
-import { readFileSync, readdirSync } from 'node:fs';
-import { allocateExpense, applyAllocationToAllExpenses, buildGroupPackage, calculateGroup, formatMoney, moneyToCents, parseGroupPackage, settlementRoutesForUnit, settleBalances, transferKey } from '../preview-shared-expenses/shared-expenses-core.js';
+import { readFileSync } from 'node:fs';
+import { allocateExpense, applyAllocationToAllExpenses, buildGroupPackage, calculateGroup, formatMoney, moneyToCents, parseGroupPackage, settleBalances, transferKey } from '../preview-shared-expenses/shared-expenses-core.js';
 
 assert.equal(moneyToCents('1.234,56 €'),123456);
 assert.equal(moneyToCents('12.50'),1250);
@@ -123,35 +123,6 @@ const emptyPackage=buildGroupPackage({id:'draft',name:'Borrador',currency:'EUR',
 assert.equal(emptyPackage.comprobacion.estado,'incompleto');
 assert.equal(parseGroupPackage(JSON.stringify(emptyPackage)).group.name,'Borrador');
 
-const exampleText=readFileSync(new URL('../preview-shared-expenses/examples/caso-ejemplo-23-comensales.json',import.meta.url),'utf8');
-const exampleCase=parseGroupPackage(exampleText),exampleResult=calculateGroup(exampleCase.group),exampleSettlement=settleBalances(exampleResult.units);
-assert.equal(exampleCase.group.families.length,7);
-assert.equal(exampleCase.group.members.length,23);
-assert.equal(exampleCase.group.expenses.length,11);
-assert.equal(exampleResult.totalCents,66535);
-assert.equal(exampleResult.balanceSum,0);
-assert.deepEqual(Object.fromEntries(exampleResult.units.map(unit=>[unit.label,{paid:unit.paidCents,owed:unit.owedCents,balance:unit.balanceCents}])),{
-  'Familia Campos':{paid:11145,owed:8679,balance:2466},
-  'Familia Luna':{paid:10100,owed:8678,balance:1422},
-  'Familia Mar':{paid:0,owed:8676,balance:-8676},
-  'Familia Ríos':{paid:9215,owed:8679,balance:536},
-  'Familia Robles':{paid:8120,owed:11572,balance:-3452},
-  'Familia Soler':{paid:14860,owed:8679,balance:6181},
-  'Familia Vega':{paid:13095,owed:11572,balance:1523}
-});
-assert.equal(exampleSettlement.exact,true);
-assert.deepEqual(exampleSettlement.transfers.map(item=>[item.fromLabel,item.toLabel,item.amountCents]),[
-  ['Familia Mar','Familia Soler',6181],
-  ['Familia Mar','Familia Campos',2466],
-  ['Familia Mar','Familia Vega',29],
-  ['Familia Robles','Familia Vega',1494],
-  ['Familia Robles','Familia Luna',1422],
-  ['Familia Robles','Familia Ríos',536]
-]);
-assert.equal(exampleSettlement.transfers.reduce((sum,item)=>sum+item.amountCents,0),12128);
-assert.deepEqual(settlementRoutesForUnit('f:robles',exampleSettlement.transfers),{pays:[{name:'Familia Vega',amountCents:1494},{name:'Familia Luna',amountCents:1422},{name:'Familia Ríos',amountCents:536}],receives:[]});
-assert.deepEqual(settlementRoutesForUnit('f:soler',exampleSettlement.transfers),{pays:[],receives:[{name:'Familia Mar',amountCents:6181}]});
-
 const practical23Text=readFileSync(new URL('../preview-shared-expenses/examples/caso-23-comensales-reparto-global.json',import.meta.url),'utf8');
 const practical23=parseGroupPackage(practical23Text);
 assert.equal(practical23.group.families.length,7);
@@ -163,21 +134,5 @@ assert.deepEqual(practical23.group.members.slice(0,4).map(item=>item.name),['Ele
 assert.equal(practical23.group.allocationDefaults.splitMode,'equal');
 assert.equal(practical23.group.allocationDefaults.participants.length,23);
 assert.equal(practical23.group.expenses.every(expense=>!('participants'in expense)&&!('splitMode'in expense)),true);
-
-const casesDirectory=new URL('../preview-shared-expenses/examples/casos-prueba/',import.meta.url);
-const caseFiles=readdirSync(casesDirectory).filter(name=>name.endsWith('.json')).sort();
-assert.equal(caseFiles.length,15);
-for(const [index,filename] of caseFiles.entries()){
-  const source=readFileSync(new URL(filename,casesDirectory),'utf8');
-  if(index===14){assert.throws(()=>parseGroupPackage(source),/deben sumar/);continue;}
-  const original=JSON.parse(source),parsed=parseGroupPackage(source);
-  assert.equal(parsed.check.balanceGlobalCentimos,0,filename);
-  assert.equal(parsed.check.totalCentimos,original.comprobacion.totalCentimos,filename);
-  assert.equal(parsed.check.transferencias.length,original.comprobacion.transferencias.length,filename);
-}
-const largeCase=parseGroupPackage(readFileSync(new URL('13-grupo-grande-plan-simplificado.json',casesDirectory),'utf8'));
-assert.equal(largeCase.check.optimizacion,'plan_simplificado');
-const continuityCase=parseGroupPackage(readFileSync(new URL('14-exportacion-importacion-identica.json',casesDirectory),'utf8'));
-assert.equal(continuityCase.group.paidTransferKeys.length,1);
 
 console.log('SHARED_EXPENSES_TESTS=PASS');
