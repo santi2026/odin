@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { allocateExpense, buildGroupPackage, calculateGroup, formatMoney, moneyToCents, parseGroupPackage, settleBalances, transferKey } from '../preview-shared-expenses/shared-expenses-core.js';
+import { allocateExpense, buildGroupPackage, calculateGroup, formatMoney, moneyToCents, parseGroupPackage, settlementRoutesForUnit, settleBalances, transferKey } from '../preview-shared-expenses/shared-expenses-core.js';
 
 assert.equal(moneyToCents('1.234,56 €'),123456);
 assert.equal(moneyToCents('12.50'),1250);
@@ -123,5 +123,7 @@ assert.deepEqual(realSettlement.transfers.map(item=>[item.fromLabel,item.toLabel
   ['Familia Fer&Raq','Familia Sil&San',304]
 ]);
 assert.equal(realSettlement.transfers.reduce((sum,item)=>sum+item.amountCents,0),14812);
+assert.deepEqual(settlementRoutesForUnit('f:f-fer',realSettlement.transfers),{pays:[{name:'Familia Jau&Xes',amountCents:357},{name:'Familia Sil&San',amountCents:304}],receives:[]});
+assert.deepEqual(settlementRoutesForUnit('f:f-gus',realSettlement.transfers),{pays:[],receives:[{name:'Familia Con&Ton',amountCents:5661},{name:'Familia Isa&Sol',amountCents:4093}]});
 
 console.log('SHARED_EXPENSES_TESTS=PASS');

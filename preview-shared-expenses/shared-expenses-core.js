@@ -123,6 +123,14 @@ export function settleBalances(units,{exactLimit=10,maxStates=100000}={}) {
 
 export function transferKey(transfer){return`${transfer.fromId}>${transfer.toId}:${transfer.amountCents}`;}
 
+export function settlementRoutesForUnit(unitId,transfers) {
+  const list=Array.isArray(transfers)?transfers:[];
+  return{
+    pays:list.filter(item=>item.fromId===unitId).map(item=>({name:item.toLabel,amountCents:item.amountCents})),
+    receives:list.filter(item=>item.toId===unitId).map(item=>({name:item.fromLabel,amountCents:item.amountCents}))
+  };
+}
+
 export function summarizeExpense(group,detail) {
   const payerText=detail.payers.map(item=>`${item.accountType==='family'?'Familia ':''}${item.accountType==='family'?familyById(group,item.accountId)?.name:memberById(group,item.accountId)?.name}: ${formatMoney(item.amountCents,group.currency)}`).join(' · ');
   const allocationText=detail.allocations.map(item=>`${memberById(group,item.memberId)?.name}: ${formatMoney(item.amountCents,group.currency)}`).join(' · ');

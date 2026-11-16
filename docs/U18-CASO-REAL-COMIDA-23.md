@@ -45,16 +45,16 @@ Como existen cinco facturas independientes, sus céntimos sobrantes se rotan ent
 
 En ODÍN un balance positivo significa que la familia debe **recibir**; uno negativo significa que debe **pagar**.
 
-| Familia | Pagó | Le correspondía | Balance final |
-|---|---:|---:|---:|
-| Con&Ton | 0,00 € | 56,61 € | Paga 56,61 € |
-| Fer&Raq | 50,00 € | 56,61 € | Paga 6,61 € |
-| Gustavo | 140,00 € | 42,46 € | Recibe 97,54 € |
-| Isa&Sol | 0,00 € | 42,45 € | Paga 42,45 € |
-| Jau&Xes | 90,00 € | 42,46 € | Recibe 47,54 € |
-| Jaume | 0,00 € | 42,45 € | Paga 42,45 € |
-| Sil&San | 45,50 € | 42,46 € | Recibe 3,04 € |
-| **Total** | **325,50 €** | **325,50 €** | **0,00 €** |
+| Familia | Pagó | Le correspondía | Balance final | Paga a / cobra de |
+|---|---:|---:|---:|---|
+| Con&Ton | 0,00 € | 56,61 € | Paga 56,61 € | Paga 56,61 € a Gustavo |
+| Fer&Raq | 50,00 € | 56,61 € | Paga 6,61 € | Paga 3,57 € a Jau&Xes y 3,04 € a Sil&San |
+| Gustavo | 140,00 € | 42,46 € | Recibe 97,54 € | Cobra 56,61 € de Con&Ton y 40,93 € de Isa&Sol |
+| Isa&Sol | 0,00 € | 42,45 € | Paga 42,45 € | Paga 40,93 € a Gustavo y 1,52 € a Jau&Xes |
+| Jau&Xes | 90,00 € | 42,46 € | Recibe 47,54 € | Cobra 1,52 € de Isa&Sol, 42,45 € de Jaume y 3,57 € de Fer&Raq |
+| Jaume | 0,00 € | 42,45 € | Paga 42,45 € | Paga 42,45 € a Jau&Xes |
+| Sil&San | 45,50 € | 42,46 € | Recibe 3,04 € | Cobra 3,04 € de Fer&Raq |
+| **Total** | **325,50 €** | **325,50 €** | **0,00 €** | **148,12 € enviados y recibidos** |
 
 ## Plan de pagos esperado
 

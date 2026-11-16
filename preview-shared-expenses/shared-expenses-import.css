@@ -54,3 +54,13 @@
   .import-preview dl { grid-template-columns: 1fr 1fr; }
   .import-dialog-shell > footer button { flex: 1; }
 }
+
+/* Relaciones de pago mostradas dentro del balance. */
+.balance-table th:last-child { text-align: left; }
+.balance-route { min-width: 230px; text-align: left !important; }
+.balance-route span { display: block; line-height: 1.45; }
+.balance-route span + span { margin-top: .25rem; }
+.balance-route b { color: inherit; }
+.route-pay { color: #f0a4ab; }
+.route-receive { color: #71dfb5; }
+.route-none { color: #8296b5; }
