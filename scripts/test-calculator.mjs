@@ -3,6 +3,7 @@ import{evaluateExpression,formatNumber,normalizeState,saveHistory,tokenize,versi
 assert.equal(evaluateExpression('(1250,50 + 89,90 + 42,75 - 125) * 1,21 / 3'),507.4538333333333);
 assert.equal(evaluateExpression('√(81)+10%'),9.1);
 assert.equal(evaluateExpression('2*-3'),-6);
+assert.equal(evaluateExpression('1/(4)'),0.25);assert.equal(evaluateExpression('10^(3)'),1000);assert.equal(evaluateExpression('(12)^2'),144);assert.equal(evaluateExpression('2^3^2'),512);
 assert.throws(()=>evaluateExpression('1/0'),/dividir/);assert.throws(()=>evaluateExpression('alert(1)'),/Símbolo/);
 assert.equal(tokenize('1.250,50 + 2')[0].value,1250.5);assert.equal(formatNumber(1250.5),'1.250,5');
 const history=[{id:'1',concept:'Hotel',expression:'480/3',result:160,createdAt:1}];

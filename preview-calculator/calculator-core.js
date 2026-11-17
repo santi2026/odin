@@ -17,7 +17,7 @@ export function tokenize(source){
       tokens.push({type:'number',value});continue;
     }
     if(OPERATORS[char]){tokens.push({type:'operator',value:OPERATORS[char]});index++;continue}
-    if(char==='('||char===')'||char==='%'||char==='√'){tokens.push({type:char,value:char});index++;continue}
+    if(char==='('||char===')'||char==='%'||char==='√'||char==='^'){tokens.push({type:char,value:char});index++;continue}
     throw new Error(`Símbolo no permitido: ${char}`);
   }
   return tokens;
@@ -33,11 +33,13 @@ export function evaluateExpression(source){
     if(token.type==='('){const value=additive();if(take()?.type!==')')throw new Error('Falta cerrar un paréntesis.');return value}
     throw new Error('Se esperaba un número o un paréntesis.');
   }
+  function postfix(){let value=primary();while(peek()?.type==='%'){take();value/=100}return value}
+  function power(){const value=postfix();if(peek()?.type==='^'){take();const exponent=unary(),result=value**exponent;if(!Number.isFinite(result))throw new Error('La potencia no produce un resultado válido.');return result}return value}
   function unary(){
     const token=peek();
     if(token?.type==='operator'&&(token.value==='+'||token.value==='-')){take();const value=unary();return token.value==='-'?-value:value}
     if(token?.type==='√'){take();const value=unary();if(value<0)throw new Error('No se puede calcular la raíz real de un número negativo.');return Math.sqrt(value)}
-    let value=primary();while(peek()?.type==='%'){take();value/=100}return value;
+    return power();
   }
   function multiplicative(){let value=unary();while(peek()?.type==='operator'&&(peek().value==='*'||peek().value==='/')){const operator=take().value,right=unary();if(operator==='/'&&right===0)throw new Error('No se puede dividir entre cero.');value=operator==='*'?value*right:value/right}return value}
   function additive(){let value=multiplicative();while(peek()?.type==='operator'&&(peek().value==='+'||peek().value==='-')){const operator=take().value,right=multiplicative();value=operator==='+'?value+right:value-right}return value}
