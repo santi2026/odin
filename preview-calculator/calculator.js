@@ -69,7 +69,7 @@ async function openFloating(){
   const help=document.querySelector('#floating-help'),size=readFloatingSize(),dimensions=floatingSizes[size];
   if('documentPictureInPicture'in window){
     const pip=await window.documentPictureInPicture.requestWindow(dimensions);pip.document.title='Calculadora ODÍN';
-    for(const href of ['/src/styles/global.css?v=calculator-1','/preview-calculator/calculator.css?v=2']){const link=pip.document.createElement('link');link.rel='stylesheet';link.href=href;pip.document.head.append(link)}
+    for(const href of ['/src/styles/global.css?v=calculator-1','/preview-calculator/calculator.css?v=3']){const link=pip.document.createElement('link');link.rel='stylesheet';link.href=href;pip.document.head.append(link)}
     pip.document.body.className='tool-page calculator-body floating-shell';const main=pip.document.createElement('main');main.className='calculator-page';const layout=pip.document.createElement('div');layout.className='calculator-layout';const panel=document.querySelector('.calculator-panel').cloneNode(true);layout.append(panel);main.append(layout);pip.document.body.append(main);const view=bindView(panel);applyFloatingSize(pip,size);pip.addEventListener('pagehide',()=>{views=views.filter(item=>item!==view);render()});help.hidden=true;return;
   }
   window.open('/preview-calculator/?floating=1','odin-calculator',`popup,width=${dimensions.width},height=${dimensions.height},resizable=yes`);help.textContent='Este navegador no admite la ventana siempre visible. Se ha abierto una ventana compacta sincronizada.';help.hidden=false;
