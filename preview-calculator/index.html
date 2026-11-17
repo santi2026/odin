@@ -28,14 +28,16 @@
           <output id="result" class="calculator-result" aria-live="polite">0</output>
           <p id="error" class="calculator-error" hidden></p>
         </div>
+        <div class="memory-values" aria-live="polite"><span>Memoria M <b class="memory-value">0</b></span><span>Último resultado ANS <b class="answer-value">0</b></span></div>
         <div class="memory-row" aria-label="Memoria"><button type="button" data-memory="clear" title="Borrar la memoria">MC</button><button type="button" data-memory="recall" title="Recuperar la memoria">MR</button><button type="button" data-memory="add" title="Sumar el resultado a la memoria">M+</button><button type="button" data-memory="subtract" title="Restar el resultado de la memoria">M−</button><button type="button" data-memory="answer" title="Insertar el último resultado">ANS</button></div>
+        <div class="memory-help" aria-live="polite"><b class="memory-help-title">ANS · último resultado</b><p class="memory-help-text">Inserta el último resultado calculado en la posición actual de la operación.</p></div>
         <div class="calculator-keypad" aria-label="Teclado de calculadora">
           <button type="button" data-command="clear" class="utility">C</button><button type="button" data-command="sign" class="utility">±</button><button type="button" data-command="sqrt" class="utility">√</button><button type="button" data-insert="%" class="utility">%</button>
           <button type="button" data-insert="7">7</button><button type="button" data-insert="8">8</button><button type="button" data-insert="9">9</button><button type="button" data-insert="÷" class="operator">÷</button>
           <button type="button" data-insert="4">4</button><button type="button" data-insert="5">5</button><button type="button" data-insert="6">6</button><button type="button" data-insert="×" class="operator">×</button>
           <button type="button" data-insert="1">1</button><button type="button" data-insert="2">2</button><button type="button" data-insert="3">3</button><button type="button" data-insert="−" class="operator">−</button>
           <button type="button" data-insert="00">00</button><button type="button" data-insert="0">0</button><button type="button" data-insert=",">,</button><button type="button" data-insert="+" class="operator">+</button>
-          <button id="calculate" type="button" class="equals" aria-label="Calcular">=</button>
+          <button id="calculate" type="button" class="equals" aria-label="Calcular">=</button><button id="calculate-save" type="button" class="calculate-save"><span>Calcular</span><span>y guardar</span></button>
         </div>
       </section>
       <aside class="calculator-history" id="history-panel">

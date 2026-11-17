@@ -9,5 +9,6 @@ const history=[{id:'1',concept:'Hotel',expression:'480/3',result:160,createdAt:1
 assert.equal(versionedConcept('Hotel',history),'Hotel (2)');
 const copied=saveHistory(history,{concept:'Hotel',expression:'500/2',result:250},{editingId:'1',copy:true,now:2});assert.equal(copied[0].concept,'Hotel (2)');assert.equal(copied.length,2);
 const updated=saveHistory(history,{concept:'Hotel',expression:'600/3',result:200},{editingId:'1',now:3});assert.equal(updated.length,1);assert.equal(updated[0].result,200);
+const afterDelete=saveHistory([],{concept:'Hotel',expression:'600/3',result:200},{editingId:'1',now:4});assert.equal(afterDelete.length,1);assert.notEqual(afterDelete[0].id,'1');
 assert.equal(normalizeState({history:null}).history.length,0);
 console.log('CALCULATOR_TESTS=PASS');
