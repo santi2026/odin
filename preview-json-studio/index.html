@@ -7,7 +7,7 @@
   <title>Editor JSON, CSV y XML · ODÍN</title>
   <link rel="icon" href="/logo.ico" type="image/x-icon" />
   <link rel="stylesheet" href="/src/styles/global.css?v=json-studio-1" />
-  <link rel="stylesheet" href="/preview-json-studio/json-studio.css?v=1" />
+  <link rel="stylesheet" href="/preview-json-studio/json-studio.css?v=2" />
 </head>
 <body class="tool-page json-body">
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -19,7 +19,7 @@
     </header>
 
     <section class="json-toolbar" aria-label="Acciones del documento">
-      <label class="json-file-button" title="Actualmente admite archivos JSON">Abrir fichero<input id="json-file" type="file" accept="application/json,.json" hidden /></label>
+      <label class="json-file-button">Abrir fichero<input id="json-file" type="file" accept=".json,.csv,.xml,application/json,text/csv,application/xml,text/xml" hidden /></label>
       <button id="paste-open" type="button">Pegar</button>
       <button id="load-example" type="button">Ejemplo múltiple</button>
       <div class="save-menu"><button id="save-toggle" type="button" aria-expanded="false">Guardar como <span>⌄</span></button><div id="save-options" hidden><button data-save="json" type="button">JSON (.json)</button><button data-save="csv" type="button">CSV (.csv)</button><button data-save="xml" type="button">XML (.xml)</button></div></div>
@@ -40,7 +40,7 @@
 
     <div class="json-layout">
       <section class="json-workspace">
-        <div class="json-view" data-panel="json"><div class="view-heading"><div><span>CÓDIGO</span><h2>Documento JSON</h2></div><button id="format-json" type="button">Formatear</button></div><textarea id="json-editor" spellcheck="false" aria-label="Editor JSON"></textarea><p class="json-validation success" id="json-validation">JSON válido</p></div>
+        <div class="json-view" data-panel="json"><div class="view-heading"><div><span>CÓDIGO</span><h2 id="document-view-title">Documento JSON</h2></div><button id="format-json" type="button">Formatear</button></div><textarea id="json-editor" spellcheck="false" aria-label="Editor JSON"></textarea><p class="json-validation success" id="json-validation">JSON válido</p></div>
         <div class="json-view" data-panel="table" hidden><div class="view-heading"><div><span>REGISTROS</span><h2>Vista tabular</h2></div><button id="add-record" type="button">+ Añadir registro</button></div><label class="table-source" id="table-source-wrap"><span>Tabla del documento</span><select id="table-source" aria-label="Tabla del documento"></select></label><div class="table-scroll"><table><thead id="table-head"></thead><tbody id="table-body"></tbody></table></div><p class="empty-view" id="table-empty" hidden>No se han encontrado colecciones de objetos que puedan mostrarse como tabla.</p></div>
         <div class="json-view" data-panel="tree" hidden><div class="view-heading"><div><span>ESTRUCTURA</span><h2>Árbol del documento</h2></div><button id="expand-tree" type="button">Expandir todo</button></div><div id="tree-root" class="tree-root"></div></div>
       </section>
@@ -58,11 +58,13 @@
         </form>
       </aside>
     </div>
-    <section class="json-note"><span>i</span><p><b>Compatibilidad actual:</b> la apertura de ficheros admite JSON; CSV y XML están disponibles al guardar. La apertura directa de CSV/XML y la exportación de varias tablas CSV se incorporarán en la próxima evolución. Las conversiones entre formatos pueden adaptar o perder parte de la estructura y se avisará antes de realizarlas.</p></section>
+    <section class="json-note"><span>i</span><p><b>JSON, CSV y XML:</b> abre cualquiera de los tres formatos y guárdalo en el que necesites. XML de ODÍN se recupera sin pérdidas; al convertir XML externo o estructuras complejas a CSV se avisa de las adaptaciones.</p><button id="format-help" type="button">Ayuda de formatos</button></section>
   </main>
-  <dialog id="paste-dialog"><form method="dialog"><header><div><span>PEGAR JSON</span><h2>Contenido del documento</h2></div><button value="cancel" aria-label="Cerrar">×</button></header><textarea id="paste-value" spellcheck="false" placeholder="Pega aquí un objeto, array o valor JSON…"></textarea><p id="paste-error"></p><div><button value="cancel">Cancelar</button><button id="apply-paste" class="primary" value="default">Abrir contenido</button></div></form></dialog>
+  <dialog id="paste-dialog"><form method="dialog"><header><div><span>PEGAR DATOS</span><h2>Contenido del documento</h2></div><button value="cancel" aria-label="Cerrar">×</button></header><textarea id="paste-value" spellcheck="false" placeholder="Pega aquí contenido JSON, CSV o XML…"></textarea><p id="paste-error"></p><div><button value="cancel">Cancelar</button><button id="apply-paste" class="primary" value="default">Abrir contenido</button></div></form></dialog>
+  <dialog id="csv-dialog"><form method="dialog"><header><div><span>EXPORTAR CSV</span><h2>Elige qué tablas guardar</h2></div><button value="cancel" aria-label="Cerrar">×</button></header><label class="dialog-field"><span>Tabla</span><select id="csv-table"></select></label><p>Un CSV contiene una sola tabla. Puedes guardar la elegida o descargar todas en un ZIP, junto con un manifiesto de sus rutas.</p><div><button value="cancel">Cancelar</button><button id="csv-one" type="button">Guardar esta tabla</button><button id="csv-all" class="primary" type="button">Todas en ZIP</button></div></form></dialog>
+  <dialog id="help-dialog"><form method="dialog"><header><div><span>AYUDA</span><h2>Formatos y conversiones</h2></div><button value="cancel" aria-label="Cerrar">×</button></header><div class="format-help-copy"><p><b>JSON</b> conserva objetos, arrays y tipos nativos.</p><p><b>CSV</b> representa una tabla. Los arrays y objetos de una celda se escriben como JSON; varias tablas se descargan en un ZIP.</p><p><b>XML de ODÍN</b> incluye metadatos de tipo para poder abrirse de nuevo sin pérdidas.</p><p><b>XML externo</b> se adapta: atributos en <code>@attributes</code>, texto en <code>#text</code> y etiquetas repetidas como arrays. Se solicita confirmación antes de abrirlo.</p></div><div><button class="primary" value="default">Entendido</button></div></form></dialog>
   <footer class="site-footer"><span>ODÍN · Editor JSON, CSV y XML</span><span>Procesamiento local · sin seguimiento</span></footer>
-  <script type="module" src="/preview-json-studio/json-studio.js?v=1"></script>
+  <script type="module" src="/preview-json-studio/json-studio.js?v=2"></script>
   <script type="module" src="/global-timer.js?v=calendar-merge-1"></script>
   <script type="module" src="/time-center.js?v=calendar-merge-1"></script>
 </body>

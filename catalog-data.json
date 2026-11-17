@@ -94,8 +94,8 @@
     },
     {
       "id": "U19", "order": 19, "slug": "json-studio", "category": "Texto y datos", "name": "Editor JSON, CSV y XML",
-      "description": "Consulta, edita y transforma datos con vistas de código, tabla y árbol.", "status": "available", "href": "/preview-json-studio/", "cover": "json-studio", "icon": "{}", "featured": false,
-      "preview": "<div class=\"json-studio-cover\"><div class=\"json-mini-code\"><small>JSON</small><span>{</span><i>\"nombre\": \"Ana\"</i><i>\"estado\": true</i><span>}</span></div><div class=\"json-mini-table\"><small>TABLA</small><b><i>id</i><i>nombre</i></b><span><i>1</i><i>Ana</i></span><span><i>2</i><i>Carlos</i></span></div><strong>JSON · TABLA · ÁRBOL</strong></div>"
+      "description": "Abre, edita y transforma JSON, CSV y XML con vistas de código, tabla y árbol.", "status": "available", "href": "/preview-json-studio/", "cover": "json-studio", "icon": "{}", "featured": false,
+      "preview": "<div class=\"json-studio-cover\"><div class=\"json-mini-code\"><small>JSON · XML</small><span>{</span><i>\"nombre\": \"Ana\"</i><i>\"estado\": true</i><span>}</span></div><div class=\"json-mini-table\"><small>CSV · TABLA</small><b><i>id</i><i>nombre</i></b><span><i>1</i><i>Ana</i></span><span><i>2</i><i>Carlos</i></span></div><strong>ABRIR · EDITAR · CONVERTIR</strong></div>"
     }
   ]
 }

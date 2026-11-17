@@ -1,5 +1,5 @@
 import assert from'node:assert/strict';
-import{EXAMPLE_DATA,addAtPath,findTables,formatJson,getAtPath,parseJson,pathAtOffset,pathLabel,removeAtPath,searchDocument,setAtPath,tableModel,toCsv,toXml}from'../preview-json-studio/json-studio-core.js';
+import{EXAMPLE_DATA,addAtPath,createZip,findTables,formatJson,getAtPath,parseCsv,parseJson,parseXml,pathAtOffset,pathLabel,removeAtPath,searchDocument,setAtPath,tableFileName,tableModel,toCsv,toXml}from'../preview-json-studio/json-studio-core.js';
 const parsed=parseJson(formatJson(EXAMPLE_DATA));assert.equal(parsed.ok,true);assert.deepEqual(parsed.value,EXAMPLE_DATA);assert.equal(parseJson('{mal').ok,false);
 assert.equal(pathLabel([0,'contactos','emails',1]),'$[0].contactos.emails[1]');assert.equal(getAtPath(EXAMPLE_DATA,[0,'nombre']),'Ana Torres');
 const changed=setAtPath(EXAMPLE_DATA,[1,'estado'],'Inactivo');assert.equal(changed[1].estado,'Inactivo');assert.equal(EXAMPLE_DATA[1].estado,'Activo');
@@ -10,5 +10,9 @@ const nested={grupo:{families:[{id:'f1',nombre:'Ana'}],members:[{id:'m1',familyI
 const source=formatJson(nested),memberOffset=source.indexOf('familyId');assert.deepEqual(pathAtOffset(source,memberOffset),['grupo','members',0,'familyId']);
 const csv=toCsv(EXAMPLE_DATA);assert.match(csv,/"\[""ventas""/);assert.match(csv,/ana@empresa\.com/);assert.throws(()=>toCsv({a:1}),/tabla de objetos/);
 assert.match(toCsv(nested,['grupo','families']),/f1,Ana/);
-const xml=toXml(EXAMPLE_DATA);assert.match(xml,/odin-json-editor-v1/);assert.match(xml,/<raiz tipo="array">/);assert.match(xml,/<etiquetas tipo="array">/);assert.match(xml,/<elemento tipo="texto">ventas<\/elemento>/);assert.match(xml,/<telefonos tipo="array"\/>/);
+const parsedCsv=parseCsv('id;nombre;activo;datos\r\n1;Ana;true;"[1,2]"');assert.equal(parsedCsv.delimiter,';');assert.deepEqual(parsedCsv.value,[{id:1,nombre:'Ana',activo:true,datos:[1,2]}]);assert.throws(()=>parseCsv('a,a\n1,2'),/duplicadas/);
+const xml=toXml(EXAMPLE_DATA);assert.match(xml,/odin-json-editor-v1/);assert.match(xml,/<raiz tipo="array">/);assert.match(xml,/<etiquetas tipo="array">/);assert.match(xml,/<elemento tipo="texto">ventas<\/elemento>/);assert.match(xml,/<telefonos tipo="array"\/>/);assert.deepEqual(parseXml(xml).value,EXAMPLE_DATA);
+const special={'clave con espacios':'<valor>'};assert.deepEqual(parseXml(toXml(special)).value,special);
+const external=parseXml('<facturas moneda="EUR"><factura id="1"><total>12.50</total></factura><factura id="2"><total>8</total></factura></facturas>');assert.equal(external.odin,false);assert.deepEqual(external.value,{facturas:{'@attributes':{moneda:'EUR'},factura:[{'@attributes':{id:'1'},total:'12.50'},{'@attributes':{id:'2'},total:'8'}]}});
+const zip=createZip([{name:'tabla.csv',content:'id,nombre\r\n1,Ana'}]);assert.equal(new DataView(zip.buffer).getUint32(0,true),0x04034b50);assert.equal(new DataView(zip.buffer).getUint32(zip.length-22,true),0x06054b50);assert.equal(tableFileName(['grupo','members']),'grupo-members.csv');
 console.log('JSON_STUDIO_TESTS=PASS');
