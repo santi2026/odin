@@ -1,7 +1,7 @@
 import{evaluateExpression,formatNumber,normalizeState,saveHistory}from'./calculator-core.js';
 
 const STORAGE_KEY='odin-calculator-v1',CHANNEL_NAME='odin-calculator-sync-v1',FLOATING_SIZE_KEY='odin-calculator-floating-size';
-const floatingSizes={normal:{width:380,height:690},compact:{width:330,height:590},mini:{width:285,height:520}};
+const floatingSizes={normal:{width:380,height:650},compact:{width:330,height:540},mini:{width:285,height:450}};
 const readFloatingSize=()=>Object.hasOwn(floatingSizes,localStorage.getItem(FLOATING_SIZE_KEY))?localStorage.getItem(FLOATING_SIZE_KEY):'normal';
 const readState=()=>{try{return normalizeState(JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}'))}catch{return normalizeState()}};
 let state=readState(),undoStack=[],redoStack=[],views=[];
@@ -69,7 +69,7 @@ async function openFloating(){
   const help=document.querySelector('#floating-help'),size=readFloatingSize(),dimensions=floatingSizes[size];
   if('documentPictureInPicture'in window){
     const pip=await window.documentPictureInPicture.requestWindow(dimensions);pip.document.title='Calculadora ODÍN';
-    for(const href of ['/src/styles/global.css?v=calculator-1','/preview-calculator/calculator.css?v=6']){const link=pip.document.createElement('link');link.rel='stylesheet';link.href=href;pip.document.head.append(link)}
+    for(const href of ['/src/styles/global.css?v=title-standard-1','/preview-calculator/calculator.css?v=7']){const link=pip.document.createElement('link');link.rel='stylesheet';link.href=href;pip.document.head.append(link)}
     pip.document.body.className='tool-page calculator-body floating-shell';const main=pip.document.createElement('main');main.className='calculator-page';const layout=pip.document.createElement('div');layout.className='calculator-layout';const panel=document.querySelector('.calculator-panel').cloneNode(true);layout.append(panel);main.append(layout);pip.document.body.append(main);const view=bindView(panel);applyFloatingSize(pip,size);pip.addEventListener('pagehide',()=>{views=views.filter(item=>item!==view);render()});help.hidden=true;return;
   }
   window.open('/preview-calculator/?floating=1','odin-calculator',`popup,width=${dimensions.width},height=${dimensions.height},resizable=yes`);help.textContent='Este navegador no admite la ventana siempre visible. Se ha abierto una ventana compacta sincronizada.';help.hidden=false;
