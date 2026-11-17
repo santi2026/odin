@@ -1,6 +1,8 @@
 import{evaluateExpression,formatNumber,normalizeState,saveHistory}from'./calculator-core.js';
 
-const STORAGE_KEY='odin-calculator-v1',CHANNEL_NAME='odin-calculator-sync-v1';
+const STORAGE_KEY='odin-calculator-v1',CHANNEL_NAME='odin-calculator-sync-v1',FLOATING_SIZE_KEY='odin-calculator-floating-size';
+const floatingSizes={normal:{width:380,height:690},compact:{width:330,height:590},mini:{width:285,height:520}};
+const readFloatingSize=()=>Object.hasOwn(floatingSizes,localStorage.getItem(FLOATING_SIZE_KEY))?localStorage.getItem(FLOATING_SIZE_KEY):'normal';
 const readState=()=>{try{return normalizeState(JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}'))}catch{return normalizeState()}};
 let state=readState(),undoStack=[],redoStack=[],views=[];
 const channel='BroadcastChannel'in window?new BroadcastChannel(CHANNEL_NAME):null;
@@ -30,6 +32,13 @@ function memoryAction(view,action){
   render();persist();
 }
 
+function applyFloatingSize(targetWindow,size){
+  const selected=Object.hasOwn(floatingSizes,size)?size:'normal',body=targetWindow.document.body;
+  body.classList.remove('floating-size-normal','floating-size-compact','floating-size-mini');body.classList.add(`floating-size-${selected}`);localStorage.setItem(FLOATING_SIZE_KEY,selected);
+  for(const view of views)view.root.querySelectorAll('[data-floating-size]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.floatingSize===selected)));
+  const dimensions=floatingSizes[selected];try{targetWindow.resizeTo(dimensions.width,dimensions.height)}catch{}
+}
+
 function bindView(root){
   const view={root,concept:root.querySelector('#concept'),expression:root.querySelector('#expression'),result:root.querySelector('#result'),error:root.querySelector('#error'),memoryValue:root.querySelector('.memory-value')};views.push(view);
   view.concept.addEventListener('input',()=>{state.concept=view.concept.value;render(view);persist()});
@@ -37,6 +46,7 @@ function bindView(root){
   root.querySelectorAll('[data-insert]').forEach(button=>button.addEventListener('click',()=>insertAt(view,button.dataset.insert)));
   root.querySelectorAll('[data-command]').forEach(button=>button.addEventListener('click',()=>runCommand(view,button.dataset.command)));
   root.querySelectorAll('[data-memory]').forEach(button=>button.addEventListener('click',()=>memoryAction(view,button.dataset.memory)));
+  root.querySelectorAll('[data-floating-size]').forEach(button=>button.addEventListener('click',()=>applyFloatingSize(root.ownerDocument.defaultView,button.dataset.floatingSize)));
   root.querySelector('#calculate')?.addEventListener('click',calculate);root.querySelector('#calculate-save')?.addEventListener('click',()=>storeOperation(false));render();return view;
 }
 
@@ -56,17 +66,17 @@ function bindHistoryActions(root){
 function storeOperation(copy=false){if(!calculate())return;state.history=saveHistory(state.history,{concept:state.concept,expression:state.expression,result:state.result},{editingId:state.editingId,copy});state.editingId='';state.concept='';render();persist()}
 
 async function openFloating(){
-  const help=document.querySelector('#floating-help');
+  const help=document.querySelector('#floating-help'),size=readFloatingSize(),dimensions=floatingSizes[size];
   if('documentPictureInPicture'in window){
-    const pip=await window.documentPictureInPicture.requestWindow({width:380,height:690});pip.document.title='Calculadora ODÍN';
-    for(const href of ['/src/styles/global.css?v=calculator-1','/preview-calculator/calculator.css?v=1']){const link=pip.document.createElement('link');link.rel='stylesheet';link.href=href;pip.document.head.append(link)}
-    pip.document.body.className='tool-page calculator-body floating-shell';const main=pip.document.createElement('main');main.className='calculator-page';const layout=pip.document.createElement('div');layout.className='calculator-layout';const panel=document.querySelector('.calculator-panel').cloneNode(true);layout.append(panel);main.append(layout);pip.document.body.append(main);const view=bindView(panel);pip.addEventListener('pagehide',()=>{views=views.filter(item=>item!==view);render()});help.hidden=true;return;
+    const pip=await window.documentPictureInPicture.requestWindow(dimensions);pip.document.title='Calculadora ODÍN';
+    for(const href of ['/src/styles/global.css?v=calculator-1','/preview-calculator/calculator.css?v=2']){const link=pip.document.createElement('link');link.rel='stylesheet';link.href=href;pip.document.head.append(link)}
+    pip.document.body.className='tool-page calculator-body floating-shell';const main=pip.document.createElement('main');main.className='calculator-page';const layout=pip.document.createElement('div');layout.className='calculator-layout';const panel=document.querySelector('.calculator-panel').cloneNode(true);layout.append(panel);main.append(layout);pip.document.body.append(main);const view=bindView(panel);applyFloatingSize(pip,size);pip.addEventListener('pagehide',()=>{views=views.filter(item=>item!==view);render()});help.hidden=true;return;
   }
-  window.open('/preview-calculator/?floating=1','odin-calculator','popup,width=390,height=720,resizable=yes');help.textContent='Este navegador no admite la ventana siempre visible. Se ha abierto una ventana compacta sincronizada.';help.hidden=false;
+  window.open('/preview-calculator/?floating=1','odin-calculator',`popup,width=${dimensions.width},height=${dimensions.height},resizable=yes`);help.textContent='Este navegador no admite la ventana siempre visible. Se ha abierto una ventana compacta sincronizada.';help.hidden=false;
 }
 
-if(new URLSearchParams(location.search).has('floating'))document.body.classList.add('floating-shell');
-bindView(document.querySelector('.calculator-panel'));
+const isFloating=new URLSearchParams(location.search).has('floating');if(isFloating)document.body.classList.add('floating-shell');
+bindView(document.querySelector('.calculator-panel'));if(isFloating)applyFloatingSize(window,readFloatingSize());
 document.querySelector('#history-search')?.addEventListener('input',render);
 document.querySelector('#toggle-history')?.addEventListener('click',event=>{state.historyVisible=!state.historyVisible;document.querySelector('#calculator-layout').classList.toggle('history-hidden',!state.historyVisible);event.currentTarget.textContent=state.historyVisible?'Ocultar historial':'Mostrar historial';event.currentTarget.setAttribute('aria-pressed',String(state.historyVisible));persist()});
 document.querySelector('#save-operation')?.addEventListener('click',()=>storeOperation(false));document.querySelector('#save-copy')?.addEventListener('click',()=>storeOperation(true));

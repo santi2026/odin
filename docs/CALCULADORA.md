@@ -23,6 +23,7 @@ Calculadora local con edición por cursor, memoria, historial buscable y vista f
 El estado se guarda en `localStorage` con la clave `odin-calculator-v1`. El historial conserva como máximo 100 registros. Las ventanas se sincronizan mediante `BroadcastChannel` y el evento `storage`.
 
 La vista flotante utiliza Document Picture-in-Picture cuando está disponible. En otros navegadores se abre una ventana compacta sincronizada.
+Puede alternarse entre los tamaños Normal, Compacta y Mini. La elección se conserva para la siguiente apertura.
 
 ## Comprobación
 
