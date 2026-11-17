@@ -11,6 +11,7 @@ export const SECTIONS = [
   { id:'vacaciones', label:'Vacaciones', group:'data', key:'odin-calendar-v1', kind:'periods', periodType:'vacation' },
   { id:'otros_festivos', label:'Otros y festivos locales', group:'data', key:'odin-calendar-v1', kind:'periods', periodType:'other' },
   { id:'gastos_compartidos', label:'Grupos y facturas compartidas', group:'data', key:'odin-shared-expenses-v1' },
+  { id:'calculadora', label:'Calculadora e historial', group:'data', key:'odin-calculator-v1', sizeKey:'odin-calculator-floating-size', kind:'calculator' },
   { id:'catalogo', label:'Catálogo, favoritos y orden', group:'preferences', key:'odin-catalog-preferences-v1' },
   { id:'reloj_negro', label:'Reloj negro', group:'preferences', key:'odin:u01:sony-clock:v1' },
   { id:'temporizador', label:'Temporizador y cronómetro', group:'preferences', key:'odin-timer-v1' },
@@ -58,6 +59,7 @@ function internalPeriod(item, fallbackType) {
 export function readSection(storage, id) {
   const section = byId(id); if (!section) throw new Error(`Sección desconocida: ${id}`);
   const stored = parseJson(storage.getItem(section.key));
+  if (section.kind === 'calculator') { const floatingSize=storage.getItem(section.sizeKey);return stored==null&&floatingSize==null?null:{state:clone(stored),floatingSize:['normal','compact','mini'].includes(floatingSize)?floatingSize:'normal'}; }
   if (section.kind === 'periods') return (Array.isArray(stored?.vacations) ? stored.vacations : []).filter(item => (item.type === 'other' ? 'other' : 'vacation') === section.periodType).map(item => externalPeriod(item, section.periodType));
   if (section.kind === 'calendar-preferences') return stored ? { colors:clone(stored.colors || {}), layers:clone(stored.layers || {}), view:clone(stored.view || {}) } : null;
   if (id === 'cuentas_atras') return normalizeCountdownState(stored || {});
@@ -69,6 +71,7 @@ export function sectionCount(id, value) {
   if (id === 'cuentas_atras') return Array.isArray(value?.personal) ? value.personal.length : 0;
   if (id === 'vacaciones' || id === 'otros_festivos') return Array.isArray(value) ? value.length : 0;
   if (id === 'gastos_compartidos') return Array.isArray(value?.groups) ? value.groups.length : 0;
+  if (id === 'calculadora') return value==null?0:(Array.isArray(value?.state?.history)?value.state.history.length:0)+1;
   return value == null ? 0 : 1;
 }
 
@@ -143,11 +146,15 @@ function mergeUnique(existing,incoming,keyOf){const seen=new Set(existing.map(ke
 const alarmKey=item=>item.id||`${item.time}|${item.label}|${(item.days||[]).join(',')}`;
 const countdownKey=item=>item.id||`${item.category}|${item.name}|${item.year||''}-${item.month}-${item.day}|${item.time}|${item.annual}`;
 const periodKey=item=>`${item.type}|${item.name.toLocaleLowerCase('es')}|${item.start}|${item.end}`;
+const calculatorHistoryKey=item=>item.id||`${item.expression}|${item.result}|${item.createdAt}`;
 
 export function applySections(storage, sections, selectedIds=Object.keys(sections), mode='merge') {
   const applied=[];
   for(const id of selectedIds){if(!(id in sections)||!byId(id))continue;const section=byId(id),incoming=clone(sections[id]);
-    if(section.kind==='periods'){
+    if(section.kind==='calculator'){
+      if(incoming==null){if(mode==='merge')continue;storage.removeItem(section.key);storage.removeItem(section.sizeKey);}
+      else{const current=parseJson(storage.getItem(section.key)),incomingState=incoming.state&&typeof incoming.state==='object'?incoming.state:null;let next=incomingState;if(mode==='merge'&&current&&incomingState){next={...incomingState,...current,history:mergeUnique(Array.isArray(current.history)?current.history:[],Array.isArray(incomingState.history)?incomingState.history:[],calculatorHistoryKey)}}if(next)storage.setItem(section.key,JSON.stringify(next));else storage.removeItem(section.key);const currentSize=storage.getItem(section.sizeKey),nextSize=mode==='merge'&&currentSize?currentSize:incoming.floatingSize;if(['normal','compact','mini'].includes(nextSize))storage.setItem(section.sizeKey,nextSize);else if(mode!=='merge')storage.removeItem(section.sizeKey);}
+    }else if(section.kind==='periods'){
       const calendar=parseJson(storage.getItem(section.key))||{},all=Array.isArray(calendar.vacations)?calendar.vacations:[],keep=all.filter(item=>(item.type==='other'?'other':'vacation')!==section.periodType),current=all.filter(item=>(item.type==='other'?'other':'vacation')===section.periodType),next=(incoming||[]).map(item=>internalPeriod(item,section.periodType));calendar.vacations=[...keep,...(mode==='merge'?mergeUnique(current,next,periodKey):next)];if(section.periodType==='other')calendar.localHolidaySeedVersion=LOCAL_HOLIDAY_SEED_VERSION;storage.setItem(section.key,JSON.stringify(calendar));
     }else if(section.kind==='calendar-preferences'){
       const calendar=parseJson(storage.getItem(section.key))||{};if(incoming==null){if(mode==='merge')continue;delete calendar.colors;delete calendar.layers;delete calendar.view;}else{calendar.colors=clone(incoming.colors||{});calendar.layers=clone(incoming.layers||{});calendar.view=clone(incoming.view||{});}storage.setItem(section.key,JSON.stringify(calendar));
@@ -163,12 +170,27 @@ export function applySections(storage, sections, selectedIds=Object.keys(section
 
 export function resetSections(storage, ids) {
   for(const id of ids){const section=byId(id);if(!section)continue;
-    if(section.kind==='periods'){const calendar=parseJson(storage.getItem(section.key))||{},all=Array.isArray(calendar.vacations)?calendar.vacations:[];calendar.vacations=all.filter(item=>(item.type==='other'?'other':'vacation')!==section.periodType);storage.setItem(section.key,JSON.stringify(calendar));}
+    if(section.kind==='calculator'){storage.removeItem(section.key);storage.removeItem(section.sizeKey);}
+    else if(section.kind==='periods'){const calendar=parseJson(storage.getItem(section.key))||{},all=Array.isArray(calendar.vacations)?calendar.vacations:[];calendar.vacations=all.filter(item=>(item.type==='other'?'other':'vacation')!==section.periodType);storage.setItem(section.key,JSON.stringify(calendar));}
     else if(section.kind==='calendar-preferences'){const calendar=parseJson(storage.getItem(section.key))||{};delete calendar.colors;delete calendar.layers;delete calendar.view;storage.setItem(section.key,JSON.stringify(calendar));}
     else storage.removeItem(section.key);
   }
 }
 
 export function validateImportedSections(sections) {
-  let total=0;for(const [id,data] of Object.entries(sections)){if(!byId(id))continue;if(id==='vacaciones'||id==='otros_festivos'){if(!Array.isArray(data))throw new Error(`${byId(id).label} debe ser una lista.`);for(const item of data)internalPeriod(item,id==='otros_festivos'?'other':'vacation');total+=data.length;}else if(id==='cuentas_atras'){const normalized=normalizeCountdownState(data||{});for(const item of normalized.personal){if(!COUNTDOWN_CATEGORY_IDS.includes(item.category)||!item.name||item.month<1||item.month>12||item.day<1||item.day>31)throw new Error('Hay un acontecimiento personal no válido.');}total+=normalized.personal.length;}else if(id==='gastos_compartidos'){if(!data||!Array.isArray(data.groups))throw new Error('Grupos y facturas compartidas no tiene una estructura válida.');for(const group of data.groups){if(!group.id||!group.name||!Array.isArray(group.members)||!Array.isArray(group.families)||!Array.isArray(group.expenses))throw new Error('Hay un reparto de gastos no válido.');total+=1+group.members.length+group.expenses.length;}}else total+=sectionCount(id,data);if(total>2000)throw new Error('La importación supera el límite de 2.000 elementos.');}return true;
+  let total=0;
+  for(const [id,data] of Object.entries(sections)){
+    if(!byId(id))continue;
+    if(id==='vacaciones'||id==='otros_festivos'){
+      if(!Array.isArray(data))throw new Error(`${byId(id).label} debe ser una lista.`);for(const item of data)internalPeriod(item,id==='otros_festivos'?'other':'vacation');total+=data.length;
+    }else if(id==='cuentas_atras'){
+      const normalized=normalizeCountdownState(data||{});for(const item of normalized.personal){if(!COUNTDOWN_CATEGORY_IDS.includes(item.category)||!item.name||item.month<1||item.month>12||item.day<1||item.day>31)throw new Error('Hay un acontecimiento personal no válido.');}total+=normalized.personal.length;
+    }else if(id==='gastos_compartidos'){
+      if(!data||!Array.isArray(data.groups))throw new Error('Grupos y facturas compartidas no tiene una estructura válida.');for(const group of data.groups){if(!group.id||!group.name||!Array.isArray(group.members)||!Array.isArray(group.families)||!Array.isArray(group.expenses))throw new Error('Hay un reparto de gastos no válido.');total+=1+group.members.length+group.expenses.length;}
+    }else if(id==='calculadora'&&data!=null){
+      if(typeof data!=='object'||(data.state!=null&&typeof data.state!=='object')||!['normal','compact','mini',undefined,null].includes(data.floatingSize))throw new Error('La configuración de la calculadora no es válida.');if(data.state?.history!=null&&!Array.isArray(data.state.history))throw new Error('El historial de la calculadora no es válido.');for(const item of data.state?.history||[]){if(typeof item.expression!=='string'||!Number.isFinite(item.result))throw new Error('Hay una operación no válida en el historial de la calculadora.');}total+=(data.state?.history?.length||0)+1;
+    }else total+=sectionCount(id,data);
+    if(total>2000)throw new Error('La importación supera el límite de 2.000 elementos.');
+  }
+  return true;
 }

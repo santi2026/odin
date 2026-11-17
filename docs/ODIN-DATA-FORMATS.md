@@ -12,7 +12,11 @@ La copia completa JSON identifica su formato y versión. Administración usa esa
   "secciones": {
     "calendario": {},
     "cuentas_atras": {},
-    "alarmas": {}
+    "alarmas": {},
+    "calculadora": {
+      "state": { "memory": 0, "history": [] },
+      "floatingSize": "normal"
+    }
   }
 }
 ```

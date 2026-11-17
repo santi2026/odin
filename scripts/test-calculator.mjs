@@ -1,5 +1,6 @@
 import assert from'node:assert/strict';
 import{evaluateExpression,formatNumber,normalizeState,saveHistory,tokenize,versionedConcept}from'../preview-calculator/calculator-core.js';
+import{applySections,buildBackup,resetSections,validateImportedSections}from'../preview-admin/admin-core.js';
 assert.equal(evaluateExpression('(1250,50 + 89,90 + 42,75 - 125) * 1,21 / 3'),507.4538333333333);
 assert.equal(evaluateExpression('√(81)+10%'),9.1);
 assert.equal(evaluateExpression('2*-3'),-6);
@@ -12,4 +13,11 @@ const copied=saveHistory(history,{concept:'Hotel',expression:'500/2',result:250}
 const updated=saveHistory(history,{concept:'Hotel',expression:'600/3',result:200},{editingId:'1',now:3});assert.equal(updated.length,1);assert.equal(updated[0].result,200);
 const afterDelete=saveHistory([],{concept:'Hotel',expression:'600/3',result:200},{editingId:'1',now:4});assert.equal(afterDelete.length,1);assert.notEqual(afterDelete[0].id,'1');
 assert.equal(normalizeState({history:null}).history.length,0);
+class MemoryStorage{constructor(entries={}){this.values=new Map(Object.entries(entries))}getItem(key){return this.values.has(key)?this.values.get(key):null}setItem(key,value){this.values.set(key,String(value))}removeItem(key){this.values.delete(key)}}
+const storedState={expression:'12+6',result:18,memory:150,history:[{id:'calc-1',concept:'Compra',expression:'12+6',result:18,createdAt:10}]};
+const storage=new MemoryStorage({'odin-calculator-v1':JSON.stringify(storedState),'odin-calculator-floating-size':'compact'}),backup=buildBackup(storage,['calculadora']);
+assert.deepEqual(backup.secciones.calculadora,{state:storedState,floatingSize:'compact'});assert.equal(validateImportedSections(backup.secciones),true);
+const restored=new MemoryStorage();applySections(restored,backup.secciones,['calculadora'],'replace');assert.deepEqual(JSON.parse(restored.getItem('odin-calculator-v1')),storedState);assert.equal(restored.getItem('odin-calculator-floating-size'),'compact');
+applySections(restored,{calculadora:{state:{history:[{id:'calc-2',concept:'Hotel',expression:'480/3',result:160,createdAt:20}],memory:9},floatingSize:'mini'}},['calculadora'],'merge');assert.equal(JSON.parse(restored.getItem('odin-calculator-v1')).history.length,2);assert.equal(restored.getItem('odin-calculator-floating-size'),'compact');
+resetSections(restored,['calculadora']);assert.equal(restored.getItem('odin-calculator-v1'),null);assert.equal(restored.getItem('odin-calculator-floating-size'),null);
 console.log('CALCULATOR_TESTS=PASS');
