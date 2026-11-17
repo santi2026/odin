@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Calculadora local con memoria, historial buscable y ventana flotante." />
+  <title>Calculadora · ODÍN</title>
+  <link rel="icon" href="/logo.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="/src/styles/global.css?v=calculator-1" />
+  <link rel="stylesheet" href="/preview-calculator/calculator.css?v=1" />
+</head>
+<body class="tool-page calculator-body">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="site-header"><a class="brand" href="/preview-home/" aria-label="ODÍN, volver a la portada"><span class="brand-mark">◆</span><span>ODÍN</span></a><nav aria-label="Navegación de la herramienta"><a class="back-to-catalog" href="/preview-home/#herramientas"><span aria-hidden="true">←</span> Catálogo</a></nav></header>
+  <main id="contenido" class="calculator-page">
+    <header class="calculator-heading"><div><p class="eyebrow">U20 · CÁLCULO</p><h1>Calculadora</h1><p>Calcula, corrige y recupera operaciones anteriores sin enviar tus datos fuera del navegador.</p></div><div class="calculator-heading-actions"><button id="toggle-history" type="button" aria-pressed="true">Ocultar historial</button><button id="open-floating" class="primary" type="button">Abrir flotante</button></div></header>
+    <p id="floating-help" class="calculator-notice" hidden></p>
+    <div class="calculator-layout" id="calculator-layout">
+      <section class="calculator-panel" aria-label="Calculadora">
+        <label class="concept-field"><span>Concepto opcional</span><input id="concept" maxlength="70" placeholder="¿Para qué es este cálculo?" autocomplete="off" /></label>
+        <div class="calculator-display">
+          <div class="edit-toolbar" aria-label="Edición de la operación">
+            <span><button type="button" data-insert="(" aria-label="Abrir paréntesis">(</button><button type="button" data-insert=")" aria-label="Cerrar paréntesis">)</button></span>
+            <span><button type="button" data-command="undo" aria-label="Deshacer" title="Deshacer">↶</button><button type="button" data-command="redo" aria-label="Rehacer" title="Rehacer">↷</button></span>
+            <span><button type="button" data-command="left" aria-label="Mover el cursor a la izquierda">‹</button><button type="button" data-command="right" aria-label="Mover el cursor a la derecha">›</button><button type="button" data-command="backspace" aria-label="Borrar a la izquierda">⌫</button></span>
+          </div>
+          <input id="expression" class="expression-input" inputmode="decimal" aria-label="Operación" autocomplete="off" spellcheck="false" />
+          <output id="result" class="calculator-result" aria-live="polite">0</output>
+          <p id="error" class="calculator-error" hidden></p>
+        </div>
+        <div class="memory-row" aria-label="Memoria"><button type="button" data-memory="clear" title="Borrar la memoria">MC</button><button type="button" data-memory="recall" title="Recuperar la memoria">MR</button><button type="button" data-memory="add" title="Sumar el resultado a la memoria">M+</button><button type="button" data-memory="subtract" title="Restar el resultado de la memoria">M−</button><button type="button" data-memory="answer" title="Insertar el último resultado">ANS</button></div>
+        <div class="calculator-keypad" aria-label="Teclado de calculadora">
+          <button type="button" data-command="clear" class="utility">C</button><button type="button" data-command="sign" class="utility">±</button><button type="button" data-command="sqrt" class="utility">√</button><button type="button" data-insert="%" class="utility">%</button>
+          <button type="button" data-insert="7">7</button><button type="button" data-insert="8">8</button><button type="button" data-insert="9">9</button><button type="button" data-insert="÷" class="operator">÷</button>
+          <button type="button" data-insert="4">4</button><button type="button" data-insert="5">5</button><button type="button" data-insert="6">6</button><button type="button" data-insert="×" class="operator">×</button>
+          <button type="button" data-insert="1">1</button><button type="button" data-insert="2">2</button><button type="button" data-insert="3">3</button><button type="button" data-insert="−" class="operator">−</button>
+          <button type="button" data-insert="00">00</button><button type="button" data-insert="0">0</button><button type="button" data-insert=",">,</button><button type="button" data-insert="+" class="operator">+</button>
+          <button id="calculate" type="button" class="equals" aria-label="Calcular">=</button>
+        </div>
+      </section>
+      <aside class="calculator-history" id="history-panel">
+        <header><div><span>HISTORIAL</span><h2>Operaciones recientes</h2></div><button id="clear-history" type="button">Vaciar</button></header>
+        <label class="history-search"><span aria-hidden="true">⌕</span><input id="history-search" type="search" placeholder="Buscar texto, operación o valor" /></label>
+        <div id="history-list" class="history-list"></div>
+        <p id="history-empty" class="history-empty">Aún no has guardado operaciones.</p>
+        <section class="history-save"><div><b id="save-title">Guardar operación</b><span id="save-explanation">Guardar crea un registro nuevo en el historial.</span></div><button id="save-operation" type="button">Guardar</button><button id="save-copy" type="button">Guardar como copia</button></section>
+      </aside>
+    </div>
+  </main>
+  <footer class="site-footer"><span>ODÍN · Calculadora</span><span>Historial local · sin cuentas ni seguimiento</span></footer>
+  <script type="module" src="/preview-calculator/calculator.js?v=1"></script>
+  <script type="module" src="/global-timer.js?v=calendar-merge-1"></script>
+  <script type="module" src="/time-center.js?v=calendar-merge-1"></script>
+</body>
+</html>

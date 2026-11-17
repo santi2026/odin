@@ -4,7 +4,7 @@ Colección de utilidades web cotidianas, rápidas y centradas en la privacidad. 
 
 - Producción: <https://odin.santiagosanz.info/>
 - Publicación: GitHub → Cloudflare Pages
-- Catálogo: 18 herramientas disponibles, numeradas de U01 a U18
+- Catálogo: 20 herramientas disponibles, numeradas de U01 a U20
 - Administración: acceso independiente desde la cabecera; no forma parte del catálogo ni recibe número U
 
 ## Herramientas
@@ -16,21 +16,21 @@ Colección de utilidades web cotidianas, rápidas y centradas en la privacidad. 
 | U03 | Cuenta atrás | Tiempo |
 | U04 | Alarmas | Tiempo |
 | U05 | Temporizador y cronómetro | Tiempo |
-| U06 | Concentración · Pomodoro | Productividad |
-| U07 | Calculadora de fechas | Cálculo |
-| U08 | Conversor universal | Cálculo |
-| U09 | Relojes del mundo | Tiempo |
-| U10 | Fases lunares | Tiempo |
-| U11 | Mi IP | Conexión |
-| U12 | Códigos QR | Creación |
-| U13 | HTML a texto | Texto y datos |
-| U14 | Codificador de texto y URL | Texto y datos |
-| U15 | Generador de contraseñas | Seguridad |
-| U16 | Identificadores y dígitos de control | Seguridad |
-| U17 | Taller de texto | Texto y datos |
-| U18 | Gastos compartidos | Cálculo |
-
-El motor de U18 será determinista y funcionará sin IA. Antes de publicarlo se retará con numerosos casos simples, familiares, parciales, con varios pagadores, redondeos y saldos cruzados. Cada resultado se comprobará mediante invariantes matemáticas, resultados esperados y validaciones externas asistidas por IA. La herramienta no se considerará terminada hasta superar esa batería.
+| U06 | Concentración · Pomodoro | Tiempo |
+| U07 | Gastos compartidos | Cálculo |
+| U08 | Editor JSON, CSV y XML | Texto y datos |
+| U09 | Calculadora de fechas | Cálculo |
+| U10 | Conversor universal | Cálculo |
+| U11 | Relojes del mundo | Tiempo |
+| U12 | Fases lunares | Tiempo |
+| U13 | Taller de texto | Texto y datos |
+| U14 | HTML a texto | Texto y datos |
+| U15 | Codificador de texto y URL | Texto y datos |
+| U16 | Códigos QR | Digital |
+| U17 | Generador de contraseñas | Digital |
+| U18 | Identificadores y dígitos de control | Digital |
+| U19 | Mi IP | Digital |
+| U20 | Calculadora | Cálculo |
 
 La fuente única del orden, numeración, categorías, rutas y textos es `catalog-data.json`. No se deben mantener listas paralelas.
 
@@ -39,6 +39,7 @@ La fuente única del orden, numeración, categorías, rutas y textos es `catalog
 ```powershell
 npm install
 npm run check:catalog
+npm run test:calculator
 npm run build:static
 ```
 

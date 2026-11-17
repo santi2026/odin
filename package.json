@@ -12,6 +12,7 @@
     "test:text-workshop": "node scripts/test-text-workshop.mjs",
     "test:shared-expenses": "node scripts/test-shared-expenses.mjs",
     "test:json-studio": "node scripts/test-json-studio.mjs",
+    "test:calculator": "node scripts/test-calculator.mjs",
     "check": "astro check",
     "preview": "astro preview"
   },
