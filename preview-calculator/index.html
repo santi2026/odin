@@ -17,6 +17,7 @@
     <p id="floating-help" class="calculator-notice" hidden></p>
     <div class="calculator-layout" id="calculator-layout">
       <section class="calculator-panel" aria-label="Calculadora">
+        <div class="concept-field"><input id="concept" maxlength="70" placeholder="Nombre del cálculo" aria-label="Nombre del cálculo" autocomplete="off" /></div>
         <div class="edit-toolbar edit-toolbar-outside" aria-label="Edición de la operación">
           <span><button type="button" data-command="undo" aria-label="Deshacer" title="Deshacer">↶</button><button type="button" data-command="redo" aria-label="Rehacer" title="Rehacer">↷</button></span>
           <span><button type="button" data-command="left" aria-label="Mover el cursor a la izquierda">‹</button><button type="button" data-command="right" aria-label="Mover el cursor a la derecha">›</button></span>
@@ -34,7 +35,7 @@
           <button type="button" data-insert="7">7</button><button type="button" data-insert="8">8</button><button type="button" data-insert="9">9</button><button type="button" data-command="sqrt" class="utility">√x</button><button type="button" data-command="square" class="utility">x²</button>
           <button type="button" data-insert="4">4</button><button type="button" data-insert="5">5</button><button type="button" data-insert="6">6</button><button type="button" data-insert="×" class="operator">×</button><button type="button" data-insert="÷" class="operator">÷</button>
           <button type="button" data-insert="1">1</button><button type="button" data-insert="2">2</button><button type="button" data-insert="3">3</button><button type="button" data-insert="+" class="operator">+</button><button type="button" data-insert="−" class="operator">−</button>
-          <button type="button" data-command="sign" class="utility">±</button><button type="button" data-insert="0">0</button><button type="button" data-insert=",">,</button><button id="calculate" type="button" class="equals" aria-label="Calcular">=</button><button id="calculate-save" type="button" class="calculate-save" aria-label="Calcular y guardar" title="Calcular y guardar"><span>Calcular</span><span>y guardar</span></button>
+          <button type="button" data-command="sign" class="utility">±</button><button type="button" data-insert="0">0</button><button type="button" data-insert=",">,</button><button id="calculate" type="button" class="equals" aria-label="Calcular">=</button><button id="calculate-save" type="button" class="calculate-save" aria-label="Calcular y guardar en el historial" title="Calcular y guardar en el historial"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.75 4.75A1.75 1.75 0 0 1 8.5 3h7A1.75 1.75 0 0 1 17.25 4.75v15.1L12 16.7l-5.25 3.15V4.75Z"/><path d="M12 7v6M9 10h6"/></svg></button>
         </div>
       </section>
       <aside class="calculator-history" id="history-panel">

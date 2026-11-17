@@ -2,7 +2,7 @@ import{evaluateExpression,formatNumber,normalizeState,saveHistory}from'./calcula
 
 const STORAGE_KEY='odin-calculator-v1',CHANNEL_NAME='odin-calculator-sync-v1';
 const readState=()=>{try{return normalizeState(JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}'))}catch{return normalizeState()}};
-let state=readState(),undoStack=[],redoStack=[],views=[];state.concept='';
+let state=readState(),undoStack=[],redoStack=[],views=[];
 const channel='BroadcastChannel'in window?new BroadcastChannel(CHANNEL_NAME):null;
 const timestamp=value=>new Intl.DateTimeFormat('es-ES',{dateStyle:'medium',timeStyle:'short'}).format(new Date(value));
 const escapeHtml=value=>String(value).replace(/[&<>'"]/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
@@ -31,7 +31,8 @@ function memoryAction(view,action){
 }
 
 function bindView(root){
-  const view={root,expression:root.querySelector('#expression'),result:root.querySelector('#result'),error:root.querySelector('#error'),memoryValue:root.querySelector('.memory-value')};views.push(view);
+  const view={root,concept:root.querySelector('#concept'),expression:root.querySelector('#expression'),result:root.querySelector('#result'),error:root.querySelector('#error'),memoryValue:root.querySelector('.memory-value')};views.push(view);
+  view.concept.addEventListener('input',()=>{state.concept=view.concept.value;render(view);persist()});
   view.expression.addEventListener('input',()=>setExpression(view.expression.value));view.expression.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();calculate()}});
   root.querySelectorAll('[data-insert]').forEach(button=>button.addEventListener('click',()=>insertAt(view,button.dataset.insert)));
   root.querySelectorAll('[data-command]').forEach(button=>button.addEventListener('click',()=>runCommand(view,button.dataset.command)));
@@ -40,7 +41,7 @@ function bindView(root){
 }
 
 function render(skip){
-  for(const view of views){if(view.expression.value!==state.expression)view.expression.value=state.expression;view.result.textContent=formatNumber(state.result);view.memoryValue.textContent=formatNumber(state.memory)}
+  for(const view of views){if(view!==skip&&view.concept.value!==state.concept)view.concept.value=state.concept;if(view.expression.value!==state.expression)view.expression.value=state.expression;view.result.textContent=formatNumber(state.result);view.memoryValue.textContent=formatNumber(state.memory)}
   const historyList=document.querySelector('#history-list'),empty=document.querySelector('#history-empty');
   if(historyList){const query=(document.querySelector('#history-search')?.value||'').trim().toLocaleLowerCase('es'),items=state.history.filter(item=>`${item.concept} ${item.expression} ${formatNumber(item.result)} ${timestamp(item.createdAt)}`.toLocaleLowerCase('es').includes(query));historyList.innerHTML=items.map(item=>`<article class="history-item" data-id="${item.id}"><div><b>${escapeHtml(item.concept||timestamp(item.createdAt))}</b>${item.concept?`<time>${timestamp(item.createdAt)}</time>`:''}<small>${escapeHtml(item.expression)}</small></div><strong>${formatNumber(item.result)}</strong><span class="history-actions"><button type="button" data-recover="${item.id}" title="Recuperar resultado" aria-label="Recuperar resultado">↙</button><button type="button" data-edit="${item.id}" title="Editar operación" aria-label="Editar operación">✎</button><button type="button" data-delete="${item.id}" title="Eliminar del historial" aria-label="Eliminar del historial">×</button></span></article>`).join('');empty.hidden=items.length>0;bindHistoryActions(historyList)}
   const editing=state.history.find(item=>item.id===state.editingId),title=document.querySelector('#save-title'),explanation=document.querySelector('#save-explanation'),copy=document.querySelector('#save-copy');if(title){title.textContent=editing?'Editando una operación':'Guardar operación';explanation.textContent=editing?'Guardar actualiza este registro. La copia conserva el anterior.':'Guardar crea un registro nuevo en el historial.';copy.hidden=!editing}
