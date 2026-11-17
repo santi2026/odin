@@ -23,15 +23,16 @@
     <section class="tools-section" id="herramientas">
       <div class="section-heading">
         <div><p class="eyebrow">Catálogo</p><h2>Todas las herramientas</h2></div>
-        <label class="search-box"><span aria-hidden="true">⌕</span><span class="sr-only">Buscar herramientas</span><input id="tool-search" type="search" placeholder="Buscar por nombre o función" autocomplete="off" /></label>
+        <div class="catalog-actions"><label class="search-box"><span aria-hidden="true">⌕</span><span class="sr-only">Buscar herramientas</span><input id="tool-search" type="search" placeholder="Buscar por nombre o función" autocomplete="off" /></label><button id="open-tool-order" type="button">Ordenar herramientas</button></div>
       </div>
       <div class="catalog-filters" id="catalog-filters" aria-label="Filtrar por categoría"></div>
       <div class="tool-grid" id="tool-grid"></div>
       <p class="empty-state" id="empty-state" hidden>No hay herramientas que coincidan con la búsqueda.</p>
     </section>
   </main>
+  <dialog id="tool-order-dialog"><form method="dialog"><header><div><span>PERSONALIZAR</span><h2>Orden de las herramientas</h2><p>Arrastra cada herramienta o utiliza los botones para colocarla.</p></div><button value="cancel" aria-label="Cerrar">×</button></header><ol id="tool-order-list"></ol><div><button id="reset-tool-order" type="button">Restablecer orden de ODÍN</button><button class="primary" value="default">Guardar y cerrar</button></div></form></dialog>
   <footer class="site-footer"><span>ODÍN · herramientas claras para cada día</span><span>Privacidad primero · sin publicidad</span></footer>
-  <script type="module" src="/preview-home/home.js?v=catalog-19-1"></script>
+  <script type="module" src="/preview-home/home.js?v=catalog-20-1"></script>
   <script type="module" src="/global-timer.js?v=calendar-merge-1"></script>
   <script type="module" src="/time-center.js?v=calendar-merge-1"></script>
 </body>

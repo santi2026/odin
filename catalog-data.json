@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "categoryOrder": ["Tiempo", "Cálculo", "Texto y datos", "Seguridad", "Creación", "Conexión", "Productividad"],
+  "categoryOrder": ["Tiempo", "Cálculo", "Texto y datos", "Digital"],
   "tools": [
     {
       "id": "U01", "order": 1, "slug": "reloj-negro", "category": "Tiempo", "name": "Reloj negro",
@@ -28,72 +28,72 @@
       "preview": "<b id=\"live-timer-cover\">25:00</b><span id=\"live-timer-state\">Preparado</span>"
     },
     {
-      "id": "U06", "order": 6, "slug": "concentracion-pomodoro", "category": "Productividad", "name": "Concentración · Pomodoro",
+      "id": "U06", "order": 6, "slug": "concentracion-pomodoro", "category": "Tiempo", "name": "Concentración · Pomodoro",
       "description": "Alterna sesiones de concentración y descanso configurables.", "status": "available", "href": "/preview-focus/", "cover": "focus", "icon": "◎", "featured": true,
       "preview": "<div class=\"focus-ring\"><b id=\"live-focus-time\">25</b><small id=\"live-focus-unit\">min</small></div><i id=\"live-focus-phase\">Sesión 1 de 4</i>"
     },
     {
-      "id": "U07", "order": 7, "slug": "calculadora-fechas", "category": "Cálculo", "name": "Calculadora de fechas",
+      "id": "U09", "order": 9, "slug": "calculadora-fechas", "category": "Cálculo", "name": "Calculadora de fechas",
       "description": "Suma días y calcula periodos entre fechas.", "status": "available", "href": "/preview-dates/", "cover": "dates", "icon": "±", "featured": false,
       "preview": "<span><small>12 NOV</small><b>+ 45 días</b></span><strong>27 DIC</strong>"
     },
     {
-      "id": "U08", "order": 8, "slug": "conversor-universal", "category": "Cálculo", "name": "Conversor universal",
+      "id": "U10", "order": 10, "slug": "conversor-universal", "category": "Cálculo", "name": "Conversor universal",
       "description": "Convierte unidades habituales con claridad.", "status": "available", "href": "/preview-convert/", "cover": "convert", "icon": "⇄", "featured": false,
       "preview": "<span><b>24</b><small>km</small></span><i>⇄</i><span><b>14,91</b><small>mi</small></span>"
     },
     {
-      "id": "U09", "order": 9, "slug": "relojes-del-mundo", "category": "Tiempo", "name": "Relojes del mundo",
+      "id": "U11", "order": 11, "slug": "relojes-del-mundo", "category": "Tiempo", "name": "Relojes del mundo",
       "description": "Compara ciudades con sus zonas horarias reales.", "status": "available", "href": "/preview-world/", "cover": "world", "icon": "◉", "featured": false,
       "preview": "<span><small>Barcelona</small><b id=\"live-barcelona\">--:--</b></span><span><small>Washington</small><b id=\"live-washington\">--:--</b></span>"
     },
     {
-      "id": "U10", "order": 10, "slug": "fases-lunares", "category": "Tiempo", "name": "Fases lunares",
+      "id": "U12", "order": 12, "slug": "fases-lunares", "category": "Tiempo", "name": "Fases lunares",
       "description": "Consulta la fase actual de la Luna y sus próximos cambios.", "status": "available", "href": "/preview-moon/", "cover": "moon", "icon": "◐", "featured": false,
       "preview": "<div class=\"moon-orbit\"><span class=\"moon-phase\" id=\"live-moon-disc\"></span></div><i id=\"live-moon-phase\">Fase actual</i>"
     },
     {
-      "id": "U11", "order": 11, "slug": "mi-ip", "category": "Conexión", "name": "Mi IP",
+      "id": "U19", "order": 19, "slug": "mi-ip", "category": "Digital", "name": "Mi IP",
       "description": "Tu dirección pública y la información disponible de la conexión.", "status": "available", "href": "/preview-ip/", "cover": "ip", "icon": "⌁", "featured": false,
       "preview": "<small>Tu IP pública</small><b id=\"live-public-ip\">Consultando…</b><i id=\"live-ip-type\">Conexión actual</i>"
     },
     {
-      "id": "U12", "order": 12, "slug": "codigos-qr", "category": "Creación", "name": "Códigos QR",
+      "id": "U16", "order": 16, "slug": "codigos-qr", "category": "Digital", "name": "Códigos QR",
       "description": "Crea un código para compartir o lee uno desde una imagen o la cámara. Todo se procesa en este dispositivo.", "status": "available", "href": "/preview-qr/", "cover": "qr", "icon": "▦", "featured": false,
       "preview": "<div class=\"qr-cover-ui\"><div class=\"qr-mini\"><i class=\"qr-eye eye-a\"></i><i class=\"qr-eye eye-b\"></i><i class=\"qr-eye eye-c\"></i><span></span></div><div class=\"qr-cover-actions\"><b>Crear QR</b><span>▧ Leer imagen</span><span>◉ Usar cámara</span></div></div>"
     },
     {
-      "id": "U13", "order": 13, "slug": "html-a-texto", "category": "Texto y datos", "name": "HTML a texto",
+      "id": "U14", "order": 14, "slug": "html-a-texto", "category": "Texto y datos", "name": "HTML a texto",
       "description": "Extrae el texto legible de un documento HTML sin ejecutarlo.", "status": "available", "href": "/preview-html-text/", "cover": "html-clean", "icon": "Aa", "featured": false,
       "preview": "<div class=\"html-clean-cover\"><div class=\"html-source\"><i>&lt;h1&gt;</i><i>&lt;p&gt;</i><i>&lt;b&gt;</i></div><span class=\"cover-flow\">→</span><div class=\"html-output\"><b>Texto limpio</b><i></i><i></i><i></i></div></div>"
     },
     {
-      "id": "U14", "order": 14, "slug": "codificador-texto-url", "category": "Texto y datos", "name": "Codificador de texto y URL",
+      "id": "U15", "order": 15, "slug": "codificador-texto-url", "category": "Texto y datos", "name": "Codificador de texto y URL",
       "description": "Codifica, analiza URLs y cifra texto localmente.", "status": "available", "href": "/preview-codec/", "cover": "codec", "icon": "%", "featured": false,
       "preview": "<div class=\"codec-cover\"><div class=\"codec-input\"><small>Texto</small><b>Hola mundo</b></div><span>⇄</span><div class=\"codec-stack\"><i>%48%6F...</i><i>SG9sYQ==</i></div></div>"
     },
     {
-      "id": "U15", "order": 15, "slug": "generador-contrasenas", "category": "Seguridad", "name": "Generador de contraseñas",
+      "id": "U17", "order": 17, "slug": "generador-contrasenas", "category": "Digital", "name": "Generador de contraseñas",
       "description": "Crea contraseñas, frases de paso y PIN aleatorios sin guardar historial.", "status": "available", "href": "/preview-password/", "cover": "password", "icon": "✦", "featured": false,
       "preview": "<div class=\"password-cover\"><div class=\"password-window\"><small>Contraseña segura</small><b>A7·x#9K!</b><div class=\"strength-bars\"><i></i><i></i><i></i><i></i></div><span>Excelente · 16 caracteres</span></div></div>"
     },
     {
-      "id": "U16", "order": 16, "slug": "identificadores-control", "category": "Seguridad", "name": "Identificadores y dígitos de control",
+      "id": "U18", "order": 18, "slug": "identificadores-control", "category": "Digital", "name": "Identificadores y dígitos de control",
       "description": "Valida, calcula y genera ejemplos de NIF, NIE, CIF, IBAN y NUSS/NAF.", "status": "available", "href": "/preview-identifiers/", "cover": "identity", "icon": "✓", "featured": false,
       "preview": "<div class=\"identity-cover\"><div class=\"identity-doc\"><span>NIF</span><b>12345678·Z</b><i>✓ Válido</i></div><div class=\"identity-types\"><span>IBAN</span><span>CIF</span><span>NUSS</span></div></div>"
     },
     {
-      "id": "U17", "order": 17, "slug": "taller-de-texto", "category": "Texto y datos", "name": "Taller de texto",
+      "id": "U13", "order": 13, "slug": "taller-de-texto", "category": "Texto y datos", "name": "Taller de texto",
       "description": "Transforma, ordena, reemplaza, cuenta y extrae correos y URL.", "status": "available", "href": "/preview-text-workshop/", "cover": "text-workshop", "icon": "Aa", "featured": false,
       "preview": "<div class=\"text-workshop-cover\"><div class=\"text-workshop-tabs\"><span class=\"is-active\">Aa</span><span>A-Z</span><span>42</span></div><div class=\"text-workshop-sheet\"><b>Un texto, muchas tareas</b><i></i><i></i><div><span>128 palabras</span><span>@ 3 correos</span><span>↗ 2 URL</span></div></div></div>"
     },
     {
-      "id": "U18", "order": 18, "slug": "gastos-compartidos", "category": "Cálculo", "name": "Gastos compartidos",
+      "id": "U07", "order": 7, "slug": "gastos-compartidos", "category": "Cálculo", "name": "Gastos compartidos",
       "description": "Reparte varias facturas entre personas o familias y simplifica los pagos.", "status": "available", "href": "/preview-shared-expenses/", "cover": "shared-expenses", "icon": "€", "featured": false,
       "preview": "<div class=\"shared-expenses-cover\"><div class=\"expense-ledger\"><span><i>Casa</i><b>480 €</b></span><span><i>Compra</i><b>126 €</b></span><span><i>Cena</i><b>84 €</b></span></div><div class=\"expense-settlement\"><small>3 facturas · 2 familias</small><b>Martín&nbsp; → &nbsp;García</b><strong>96 €</strong></div></div>"
     },
     {
-      "id": "U19", "order": 19, "slug": "json-studio", "category": "Texto y datos", "name": "Editor JSON, CSV y XML",
+      "id": "U08", "order": 8, "slug": "json-studio", "category": "Texto y datos", "name": "Editor JSON, CSV y XML",
       "description": "Abre, edita y transforma JSON, CSV y XML con vistas de código, tabla y árbol.", "status": "available", "href": "/preview-json-studio/", "cover": "json-studio", "icon": "{}", "featured": false,
       "preview": "<div class=\"json-studio-cover\"><div class=\"json-mini-code\"><small>JSON · XML</small><span>{</span><i>\"nombre\": \"Ana\"</i><i>\"estado\": true</i><span>}</span></div><div class=\"json-mini-table\"><small>CSV · TABLA</small><b><i>id</i><i>nombre</i></b><span><i>1</i><i>Ana</i></span><span><i>2</i><i>Carlos</i></span></div><strong>ABRIR · EDITAR · CONVERTIR</strong></div>"
     }

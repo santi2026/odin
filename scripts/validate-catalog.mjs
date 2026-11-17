@@ -17,10 +17,11 @@ for (const field of ['id', 'order', 'slug', 'name']) {
 const routes = tools.map((tool) => tool.href).filter(Boolean);
 if (new Set(routes).size !== routes.length) throw new Error('El catálogo contiene rutas duplicadas.');
 
-for (const [index, tool] of tools.entries()) {
-  const order = index + 1;
-  const expectedId = `U${String(order).padStart(2, '0')}`;
-  if (tool.order !== order || tool.id !== expectedId) throw new Error(`Orden incorrecto: se esperaba ${expectedId}.`);
+const orders=new Set(),ids=new Set();
+for (const tool of tools) {
+  const expectedId = `U${String(tool.order).padStart(2, '0')}`;
+  if (!Number.isInteger(tool.order)||tool.order<1||tool.order>tools.length||tool.id!==expectedId) throw new Error(`Orden incorrecto en ${tool.slug}: se esperaba ${expectedId}.`);
+  if(orders.has(tool.order)||ids.has(tool.id))throw new Error(`Orden o identificador duplicado: ${tool.id}.`);orders.add(tool.order);ids.add(tool.id);
   if (!expectedCategories.has(tool.category)) throw new Error(`Categoría desconocida en ${tool.id}: ${tool.category}.`);
   if (!['available', 'next', 'planned'].includes(tool.status)) throw new Error(`Estado desconocido en ${tool.id}: ${tool.status}.`);
   if (tool.status === 'available') {
@@ -30,5 +31,6 @@ for (const [index, tool] of tools.entries()) {
     throw new Error(`${tool.id} no debe enlazar a una pantalla antes de estar disponible.`);
   }
 }
+if(orders.size!==tools.length||![...orders].every(order=>order>=1&&order<=tools.length))throw new Error('El orden del catálogo debe ser continuo.');
 
 console.log(`CATALOG_OK=${tools.length}`);

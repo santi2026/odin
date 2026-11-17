@@ -4,30 +4,35 @@ import {isGeneralEventEnabled,nextGeneralEvents} from '/countdown-general.js?v=1
 const catalogResponse = await fetch('/catalog-data.json?v=1', { cache: 'no-store' });
 if (!catalogResponse.ok) throw new Error('No se pudo cargar el catálogo de ODÍN.');
 const catalog = await catalogResponse.json();
-const tools = catalog.tools.map((tool) => [tool.id, tool.category, tool.name, tool.description, tool.status, tool.href, tool.cover, tool.preview]);
+const PREFERENCES_KEY='odin-catalog-preferences-v1';
+const defaultTools=[...catalog.tools].sort((a,b)=>a.order-b.order);
+function readPreferences(){try{const value=JSON.parse(localStorage.getItem(PREFERENCES_KEY));return{favorites:Array.isArray(value?.favorites)?value.favorites:[],order:Array.isArray(value?.order)?value.order:[]}}catch{return{favorites:[],order:[]}}}
+let preferences=readPreferences();
+const validSlugs=new Set(defaultTools.map(tool=>tool.slug));
+preferences.favorites=[...new Set(preferences.favorites.filter(slug=>validSlugs.has(slug)))];preferences.order=[...new Set(preferences.order.filter(slug=>validSlugs.has(slug)))];
+function savePreferences(){localStorage.setItem(PREFERENCES_KEY,JSON.stringify(preferences));window.dispatchEvent(new CustomEvent('odin:catalog-preferences-updated'))}
+function orderedTools(){const rank=new Map(preferences.order.map((slug,index)=>[slug,index]));return[...defaultTools].sort((a,b)=>(rank.get(a.slug)??1000+a.order)-(rank.get(b.slug)??1000+b.order))}
 const preferredCategoryOrder = catalog.categoryOrder;
 
-const categoryCounts = tools.reduce((counts, tool) => counts.set(tool[1], (counts.get(tool[1]) || 0) + 1), new Map());
+const categoryCounts = defaultTools.reduce((counts, tool) => counts.set(tool.category, (counts.get(tool.category) || 0) + 1), new Map());
 const remainingCategories = [...categoryCounts.keys()].filter(category => !preferredCategoryOrder.includes(category)).sort((a,b) => a.localeCompare(b,'es'));
 const categories = preferredCategoryOrder.filter(category => categoryCounts.has(category)).concat(remainingCategories);
 const filtersNode = document.querySelector('#catalog-filters');
-filtersNode.innerHTML = [{ value:'all', label:'Todas', count:tools.length }, ...categories.map(category => ({ value:category, label:category, count:categoryCounts.get(category) }))]
-  .map((filter,index) => `<button class="filter-chip${index===0?' active':''}" type="button" data-filter="${filter.value}" aria-pressed="${index===0}"><span>${filter.label}</span><b>(${filter.count})</b></button>`).join('');
-document.querySelector('#catalog-tool-count').textContent = tools.length;
+function renderFilters(){const filters=[{value:'favorites',label:'★ Favoritos',count:preferences.favorites.length},{value:'all',label:'Todas',count:defaultTools.length},...categories.map(category=>({value:category,label:category,count:categoryCounts.get(category)}))];filtersNode.innerHTML=filters.map(filter=>`<button class="filter-chip${activeFilter===filter.value?' active':''}" type="button" data-filter="${filter.value}" aria-pressed="${activeFilter===filter.value}"><span>${filter.label}</span><b>(${filter.count})</b></button>`).join('');for(const chip of filtersNode.querySelectorAll('.filter-chip'))chip.addEventListener('click',()=>{activeFilter=chip.dataset.filter;renderFilters();updateCards()})}
+document.querySelector('#catalog-tool-count').textContent = defaultTools.length;
 const labels = { available: 'Disponible', next: 'Próximamente', planned: 'Planificada' };
 const grid = document.querySelector('#tool-grid');
-for (const [id, category, name, description, status, href, cover, preview] of tools) {
-  const card = document.createElement('article');
-  card.className = `tool-card status-${status}`; card.dataset.toolName = `${name} ${description} ${category}`.toLowerCase();
-  card.dataset.category = category;
-  card.innerHTML = `<div class="tool-cover cover-${cover}" aria-hidden="true"><span class="cover-code">${id}</span><div class="cover-preview">${preview}</div></div><div class="tool-card-copy"><div class="tool-meta"><span class="tool-category">${category}</span><span class="status-pill pill-${status}">${labels[status]}</span></div><h3>${name}</h3><p>${description}</p></div>${href ? `<a class="card-hit-area" href="${href}" aria-label="Abrir ${name}"><span class="sr-only">Abrir ${name}</span></a>` : ''}`;
-  grid.append(card);
-}
-const input = document.querySelector('#tool-search'), cards = [...document.querySelectorAll('.tool-card')], empty = document.querySelector('#empty-state'), chips = [...document.querySelectorAll('.filter-chip')];
 let activeFilter = 'all';
-function updateCards() { const query = input.value.trim().toLocaleLowerCase('es'); let visible = 0; for (const card of cards) { const matchText = card.dataset.toolName.includes(query), matchCategory = activeFilter === 'all' || card.dataset.category === activeFilter, match = matchText && matchCategory; card.hidden = !match; if (match) visible++; } empty.hidden = visible !== 0; }
+const input = document.querySelector('#tool-search'),empty = document.querySelector('#empty-state');
+function renderCards(){grid.replaceChildren();for(const tool of orderedTools()){const favorite=preferences.favorites.includes(tool.slug),card=document.createElement('article');card.className=`tool-card status-${tool.status}`;card.dataset.toolName=`${tool.name} ${tool.description} ${tool.category}`.toLowerCase();card.dataset.category=tool.category;card.dataset.slug=tool.slug;card.innerHTML=`<button class="favorite-toggle${favorite?' is-favorite':''}" type="button" aria-pressed="${favorite}" aria-label="${favorite?'Quitar de':'Añadir a'} favoritos: ${tool.name}" title="${favorite?'Quitar de':'Añadir a'} favoritos">★</button><div class="tool-cover cover-${tool.cover}" aria-hidden="true"><span class="cover-code">${tool.id}</span><div class="cover-preview">${tool.preview}</div></div><div class="tool-card-copy"><div class="tool-meta"><span class="tool-category">${tool.category}</span><span class="status-pill pill-${tool.status}">${labels[tool.status]}</span></div><h3>${tool.name}</h3><p>${tool.description}</p></div>${tool.href?`<a class="card-hit-area" href="${tool.href}" aria-label="Abrir ${tool.name}"><span class="sr-only">Abrir ${tool.name}</span></a>`:''}`;card.querySelector('.favorite-toggle').addEventListener('click',()=>{preferences.favorites=favorite?preferences.favorites.filter(slug=>slug!==tool.slug):[...preferences.favorites,tool.slug];savePreferences();renderFilters();renderCards()});grid.append(card)}updateCards()}
+function updateCards() { const query = input.value.trim().toLocaleLowerCase('es'); let visible = 0; for (const card of grid.querySelectorAll('.tool-card')) { const matchText = card.dataset.toolName.includes(query), matchCategory = activeFilter === 'all' || activeFilter==='favorites'&&preferences.favorites.includes(card.dataset.slug) || card.dataset.category === activeFilter, match = matchText && matchCategory; card.hidden = !match; if (match) visible++; } empty.hidden = visible !== 0; }
 input.addEventListener('input', updateCards);
-for (const chip of chips) chip.addEventListener('click', () => { activeFilter = chip.dataset.filter; for (const item of chips) { const selected=item===chip; item.classList.toggle('active',selected); item.setAttribute('aria-pressed',String(selected)); } updateCards(); });
+renderFilters();renderCards();
+
+const orderDialog=document.querySelector('#tool-order-dialog'),orderList=document.querySelector('#tool-order-list');let workingOrder=[];
+function renderOrderList(){orderList.replaceChildren();workingOrder.forEach((slug,index)=>{const tool=defaultTools.find(item=>item.slug===slug),row=document.createElement('li');row.draggable=true;row.dataset.slug=slug;row.innerHTML=`<span aria-hidden="true">⋮⋮</span><b>${tool.id}</b><strong>${tool.name}</strong><button type="button" data-move="up" ${index===0?'disabled':''} aria-label="Subir ${tool.name}">↑</button><button type="button" data-move="down" ${index===workingOrder.length-1?'disabled':''} aria-label="Bajar ${tool.name}">↓</button>`;row.querySelectorAll('[data-move]').forEach(button=>button.addEventListener('click',()=>{const target=index+(button.dataset.move==='up'?-1:1);[workingOrder[index],workingOrder[target]]=[workingOrder[target],workingOrder[index]];preferences.order=[...workingOrder];savePreferences();renderOrderList();renderCards()}));row.addEventListener('dragstart',event=>event.dataTransfer.setData('text/plain',slug));row.addEventListener('dragover',event=>event.preventDefault());row.addEventListener('drop',event=>{event.preventDefault();const source=event.dataTransfer.getData('text/plain'),from=workingOrder.indexOf(source),to=workingOrder.indexOf(slug);if(from<0||to<0||from===to)return;workingOrder.splice(to,0,workingOrder.splice(from,1)[0]);preferences.order=[...workingOrder];savePreferences();renderOrderList();renderCards()});orderList.append(row)})}
+document.querySelector('#open-tool-order').addEventListener('click',()=>{workingOrder=orderedTools().map(tool=>tool.slug);renderOrderList();orderDialog.showModal()});
+document.querySelector('#reset-tool-order').addEventListener('click',()=>{workingOrder=defaultTools.map(tool=>tool.slug);preferences.order=[];savePreferences();renderOrderList();renderCards()});
 
 const timeFormatter = (timeZone) => new Intl.DateTimeFormat('es-ES', { timeZone, hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
 const localTime = new Intl.DateTimeFormat('es-ES', { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });

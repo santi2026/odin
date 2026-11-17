@@ -11,6 +11,7 @@ export const SECTIONS = [
   { id:'vacaciones', label:'Vacaciones', group:'data', key:'odin-calendar-v1', kind:'periods', periodType:'vacation' },
   { id:'otros_festivos', label:'Otros y festivos locales', group:'data', key:'odin-calendar-v1', kind:'periods', periodType:'other' },
   { id:'gastos_compartidos', label:'Grupos y facturas compartidas', group:'data', key:'odin-shared-expenses-v1' },
+  { id:'catalogo', label:'Catálogo, favoritos y orden', group:'preferences', key:'odin-catalog-preferences-v1' },
   { id:'reloj_negro', label:'Reloj negro', group:'preferences', key:'odin:u01:sony-clock:v1' },
   { id:'temporizador', label:'Temporizador y cronómetro', group:'preferences', key:'odin-timer-v1' },
   { id:'pomodoro', label:'Concentración · Pomodoro', group:'preferences', key:'odin-focus-v1' },
