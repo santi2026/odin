@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Consulta los zodiacos occidental y chino, la fase lunar y otras tradiciones asociadas a una fecha." />
+  <title>Zodiacos y tradiciones · ODÍN</title>
+  <link rel="icon" href="/logo.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="/src/styles/global.css?v=title-standard-1" />
+  <link rel="stylesheet" href="/preview-zodiac/zodiac.css?v=1" />
+</head>
+<body class="tool-page zodiac-body">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="site-header"><a class="brand" href="/preview-home/" aria-label="ODÍN, volver a la portada"><span class="brand-mark">◆</span><span>ODÍN</span></a><nav aria-label="Navegación de la herramienta"><a class="back-to-catalog" href="/preview-home/#herramientas"><span aria-hidden="true">←</span> Catálogo</a></nav></header>
+  <main id="contenido" class="zodiac-page">
+    <header class="zodiac-heading"><div><p class="eyebrow">U21 · TIEMPO Y CULTURA</p><h1>Zodiacos y tradiciones</h1><p>Descubre los signos, ciclos y tradiciones asociados a una fecha de nacimiento.</p></div><div class="zodiac-local"><b>LOCAL</b><span>sin predicciones</span></div></header>
+    <p class="zodiac-notice">Información cultural y astronómica · sin horóscopo diario ni predicciones personales.</p>
+    <div class="zodiac-tabs" role="tablist" aria-label="Vista"><button id="summary-tab" type="button" role="tab" aria-selected="true" aria-controls="summary-panel">Resumen</button><button id="wheels-tab" type="button" role="tab" aria-selected="false" aria-controls="wheels-panel">Ruedas visuales</button></div>
+    <section class="zodiac-query" aria-label="Seleccionar fecha"><label><span>Cumpleaños de ODÍN</span><select id="birthday-select"><option value="">Consulta manual</option></select></label><label><span>Fecha de nacimiento</span><input id="birth-date" type="date" /></label><label><span>Hemisferio</span><select id="hemisphere"><option value="north">Norte</option><option value="south">Sur</option></select></label><button id="analyze-date" type="button">Analizar fecha</button></section>
+    <p id="date-warning" class="zodiac-warning" role="alert" hidden></p>
+    <section id="summary-panel" role="tabpanel" aria-labelledby="summary-tab" aria-live="polite">
+      <div class="zodiac-grid">
+        <article class="zodiac-panel"><header><div><span class="panel-kicker">PERFIL DE LA FECHA</span><h2 id="profile-title">Consulta manual</h2><small id="profile-date">—</small></div><span class="status-badge" id="profile-status">Fecha completa</span></header>
+          <div class="sign-grid"><section class="sign-card"><span class="sign-symbol" id="western-symbol">—</span><small>Zodiaco occidental</small><h3 id="western-name">—</h3><div><span id="western-element">—</span><span id="western-modality">—</span></div></section><section class="sign-card"><span class="sign-symbol chinese-symbol" id="chinese-symbol">—</span><small>Zodiaco chino</small><h3 id="chinese-name">—</h3><div><span id="chinese-element">—</span><span id="chinese-polarity">—</span><span id="chinese-year">—</span></div></section></div>
+          <p class="zodiac-explanation">El signo chino se calcula con el año lunar correspondiente a la fecha exacta, no únicamente con el año occidental.</p>
+        </article>
+        <aside class="zodiac-panel"><header><div><span class="panel-kicker">NACIMIENTO Y CIELO</span><h2>Tradiciones de la fecha</h2></div><a href="/preview-moon/" id="moon-link">Abrir Fases lunares</a></header>
+          <dl class="tradition-list"><div><dt><i>◐</i><span>Fase lunar<small id="moon-detail">—</small></span></dt><dd id="moon-name">—</dd></div><div><dt><i>⌁</i><span>Estación<small id="season-detail">Hemisferio norte</small></span></dt><dd id="season-name">—</dd></div><div><dt><i>☉</i><span>Constelación solar<small>Posición astronómica aproximada</small></span></dt><dd id="constellation-name">—</dd></div><div><dt><i>◆</i><span>Piedra tradicional<small>Asociación mensual</small></span></dt><dd id="stone-name">—</dd></div><div><dt><i>✿</i><span>Flor tradicional<small>Asociación mensual</small></span></dt><dd id="flower-name">—</dd></div></dl>
+        </aside>
+      </div>
+    </section>
+    <section id="wheels-panel" role="tabpanel" aria-labelledby="wheels-tab" hidden>
+      <div class="wheel-grid"><article class="wheel-panel"><span class="panel-kicker">CICLO SOLAR OCCIDENTAL</span><div class="zodiac-wheel western-wheel" aria-label="Rueda de los signos occidentales"><div><b id="wheel-western-symbol">—</b><strong id="wheel-western-name">—</strong><small id="wheel-western-detail">—</small></div></div><p>La rueda sitúa la fecha dentro de los doce signos convencionales.</p></article><article class="wheel-panel"><span class="panel-kicker">CICLO LUNAR CHINO</span><div class="zodiac-wheel chinese-wheel" aria-label="Rueda de los animales del zodiaco chino"><div><b id="wheel-chinese-symbol">—</b><strong id="wheel-chinese-name">—</strong><small id="wheel-chinese-detail">—</small></div></div><p>El límite cambia con cada Año Nuevo lunar y puede caer entre enero y febrero.</p></article></div>
+      <div class="date-comparison"><div><b id="compare-date">—</b><span>Fecha de nacimiento</span></div><div><b id="compare-season">—</b><span>Estación terrestre</span></div><div><b id="compare-moon">—</b><span>Fase lunar</span></div><div><b id="compare-sun">—</b><span>Constelación solar</span></div></div>
+    </section>
+    <p class="zodiac-source-note">Las asociaciones de piedra y flor son tradiciones populares que pueden variar según el país. La constelación solar usa intervalos astronómicos aproximados e incluye Ofiuco cuando corresponde.</p>
+  </main>
+  <footer class="site-footer"><span>ODÍN · Zodiacos y tradiciones</span><span>Consulta local · sin seguimiento</span></footer>
+  <script type="module" src="/preview-zodiac/zodiac.js?v=1"></script><script type="module" src="/global-timer.js?v=calendar-merge-1"></script><script type="module" src="/time-center.js?v=calendar-merge-1"></script>
+</body></html>

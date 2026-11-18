@@ -101,6 +101,11 @@
       "id": "U20", "order": 20, "slug": "calculadora", "category": "Cálculo", "name": "Calculadora",
       "description": "Calcula, corrige y recupera operaciones con memoria, historial y ventana flotante.", "status": "available", "href": "/preview-calculator/", "cover": "calculator", "icon": "=", "featured": false,
       "preview": "<div class=\"calculator-cover\"><div class=\"calculator-cover-screen\"><small>(125,50 + 24,50) ÷ 3</small><b>50</b></div><div class=\"calculator-cover-keys\"><i>C</i><i>±</i><i>√</i><i>%</i><span>7</span><span>8</span><span>9</span><strong>÷</strong><em>=</em></div></div>"
+    },
+    {
+      "id": "U21", "order": 21, "slug": "zodiacos-tradiciones", "category": "Tiempo", "name": "Zodiacos y tradiciones",
+      "description": "Consulta ambos zodiacos, la fase lunar y las tradiciones asociadas a una fecha.", "status": "available", "href": "/preview-zodiac/", "cover": "zodiac", "icon": "♏", "featured": false,
+      "preview": "<div class=\"zodiac-cover\"><div><span>♏</span><b>Escorpio</b><small>Agua · Fijo</small></div><i>＋</i><div><span>羊</span><b>Cabra</b><small>Tierra · Yin</small></div></div>"
     }
   ]
 }

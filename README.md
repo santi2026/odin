@@ -4,7 +4,7 @@ Colección de utilidades web cotidianas, rápidas y centradas en la privacidad. 
 
 - Producción: <https://odin.santiagosanz.info/>
 - Publicación: GitHub → Cloudflare Pages
-- Catálogo: 20 herramientas disponibles, numeradas de U01 a U20
+- Catálogo: 21 herramientas disponibles, numeradas de U01 a U21
 - Administración: acceso independiente desde la cabecera; no forma parte del catálogo ni recibe número U
 
 ## Herramientas
@@ -31,6 +31,7 @@ Colección de utilidades web cotidianas, rápidas y centradas en la privacidad. 
 | U18 | Identificadores y dígitos de control | Digital |
 | U19 | Mi IP | Digital |
 | U20 | Calculadora | Cálculo |
+| U21 | Zodiacos y tradiciones | Tiempo |
 
 La fuente única del orden, numeración, categorías, rutas y textos es `catalog-data.json`. No se deben mantener listas paralelas.
 
@@ -40,6 +41,7 @@ La fuente única del orden, numeración, categorías, rutas y textos es `catalog
 npm install
 npm run check:catalog
 npm run test:calculator
+npm run test:zodiac
 npm run build:static
 ```
 

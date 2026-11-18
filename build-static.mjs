@@ -14,7 +14,7 @@ await cp(join(root, 'countdown-general.js'), join(dist, 'countdown-general.js'),
 await cp(join(root, 'catalog-data.json'), join(dist, 'catalog-data.json'), { force: true });
 await cp(join(root, 'logo.ico'), join(dist, 'logo.ico'), { force: true });
 
-for (const folder of ['preview','preview-home','preview-ip','preview-world','preview-timer','preview-alarms','preview-focus','preview-countdown','preview-moon','preview-calendar','preview-dates','preview-convert','preview-qr','preview-html-text','preview-codec','preview-password','preview-identifiers','preview-text-workshop','preview-shared-expenses','preview-json-studio','preview-calculator','preview-admin']) {
+for (const folder of ['preview','preview-home','preview-ip','preview-world','preview-timer','preview-alarms','preview-focus','preview-countdown','preview-moon','preview-calendar','preview-dates','preview-convert','preview-qr','preview-html-text','preview-codec','preview-password','preview-identifiers','preview-text-workshop','preview-shared-expenses','preview-json-studio','preview-calculator','preview-zodiac','preview-admin']) {
   await cp(join(root, folder), join(dist, folder), { recursive: true, force: true });
 }
 

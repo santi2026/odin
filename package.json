@@ -13,6 +13,7 @@
     "test:shared-expenses": "node scripts/test-shared-expenses.mjs",
     "test:json-studio": "node scripts/test-json-studio.mjs",
     "test:calculator": "node scripts/test-calculator.mjs",
+    "test:zodiac": "node scripts/test-zodiac.mjs",
     "check": "astro check",
     "preview": "astro preview"
   },
