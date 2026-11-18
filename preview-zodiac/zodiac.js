@@ -10,7 +10,7 @@ function loadBirthdays(){
   select.innerHTML='<option value="">Consulta manual</option>'+birthdays.map((item,index)=>`<option value="${index}">${escapeHtml(item.name)} · ${item.day}/${item.month}${item.yearKnown&&item.year?`/${item.year}`:''}</option>`).join('');
 }
 function escapeHtml(value){const span=document.createElement('span');span.textContent=value;return span.innerHTML}
-function defaultDate(){const now=new Date();dateInput.value=isoDate(now.getFullYear(),now.getMonth()+1,now.getDate())}
+function defaultDate(){const requested=new URLSearchParams(location.search).get('date'),now=new Date();dateInput.value=/^\d{4}-\d{2}-\d{2}$/.test(requested||'')?requested:isoDate(now.getFullYear(),now.getMonth()+1,now.getDate())}
 function showWarning(message=''){warning.textContent=message;warning.hidden=!message}
 function setText(id,value){$(id).textContent=value}
 function selectedName(){const index=Number(select.value);return select.value===''?'Consulta manual':birthdays[index]?.name||'Consulta manual'}
