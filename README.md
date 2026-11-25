@@ -11,7 +11,7 @@ Colección de utilidades web cotidianas, rápidas y centradas en la privacidad. 
 
 | ID | Herramienta | Categoría |
 |---|---|---|
-| U01 | Reloj negro | Tiempo |
+| U01 | Relojes | Tiempo |
 | U02 | Calendario | Tiempo |
 | U03 | Cuenta atrás | Tiempo |
 | U04 | Alarmas | Tiempo |

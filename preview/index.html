@@ -3,33 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Reloj sobre fondo negro · ODÍN</title>
+  <title>Relojes · ODÍN</title>
   <link rel="icon" href="/logo.ico" type="image/x-icon" />
-  <link rel="stylesheet" href="/src/styles/global.css?v=header-moon-1-nav5" />
+  <link rel="stylesheet" href="/src/styles/global.css?v=relojes-10" />
 </head>
 <body class="tool-page">
   <header class="site-header"><a class="brand" href="/preview-home/" aria-label="ODÍN, volver a la portada"><span class="brand-mark">✦</span><span>ODÍN</span></a><nav aria-label="Navegación de la herramienta"><a class="back-to-catalog" href="/preview-home/#herramientas"><span aria-hidden="true">←</span> Catálogo</a></nav></header>
   <main>
     <section class="sony-clock-page">
-      <header class="sony-clock-heading"><p class="eyebrow">U01 · Tiempo</p><h1>Reloj sobre fondo negro</h1><p>Mantiene la pantalla encendida con un fondo completamente negro y muestra el reloj unos segundos cada minuto.</p></header>
+      <header class="sony-clock-heading"><p class="eyebrow">U01 · Tiempo</p><h1>Relojes</h1><p>Elige un diseño y personaliza cómo quieres ver la hora.</p></header>
       <div class="sony-clock-layout">
-        <div class="sony-clock-stage" id="clock-stage" aria-label="Vista del reloj sobre fondo negro">
-          <div class="sony-floating-clock" id="floating-clock"><time id="clock-time">00:00</time><span id="clock-session">0:00</span></div>
-          <button class="stage-fullscreen" id="stage-fullscreen" type="button" aria-label="Abrir reloj en pantalla completa">⛶</button>
-        </div>
-        <aside class="sony-clock-controls" aria-label="Personalizar reloj">
-          <h2>Personalizar reloj</h2><p>El reloj aparece al cambiar el minuto o al mover el puntero. Los cambios se guardan en este navegador.</p>
+        <aside class="sony-clock-controls movement-controls" aria-label="Reloj en movimiento">
+          <h2>En movimiento</h2><button type="button" class="movement-select" data-clock-design="black">Elegir reloj en movimiento</button>
           <label class="range-control" for="speed"><span>Velocidad</span><output id="speed-output">1,0×</output><input id="speed" type="range" min="0.2" max="3" step="0.2" value="1" /></label>
           <label class="range-control" for="size"><span>Tamaño</span><output id="size-output">42 px</output><input id="size" type="range" min="24" max="110" value="42" /></label>
           <label class="color-control" for="color"><span>Color</span><input id="color" type="color" value="#ffffff" /></label>
-          <label class="always-control" for="always-visible"><span><strong>Siempre visible</strong><small>Si se desactiva, aparece al mover el ratón y cada minuto.</small></span><input id="always-visible" type="checkbox" /></label>
-          <div class="sony-control-actions"><button id="fullscreen" type="button">⛶ Pantalla completa</button><button id="reset" type="button">↻ Restablecer</button></div>
-          <p class="sony-help">Pulsa Esc para salir de pantalla completa. El contador pequeño muestra el tiempo transcurrido desde que abriste el reloj.</p>
+          <label class="always-control" for="always-visible"><span><strong>Siempre visible</strong></span><input id="always-visible" type="checkbox" /></label>
+        </aside>
+        <div class="clock-center">
+        <div class="sony-clock-stage" id="clock-stage" aria-label="Vista del reloj sobre fondo negro">
+          <div class="sony-floating-clock" id="floating-clock"><time id="clock-time">00:00</time><span id="clock-session">0:00</span></div>
+          <div id="clock-standard" class="clock-standard" hidden><div id="clock-digital" class="clock-digital">00:00:00</div><div id="clock-flip" class="clock-flip" hidden aria-label="Reloj de fichas"></div><div id="clock-analog" class="clock-analog" hidden aria-label="Reloj analógico"><span class="dial-number n12">12</span><span class="dial-number n3">3</span><span class="dial-number n6">6</span><span class="dial-number n9">9</span><span class="dial-marks" aria-hidden="true"></span><span class="hand hour"></span><span class="hand minute"></span><span class="hand second"></span><span class="pivot"></span></div><p id="clock-date"></p></div>
+          <button type="button" class="clock-background-nav previous" aria-label="Fondo anterior">‹</button><button type="button" class="clock-background-nav next" aria-label="Fondo siguiente">›</button>
+        </div>
+        <div class="sony-control-actions clock-center-actions"><button id="fullscreen" type="button">Pantalla completa</button><button id="reset" type="button">Restablecer</button></div>
+        </div>
+        <aside class="sony-clock-controls" aria-label="Personalizar reloj">
+          <h2>Otros relojes</h2>
+          <div class="clock-designs" role="group" aria-label="Diseño del reloj"><details class="analog-menu digital-menu"><summary>Digital ▾</summary><div class="analog-menu-options" aria-label="Diseño digital"><button type="button" data-digital-style="simple">Esencial</button><button type="button" data-digital-style="led">LED</button><button type="button" data-digital-style="elegant">Elegante</button></div></details><details class="analog-menu"><summary id="analog-menu-trigger">Analógico ▾</summary><div class="analog-menu-options" aria-label="Diseño analógico"><button type="button" data-analog-style="classic">Clásico</button><button type="button" data-analog-style="minimal">Esencial</button><button type="button" data-analog-style="modern">Contemporáneo</button></div></details><button type="button" data-clock-design="flip">Fichas</button></div>
+          <label class="clock-field">Tamaño <select id="clock-modern-size"><option value="xlarge">Extragrande</option><option value="large">Grande</option><option value="medium">Mediano</option><option value="small">Pequeño</option></select></label>
+          <label class="color-control" for="clock-modern-color"><span>Color del reloj</span><input id="clock-modern-color" type="color" value="#ffffff" /></label>
+          <label class="color-control" for="clock-background-color"><span>Color de fondo</span><input id="clock-background-color" type="color" value="#000000" /></label>
+          <label class="clock-field">Fondo <select id="clock-background"><option value="solid">Color liso</option><optgroup label="Estaciones"><option value="spring">Primavera</option><option value="summer">Verano</option><option value="autumn">Otoño</option><option value="winter">Invierno</option></optgroup><optgroup label="Navidad"><option value="christmas">Luces de Navidad</option><option value="christmas-village">Pueblo navideño</option></optgroup><optgroup label="Halloween"><option value="halloween-pumpkins">Calabazas</option><option value="halloween-house">Casa encantada</option></optgroup><optgroup label="Animales"><option value="dog">Perro</option><option value="cat">Gato</option><option value="horses">Caballos</option><option value="birds">Aves</option></optgroup><option value="holidays">Vacaciones</option></select></label>
+          <label class="always-control"><span><strong>Mostrar fecha</strong></span><input id="clock-show-date" type="checkbox" checked /></label>
         </aside>
       </div>
     </section>
   </main>
-  <script type="module" src="/preview/clock.js"></script>
+  <script type="module" src="/preview/clock.js?v=relojes-10"></script>
   <script type="module" src="/global-timer.js?v=calendar-merge-1"></script>
   <script type="module" src="/time-center.js?v=zodiac-center-3"></script>
 </body>

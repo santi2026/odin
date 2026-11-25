@@ -3,8 +3,8 @@
   "categoryOrder": ["Tiempo", "Cálculo", "Texto y datos", "Digital"],
   "tools": [
     {
-      "id": "U01", "order": 1, "slug": "reloj-negro", "category": "Tiempo", "name": "Reloj negro",
-      "description": "Hora limpia a pantalla completa, con movimiento protector.", "status": "available", "href": "/preview/", "cover": "clock", "icon": "◷", "featured": true,
+      "id": "U01", "order": 1, "slug": "reloj-negro", "category": "Tiempo", "name": "Relojes",
+      "description": "Elige entre relojes digitales, analógicos y fondo negro.", "status": "available", "href": "/preview/", "cover": "clock", "icon": "◷", "featured": true,
       "preview": "<b id=\"live-local-time\">--:--</b><small>hora local</small>"
     },
     {
