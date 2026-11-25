@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro check && astro build",
-    "build:static": "node scripts/validate-catalog.mjs && node build-static.mjs",
+    "build": "node scripts/build-theme.mjs && astro check && astro build",
+    "build:static": "node scripts/build-theme.mjs && node scripts/validate-catalog.mjs && node build-static.mjs",
     "check:catalog": "node scripts/validate-catalog.mjs",
     "test:countdown": "node scripts/test-countdown.mjs",
     "test:text-workshop": "node scripts/test-text-workshop.mjs",
@@ -16,11 +16,15 @@
     "test:zodiac": "node scripts/test-zodiac.mjs",
     "test:time-control": "node scripts/test-time-control.mjs",
     "check": "astro check",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "test:theme": "node scripts/test-theme.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
     "astro": "^5.16.0",
     "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "postcss": "8.5.33"
   }
 }

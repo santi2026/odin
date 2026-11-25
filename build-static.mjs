@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 const root = dirname(fileURLToPath(import.meta.url));
 const dist = join(root, 'dist');
 await mkdir(dist, { recursive: true });
+for (const asset of ['theme.js','theme.css','theme-light']) await cp(join(root,asset),join(dist,asset),{recursive:true,force:true});
 await cp(join(root, 'preview-home', 'index.html'), join(dist, 'index.html'), { force: true });
 await cp(join(root, 'global-timer.js'), join(dist, 'global-timer.js'), { force: true });
 await cp(join(root, 'time-center.js'), join(dist, 'time-center.js'), { force: true });

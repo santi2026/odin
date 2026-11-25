@@ -79,7 +79,7 @@ function tcMountFloat(doc,root,hostWindow){
 }
 async function tcOpenFloat(){
   const prefs=tcFloatPreferences(),dimensions=TC_FLOAT_SIZES[prefs.size]||TC_FLOAT_SIZES.normal;
-  if('documentPictureInPicture' in window){const pip=await window.documentPictureInPicture.requestWindow(dimensions);pip.document.title='Centro de tiempo · ODÍN';const link=pip.document.createElement('link');link.rel='stylesheet';link.href='/time-control.css?v=4';pip.document.head.append(link);pip.document.body.className='tc-floating-body';const root=pip.document.createElement('main');pip.document.body.append(root);tcMountFloat(pip.document,root,pip);return;}
+  if('documentPictureInPicture' in window){const pip=await window.documentPictureInPicture.requestWindow(dimensions);pip.document.title='Centro de tiempo · ODÍN';const link=pip.document.createElement('link');link.rel='stylesheet';link.href='/time-control.css?v=4';pip.document.head.append(link);pip.document.body.className='tc-floating-body';window.odinTheme?.attach(pip.document,'preview-time-control');const root=pip.document.createElement('main');pip.document.body.append(root);tcMountFloat(pip.document,root,pip);return;}
   const popup=window.open('/preview-time-control/','odin-time-control',`popup,width=${dimensions.width},height=${dimensions.height},resizable=yes`);if(!popup)throw new Error('El navegador ha bloqueado la ventana emergente. Permite las ventanas emergentes para ODÍN.');
 }
 function tcInstall(){

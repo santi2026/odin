@@ -14,6 +14,7 @@ export const SECTIONS = [
   { id:'calculadora', label:'Calculadora e historial', group:'data', key:'odin-calculator-v1', sizeKey:'odin-calculator-floating-size', kind:'calculator' },
   { id:'catalogo', label:'Catálogo, favoritos y orden', group:'preferences', key:'odin-catalog-preferences-v1' },
   { id:'reloj_negro', label:'Reloj negro', group:'preferences', key:'odin:u01:sony-clock:v1' },
+  { id:'apariencia', label:'Apariencia · automático, noche y día', group:'preferences', key:'odin-appearance-v1' },
   { id:'centro_tiempo', label:'Centro de control flotante', group:'preferences', key:'odin-time-control-v1' },
   { id:'temporizador', label:'Temporizador y cronómetro', group:'preferences', key:'odin-timer-v1' },
   { id:'pomodoro', label:'Concentración · Pomodoro', group:'preferences', key:'odin-focus-v1' },
@@ -182,7 +183,9 @@ export function validateImportedSections(sections) {
   let total=0;
   for(const [id,data] of Object.entries(sections)){
     if(!byId(id))continue;
-    if(id==='vacaciones'||id==='otros_festivos'){
+    if(id==='apariencia'&&data!=null){
+      if(!['auto','dark','light'].includes(data.mode))throw new Error('La apariencia debe ser automático, noche o día.');total+=1;
+    }else if(id==='vacaciones'||id==='otros_festivos'){
       if(!Array.isArray(data))throw new Error(`${byId(id).label} debe ser una lista.`);for(const item of data)internalPeriod(item,id==='otros_festivos'?'other':'vacation');total+=data.length;
     }else if(id==='cuentas_atras'){
       const normalized=normalizeCountdownState(data||{});for(const item of normalized.personal){if(!COUNTDOWN_CATEGORY_IDS.includes(item.category)||!item.name||item.month<1||item.month>12||item.day<1||item.day>31)throw new Error('Hay un acontecimiento personal no válido.');}total+=normalized.personal.length;
