@@ -47,7 +47,7 @@ export function convert(css){
 for(const folder of folders){
   let html;try{html=await readFile(resolve(root,folder,'index.html'),'utf8');}catch{continue;}
   const sheets=[];
-  for(const match of html.matchAll(/<link[^>]*href="([^"?]+\.css)(?:\?[^"]*)?"[^>]*>/g)){try{sheets.push(await readFile(resolve(root,match[1].replace(/^\//,'')),'utf8'));}catch{}}
+  for(const match of html.matchAll(/<link[^>]*href="([^"?]+\.css)(?:\?[^"]*)?"[^>]*>/g)){if(match[1]==='/theme.css'||match[1].startsWith('/theme-light/'))continue;try{sheets.push(await readFile(resolve(root,match[1].replace(/^\//,'')),'utf8'));}catch{}}
   for(const match of html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g))sheets.push(match[1]);
   // Shared centre styles are attached dynamically after the page has loaded.
   sheets.push(await readFile(resolve(root,'time-control.css'),'utf8'));

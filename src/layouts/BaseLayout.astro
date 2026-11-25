@@ -8,6 +8,7 @@ interface Props {
 }
 
 const { title, description, toolPage = false } = Astro.props;
+const themePage = ({'/herramientas/alarmas/':'preview-alarms','/herramientas/concentracion/':'preview-focus','/herramientas/cronometro-temporizador/':'preview-timer','/herramientas/mi-ip/':'preview-ip','/herramientas/reloj-negro/':'preview','/herramientas/relojes-del-mundo/':'preview-world'} as Record<string,string>)[Astro.url.pathname] || 'preview-home';
 ---
 <!doctype html>
 <html lang="es">
@@ -17,7 +18,9 @@ const { title, description, toolPage = false } = Astro.props;
     <meta name="description" content={description} />
     <meta name="theme-color" content="#070a14" />
     <title>{title}</title>
-  <script is:inline src="/theme.js?v=1"></script></head>
+    <link rel="stylesheet" href={`/theme-light/${themePage}.css?v=3`} data-odin-theme-style />
+    <link rel="stylesheet" href="/theme.css?v=3" data-odin-theme-style />
+    <script is:inline src="/theme.js?v=2"></script></head>
   <body class:list={{ 'tool-page': toolPage }}>
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
     <header class="site-header">

@@ -6,4 +6,6 @@ Administración incluye «Apariencia · automático, noche y día» entre las pr
 
 `theme.js` aplica el tema antes de mostrar el contenido y monta el menú accesible con navegación por teclado. `theme.css` contiene el control y los ajustes comunes. `scripts/build-theme.mjs` genera las variantes claras por página a partir de las hojas originales: no altera geometría, tipografía ni el modo Noche. Las caras de reloj, sus colores personalizados y las ilustraciones conservan su diseño. Al cambiar estilos de una herramienta, ejecutar el build y revisar también el tema Día; las reglas de conversión proporcionan la base de la paleta, pero no sustituyen la revisión visual.
 
+Las paletas se enlazan en la cabecera como hojas que bloquean el primer renderizado. El script síncrono se ejecuta a continuación: así la navegación en modo Día no muestra primero la paleta oscura, incluso cuando las hojas todavía no están en caché. El generador excluye sus propias hojas generadas para evitar duplicarlas.
+
 Comprobación: `node scripts/test-theme.mjs`, `npm run build` y `npm run build:static`.
