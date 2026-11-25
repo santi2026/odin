@@ -20,7 +20,7 @@
     documents.add(doc);
     if(doc!==document)doc.defaultView?.addEventListener('pagehide',()=>documents.delete(doc),{once:true});
     if(!doc.querySelector('[data-odin-theme-style]')) {
-      for(const href of [`/theme-light/${page}.css?v=3`,'/theme.css?v=3']){const link=doc.createElement('link');link.rel='stylesheet';link.href=href;link.dataset.odinThemeStyle='';doc.head.append(link);}
+      for(const href of [`/theme-light/${page}.css?v=4`,'/theme.css?v=4']){const link=doc.createElement('link');link.rel='stylesheet';link.href=href;link.dataset.odinThemeStyle='';doc.head.append(link);}
     }
     apply();
   }
