@@ -14,6 +14,7 @@
     "test:json-studio": "node scripts/test-json-studio.mjs",
     "test:calculator": "node scripts/test-calculator.mjs",
     "test:zodiac": "node scripts/test-zodiac.mjs",
+    "test:time-control": "node scripts/test-time-control.mjs",
     "check": "astro check",
     "preview": "astro preview"
   },

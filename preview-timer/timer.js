@@ -26,6 +26,9 @@ function loadState() {
   } catch { return structuredClone(defaults); }
 }
 function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+function syncExternalState() { state=loadState(); renderInputs(); renderLaps(); render(); }
+window.addEventListener('storage',event=>{if(event.key===STORAGE_KEY)syncExternalState();});
+window.addEventListener('odin:timer-updated',syncExternalState);
 function stopwatchElapsed(now = Date.now()) { return state.stopwatch.accumulated + (state.stopwatch.running ? now - state.stopwatch.startedAt : 0); }
 function timerRemaining(now = Date.now()) { return state.timer.running ? Math.max(0, state.timer.endAt - now) : state.timer.remaining; }
 function two(value) { return String(value).padStart(2,'0'); }

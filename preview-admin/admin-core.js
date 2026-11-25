@@ -14,6 +14,7 @@ export const SECTIONS = [
   { id:'calculadora', label:'Calculadora e historial', group:'data', key:'odin-calculator-v1', sizeKey:'odin-calculator-floating-size', kind:'calculator' },
   { id:'catalogo', label:'Catálogo, favoritos y orden', group:'preferences', key:'odin-catalog-preferences-v1' },
   { id:'reloj_negro', label:'Reloj negro', group:'preferences', key:'odin:u01:sony-clock:v1' },
+  { id:'centro_tiempo', label:'Centro de control flotante', group:'preferences', key:'odin-time-control-v1' },
   { id:'temporizador', label:'Temporizador y cronómetro', group:'preferences', key:'odin-timer-v1' },
   { id:'pomodoro', label:'Concentración · Pomodoro', group:'preferences', key:'odin-focus-v1' },
   { id:'calendario', label:'Vista y colores del calendario', group:'preferences', key:'odin-calendar-v1', kind:'calendar-preferences' },

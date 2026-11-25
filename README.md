@@ -63,4 +63,4 @@ El árbol Astro de `src/` se conserva como base tipada, pero la publicación act
 
 ODÍN usa principalmente `localStorage`. Administración permite exportar una copia completa o secciones independientes, analizar una importación antes de aplicarla y restablecer los datos seleccionados. Los CSV usan punto y coma (`;`).
 
-Consulta [Operación](docs/ODIN-OPERATIONS.md), [formatos de datos](docs/ODIN-DATA-FORMATS.md), [ampliación del proyecto](docs/ODIN-EXTENDING.md) y [próximos pasos](docs/PROXIMOS-PASOS.md).
+Consulta [Operación](docs/ODIN-OPERATIONS.md), [formatos de datos](docs/ODIN-DATA-FORMATS.md), [centro flotante](docs/CENTRO-FLOTANTE.md), [ampliación del proyecto](docs/ODIN-EXTENDING.md) y [próximos pasos](docs/PROXIMOS-PASOS.md).
